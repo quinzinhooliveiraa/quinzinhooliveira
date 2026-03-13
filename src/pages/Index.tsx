@@ -34,7 +34,6 @@ const projetos: ProjectItem[] = [
   { label: "Curso Redes Sociais", desc: "Em breve", image: thumbCurso, badge: "EM BREVE", link: "/curso" },
   { label: "Olivar Global", desc: "Comércio exterior", image: thumbOlivarContent, link: "/olivar-global" },
   { label: "OLSPROJECT", desc: "Comunidade de desenvolvimento pessoal e profissional", image: thumbOlsProject, badge: "NOVO", link: "/olsproject" },
-  { label: "YouTube OLSPROJECT", desc: "Canal da comunidade", image: thumbYoutube, external: "http://www.youtube.com/@OLSPROJECT_" },
   { label: "Rborn", desc: "Marca de roupas", image: thumbRoupa, badge: "EM DEV" },
   { label: "Serviços", desc: "Todos num só lugar", image: thumbServicos, link: "/servicos" },
 ];

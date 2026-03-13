@@ -99,6 +99,14 @@ const projetos = [
     external: true,
   },
   {
+    icon: Youtube,
+    name: "YouTube - OLSPROJECT",
+    color: "hsl(0, 70%, 50%)",
+    description: "Canal da comunidade OLSPROJECT.",
+    link: "http://www.youtube.com/@OLSPROJECT_",
+    external: true,
+  },
+  {
     icon: Instagram,
     name: "Instagram - Olivar Global",
     color: "hsl(200, 60%, 50%)",

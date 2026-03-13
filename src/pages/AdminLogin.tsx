@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -79,6 +79,11 @@ const AdminLogin = () => {
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Entrando..." : "Entrar"}
           </Button>
+          <div className="text-center">
+            <Link to="/admin/forgot-password" className="text-sm text-muted-foreground hover:text-foreground">
+              Esqueci minha senha
+            </Link>
+          </div>
         </form>
       </div>
     </div>
