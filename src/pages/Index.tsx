@@ -174,8 +174,9 @@ const Index = () => {
       {/* Hero */}
       <section className="relative min-h-[80vh] sm:min-h-[90vh] flex items-center overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>
         <div className="absolute inset-0">
-          <img
-            src={quinzinhoHero}
+          <AdminImage
+            settingKey="homepage_hero_image"
+            fallbackSrc={quinzinhoHero}
             alt="Quinzinho Oliveira"
             className="w-full h-full object-cover object-top"
           />
