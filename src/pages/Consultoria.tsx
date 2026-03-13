@@ -212,7 +212,7 @@ const DiagnosticoForm = () => {
             <Sparkles size={20} className="text-primary sm:hidden" />
             <Sparkles size={24} className="text-primary hidden sm:block" />
           </div>
-          <h3 className="font-heading text-lg sm:text-2xl font-bold mb-2">Diagnóstico Financeiro Gratuito</h3>
+          <h3 className="font-heading text-lg sm:text-2xl font-bold mb-2">Diagnóstico Financeiro <span className="line-through opacity-50">R$ 500</span> <span className="text-primary">R$ 0</span></h3>
           <p className="text-sm text-muted-foreground">
             Preencha abaixo e <strong className="text-foreground">eu pessoalmente</strong> analiso sua situação e te mostro o caminho.
           </p>
