@@ -121,8 +121,9 @@ const Sobre = () => {
                       <p className="text-muted-foreground leading-relaxed">{item.text}</p>
                     </div>
                     <div className={`${!isEven ? "md:order-1" : ""} flex justify-center`}>
-                      <img
-                        src={item.image}
+                      <AdminImage
+                        settingKey={`sobre_timeline_${i}`}
+                        fallbackSrc={item.image}
                         alt={item.title}
                         className="w-full max-w-sm rounded-2xl shadow-xl object-cover aspect-[4/5]"
                       />
