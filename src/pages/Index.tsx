@@ -3,7 +3,7 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useSiteSetting } from "@/hooks/use-site-settings";
-import { AdminEditOverlay } from "@/components/admin/AdminEditOverlay";
+import { AdminImage } from "@/components/admin/AdminImage";
 import quinzinhoHero from "@/assets/quinzinho-hero.jpg";
 import quinzinhoAbout from "@/assets/quinzinho-new.jpg";
 

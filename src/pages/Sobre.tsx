@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Instagram, Youtube, Linkedin, Music } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { AdminImage } from "@/components/admin/AdminImage";
 import sobrePhoto2 from "@/assets/quinzinho-sobre-2.jpeg";
 import sobreInfancia from "@/assets/sobre-infancia.jpeg";
 import sobreDesenhos from "@/assets/sobre-desenhos.jpeg";
