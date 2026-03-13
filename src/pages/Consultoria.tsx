@@ -848,7 +848,7 @@ const Consultoria = () => {
             Comece em três etapas
           </h2>
           <p className="text-center text-muted-foreground mb-8 sm:mb-14 max-w-xl mx-auto text-sm sm:text-base">
-            Sem burocracia. O primeiro passo é solicitar seu diagnóstico gratuito.
+            Sem burocracia. Solicite sua análise — eu pago por você.
           </p>
         </FadeUp>
         <Stagger className="grid sm:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto">
