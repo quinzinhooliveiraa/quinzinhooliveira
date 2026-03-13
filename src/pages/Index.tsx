@@ -34,13 +34,14 @@ const projetos: ProjectItem[] = [
   { label: "Curso Redes Sociais", desc: "Em breve", image: thumbCurso, badge: "EM BREVE", link: "/curso" },
   { label: "Olivar Global", desc: "Comércio exterior", image: thumbOlivarContent, link: "/olivar-global" },
   { label: "OLSPROJECT", desc: "Comunidade de desenvolvimento pessoal e profissional", image: thumbOlsProject, badge: "NOVO", link: "/olsproject" },
+  { label: "YouTube OLSPROJECT", desc: "Canal da comunidade", image: thumbYoutube, external: "http://www.youtube.com/@OLSPROJECT_" },
   { label: "Rborn", desc: "Marca de roupas", image: thumbRoupa, badge: "EM DEV" },
   { label: "Serviços", desc: "Todos num só lugar", image: thumbServicos, link: "/servicos" },
 ];
 
 const conteudo: ProjectItem[] = [
   { label: "YouTube", desc: "Vídeos meus sobre o que penso", image: thumbYoutube, badge: "CANAL", external: "https://www.youtube.com/@quinzinhooliveira" },
-  { label: "Instagram Pessoal", desc: "Onde me sinto à vontade", image: thumbInstaPessoal, external: "https://www.instagram.com/quinzinhooliveira_" },
+  { label: "Instagram Pessoal", desc: "Onde me sinto à vontade", image: thumbInstaPessoal, external: "https://www.instagram.com/quinzinhooliveiraa_" },
   { label: "TikTok Pessoal", desc: "Expressão livre", image: thumbTiktokPessoal, external: "https://www.tiktok.com/@quinzinhooliveiraa_" },
   { label: "LinkedIn", desc: "Networking profissional", image: thumbLinkedin, external: "https://www.linkedin.com/in/joaquim-emmanuel-oliveira/" },
   { label: "Blog", desc: "Artigos e reflexões", image: thumbBlog, link: "/blog" },
