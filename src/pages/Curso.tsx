@@ -2,7 +2,8 @@ import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   ArrowRight, CheckCircle2, Star, Play, Shield, Users, TrendingUp,
-  Award, Target, DollarSign, PiggyBank, Sparkles, Clock, BookOpen, Video
+  Award, Target, DollarSign, PiggyBank, Sparkles, Clock, BookOpen, Video,
+  Scissors, Zap, Brain, Rocket, ImageIcon, BarChart3
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
