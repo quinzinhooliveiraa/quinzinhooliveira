@@ -543,7 +543,7 @@ const Consultoria = () => {
             transition={{ delay: 0.5 }}
             className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-10"
           >
-            {["100% Gratuito", "Sem compromisso", "Análise personalizada"].map((badge) => (
+            {["Eu pago sua análise", "Sem compromisso", "Análise personalizada"].map((badge) => (
               <span key={badge} className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-primary/10 text-primary text-[10px] sm:text-xs font-semibold rounded-full border border-primary/20">
                 <CheckCircle2 size={10} className="sm:w-3 sm:h-3" /> {badge}
               </span>
