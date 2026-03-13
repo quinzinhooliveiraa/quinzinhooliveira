@@ -889,10 +889,10 @@ const Consultoria = () => {
             Dê o primeiro passo
           </span>
           <h2 className="font-heading text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6">
-            Solicite seu diagnóstico gratuito
+            Sua análise financeira, <span className="text-primary">por minha conta.</span>
           </h2>
           <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Preencha o formulário e receba uma <strong className="text-foreground">análise personalizada da sua situação financeira</strong> com um plano sob medida.
+            Uma análise como essa normalmente custa <strong className="text-foreground line-through opacity-60">R$ 500</strong>. Mas eu acredito tanto que isso pode mudar sua vida que <strong className="text-foreground">eu pago por você</strong>. Só preencha o formulário.
           </p>
         </FadeUp>
         
