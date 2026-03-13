@@ -428,8 +428,49 @@ const Curso = () => {
         </div>
       </section>
 
-      {/* ══════ GUARANTEE ══════ */}
+      {/* ══════ RESULTS / PROOF ══════ */}
       <section className="py-16 sm:py-24">
+        <div className="section-container max-w-5xl">
+          <FadeUp>
+            <span className="text-[hsl(262_83%_58%)] font-heading font-bold text-sm uppercase tracking-[0.2em] mb-4 block text-center">
+              Resultados Reais
+            </span>
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center">
+              Provas de que o método funciona
+            </h2>
+            <p className="text-center text-muted-foreground mb-10 sm:mb-14 max-w-2xl mx-auto text-sm sm:text-base">
+              Dashboards de insights, feedbacks e contas que eu cresci — resultados reais, sem filtro.
+            </p>
+          </FadeUp>
+
+          {/* Scrolling image gallery placeholder — replace with real screenshots */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <FadeUp key={i} delay={i * 0.08}>
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  className="aspect-[4/5] bg-card border border-border rounded-2xl overflow-hidden flex items-center justify-center"
+                >
+                  <div className="text-center p-4">
+                    <ImageIcon size={32} className="text-muted-foreground/30 mx-auto mb-2" />
+                    <p className="text-xs text-muted-foreground/50">Foto {i}</p>
+                    <p className="text-[10px] text-muted-foreground/30 mt-1">Dashboard / Feedback / Resultado</p>
+                  </div>
+                </motion.div>
+              </FadeUp>
+            ))}
+          </div>
+
+          <FadeUp delay={0.5} className="mt-10 text-center">
+            <p className="text-sm text-muted-foreground italic">
+              📸 Imagens reais serão adicionadas em breve
+            </p>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* ══════ GUARANTEE ══════ */}
+      <section className="py-16 sm:py-24 bg-secondary/50">
         <div className="section-container max-w-3xl">
           <FadeUp>
             <div className="bg-card border-2 border-[hsl(262_83%_58%)]/30 rounded-2xl p-6 sm:p-8 md:p-12 text-center">
@@ -437,13 +478,13 @@ const Curso = () => {
                 <Shield size={36} className="text-[hsl(262_83%_58%)]" />
               </div>
               <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold mb-4">
-                Garantia Incondicional de 30 Dias
+                Garantia Incondicional de 7 Dias
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6">
-                Se você assistir o curso, aplicar o método e não ver <strong className="text-foreground">crescimento real nas suas redes sociais em 30 dias</strong>, eu devolvo 100% do seu dinheiro.
+                Se em <strong className="text-foreground">7 dias</strong> você sentir que o curso não é pra você, devolvo <strong className="text-foreground">100% do seu dinheiro</strong>. Sem perguntas, sem burocracia.
               </p>
               <p className="text-foreground font-semibold text-sm sm:text-base">
-                Sem perguntas. Sem burocracia. É só me enviar um email.
+                Risco zero pra você. É só me enviar um email.
               </p>
             </div>
           </FadeUp>
