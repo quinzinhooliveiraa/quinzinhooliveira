@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import {
   ArrowRight, TrendingUp, Wallet, Home, GraduationCap, Plane, Heart, Briefcase,
   DollarSign, PiggyBank, ShieldCheck, BarChart3, CircleDollarSign, AlertTriangle,
-  CheckCircle2, HelpCircle, Sparkles, Award, Shield, Target, Instagram
+  CheckCircle2, HelpCircle, Sparkles, Award, Shield, Target, Instagram, Clock, Flame
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
