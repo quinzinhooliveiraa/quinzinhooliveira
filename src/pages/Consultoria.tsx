@@ -872,7 +872,7 @@ const Consultoria = () => {
           ))}
         </Stagger>
         <FadeUp delay={0.3} className="flex justify-center mt-8 sm:mt-14">
-          <ScrollCTA text="Solicitar Diagnóstico Gratuito" />
+          <ScrollCTA text="Solicitar Minha Análise" />
         </FadeUp>
       </div>
     </section>
