@@ -112,7 +112,7 @@ const faqs = [
   { q: "Qual a diferença entre consultor e assessor financeiro?", a: "O consultor analisa sua vida financeira inteira, cria um planejamento personalizado e te acompanha. Não vende produto, orienta sobre todas as áreas: orçamento, dívidas, seguros, aposentadoria. O assessor foca em investimentos. Na W1, você tem acesso aos dois." },
   { q: "O que é consultoria financeira?", a: "É ter um profissional que entende sua realidade e monta um plano sob medida. Orçamento, grandes compras, patrimônio, aposentadoria, seguros, impostos: tudo é coberto." },
   { q: "Para quem é?", a: "Para qualquer pessoa que queira tomar decisões financeiras melhores. Esteja no vermelho, no zero ou no positivo, a consultoria é adaptada ao seu momento." },
-  { q: "O diagnóstico é realmente gratuito?", a: "Sim. O diagnóstico inicial é 100% gratuito e sem compromisso. Serve para entender sua situação e mostrar como a consultoria pode ajudar." },
+  { q: "Eu realmente não pago nada?", a: "Não. A análise financeira completa normalmente custa R$ 500, mas eu pago por você. Sem compromisso. Quero que você tenha clareza sobre sua vida financeira." },
   { q: "Preciso ter muito dinheiro?", a: "Não. A consultoria é para quem quer organizar o que tem, pouco ou muito. O trabalho é feito com a sua realidade." },
 ];
 
@@ -171,7 +171,7 @@ const DiagnosticoForm = () => {
           <CheckCircle2 size={48} className="text-primary mx-auto mb-4 sm:w-14 sm:h-14" />
         </motion.div>
         <h3 className="font-heading text-lg sm:text-xl font-bold mb-2">Diagnóstico solicitado!</h3>
-        <p className="text-sm sm:text-base text-muted-foreground">Eu vou entrar em contato em breve para realizar seu diagnóstico gratuito.</p>
+        <p className="text-sm sm:text-base text-muted-foreground">Eu vou entrar em contato em breve para realizar sua análise — por minha conta.</p>
       </motion.div>
     );
   }
@@ -212,7 +212,7 @@ const DiagnosticoForm = () => {
             <Sparkles size={20} className="text-primary sm:hidden" />
             <Sparkles size={24} className="text-primary hidden sm:block" />
           </div>
-          <h3 className="font-heading text-lg sm:text-2xl font-bold mb-2">Diagnóstico Financeiro Gratuito</h3>
+          <h3 className="font-heading text-lg sm:text-2xl font-bold mb-2">Diagnóstico Financeiro <span className="line-through opacity-50">R$ 500</span> <span className="text-primary">R$ 0</span></h3>
           <p className="text-sm text-muted-foreground">
             Preencha abaixo e <strong className="text-foreground">eu pessoalmente</strong> analiso sua situação e te mostro o caminho.
           </p>
@@ -433,9 +433,9 @@ const DiagnosticoForm = () => {
           whileTap={{ scale: 0.98 }}
           className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-primary text-primary-foreground font-bold rounded-xl transition-colors hover:bg-primary/90 text-sm sm:text-base"
         >
-          Solicitar Diagnóstico Gratuito <ArrowRight size={18} />
+          Solicitar Minha Análise <ArrowRight size={18} />
         </motion.button>
-        <p className="text-[10px] sm:text-xs text-muted-foreground text-center !mt-3">100% gratuito • Sem compromisso • Seus dados estão protegidos</p>
+        <p className="text-[10px] sm:text-xs text-muted-foreground text-center !mt-3">Eu pago sua análise • Sem compromisso • Seus dados estão protegidos</p>
       </motion.form>
     </Form>
   );
@@ -523,7 +523,7 @@ const Consultoria = () => {
             transition={{ delay: 0.25 }}
             className="text-sm sm:text-lg md:text-xl text-muted-foreground mb-4 sm:mb-5 leading-relaxed"
           >
-            Consultoria financeira pessoal certificada pela W1, a maior do Brasil. Solicite seu <strong className="text-foreground">diagnóstico financeiro gratuito</strong> e descubra o que ajustar para alcançar seus objetivos mais rápido.
+            Consultoria financeira pessoal certificada pela W1, a maior do Brasil. Uma análise financeira completa custa <strong className="text-foreground line-through opacity-60">R$ 500</strong> — mas eu faço questão de <strong className="text-foreground">pagar essa análise por você</strong>. Eu quero que você acorde pra sua vida financeira.
           </motion.p>
 
           <motion.div
@@ -543,7 +543,7 @@ const Consultoria = () => {
             transition={{ delay: 0.5 }}
             className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-10"
           >
-            {["100% Gratuito", "Sem compromisso", "Análise personalizada"].map((badge) => (
+            {["Eu pago sua análise", "Sem compromisso", "Análise personalizada"].map((badge) => (
               <span key={badge} className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-primary/10 text-primary text-[10px] sm:text-xs font-semibold rounded-full border border-primary/20">
                 <CheckCircle2 size={10} className="sm:w-3 sm:h-3" /> {badge}
               </span>
@@ -555,7 +555,7 @@ const Consultoria = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
           >
-            <ScrollCTA text="Quero meu diagnóstico gratuito" />
+            <ScrollCTA text="Quero minha análise paga pelo Quinzinho" />
           </motion.div>
         </div>
       </div>
@@ -848,7 +848,7 @@ const Consultoria = () => {
             Comece em três etapas
           </h2>
           <p className="text-center text-muted-foreground mb-8 sm:mb-14 max-w-xl mx-auto text-sm sm:text-base">
-            Sem burocracia. O primeiro passo é solicitar seu diagnóstico gratuito.
+            Sem burocracia. Solicite sua análise — eu pago por você.
           </p>
         </FadeUp>
         <Stagger className="grid sm:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto">
@@ -872,7 +872,7 @@ const Consultoria = () => {
           ))}
         </Stagger>
         <FadeUp delay={0.3} className="flex justify-center mt-8 sm:mt-14">
-          <ScrollCTA text="Solicitar Diagnóstico Gratuito" />
+          <ScrollCTA text="Solicitar Minha Análise" />
         </FadeUp>
       </div>
     </section>
@@ -889,10 +889,10 @@ const Consultoria = () => {
             Dê o primeiro passo
           </span>
           <h2 className="font-heading text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6">
-            Solicite seu diagnóstico gratuito
+            Sua análise financeira, <span className="text-primary">por minha conta.</span>
           </h2>
           <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Preencha o formulário e receba uma <strong className="text-foreground">análise personalizada da sua situação financeira</strong> com um plano sob medida.
+            Uma análise como essa normalmente custa <strong className="text-foreground line-through opacity-60">R$ 500</strong>. Mas eu acredito tanto que isso pode mudar sua vida que <strong className="text-foreground">eu pago por você</strong>. Só preencha o formulário.
           </p>
         </FadeUp>
         
@@ -952,10 +952,10 @@ const Consultoria = () => {
             Seu futuro financeiro começa com uma decisão
           </h2>
           <p className="text-sm sm:text-lg text-muted-foreground mb-8 sm:mb-10">
-            Solicite seu diagnóstico gratuito e dê o primeiro passo rumo a uma vida financeira organizada, sem compromisso.
+            Solicite sua análise financeira — eu pago por você. Dê o primeiro passo rumo a uma vida financeira organizada.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <ScrollCTA text="Solicitar Diagnóstico Gratuito" />
+            <ScrollCTA text="Quero minha análise paga pelo Quinzinho" />
           </div>
         </FadeUp>
       </div>
