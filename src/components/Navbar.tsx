@@ -88,7 +88,8 @@ const Navbar = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden bg-background border-t border-border overflow-hidden"
+            className="md:hidden border-t overflow-hidden"
+            style={{ backgroundColor: 'hsl(0, 0%, 7%)', borderColor: 'hsl(0, 0%, 18%)' }}
           >
             <div className="px-4 py-6 space-y-4">
               {allItems.map((item, i) => (

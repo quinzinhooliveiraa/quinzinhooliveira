@@ -35,6 +35,7 @@ const SOURCE_LABELS: Record<string, string> = {
   contato: "Contato",
   consultoria: "Consultoria",
   curso: "Curso",
+  newsletter: "Newsletter",
 };
 
 const AdminDashboard = () => {

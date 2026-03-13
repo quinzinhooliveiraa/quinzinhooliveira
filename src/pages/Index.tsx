@@ -199,7 +199,7 @@ const Index = () => {
               </Link>
               <Link
                 to="/livro"
-                className="px-8 py-3 border border-border text-foreground font-bold rounded-full transition-all hover:border-primary hover:text-primary uppercase tracking-wide text-sm text-center"
+                className="px-8 py-3 border border-[hsl(0,0%,30%)] text-[hsl(0,0%,95%)] font-bold rounded-full transition-all hover:border-primary hover:text-primary uppercase tracking-wide text-sm text-center"
               >
                 Ler o Livro
               </Link>
