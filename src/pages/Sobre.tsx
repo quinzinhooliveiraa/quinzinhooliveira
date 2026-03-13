@@ -94,7 +94,7 @@ const Sobre = () => {
               transition={{ delay: 0.2, duration: 0.7 }}
               className="md:col-span-2 flex justify-center"
             >
-              <img src={sobrePhoto2} alt="Quinzinho Oliveira" className="w-64 sm:w-80 rounded-2xl shadow-2xl object-cover aspect-[3/4]" />
+              <AdminImage settingKey="sobre_hero_photo" fallbackSrc={sobrePhoto2} alt="Quinzinho Oliveira" className="w-64 sm:w-80 rounded-2xl shadow-2xl object-cover aspect-[3/4]" />
             </motion.div>
           </div>
         </div>
