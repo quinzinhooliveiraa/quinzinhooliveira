@@ -146,17 +146,56 @@ function NetflixRow({ title, items }: { title: string; items: ProjectItem[] }) {
   );
 }
 
+function normalizeYouTubeEmbedUrl(input: string) {
+  const raw = input.trim();
+  if (!raw) return raw;
+
+  try {
+    const url = new URL(raw);
+    const host = url.hostname.replace("www.", "");
+
+    if (host === "youtu.be") {
+      const id = url.pathname.split("/").filter(Boolean)[0];
+      return id ? `https://www.youtube.com/embed/${id}` : raw;
+    }
+
+    if (host.includes("youtube.com")) {
+      if (url.pathname.startsWith("/embed/")) return raw;
+
+      if (url.pathname === "/watch") {
+        const id = url.searchParams.get("v");
+        return id ? `https://www.youtube.com/embed/${id}` : raw;
+      }
+
+      if (url.pathname.startsWith("/shorts/")) {
+        const id = url.pathname.split("/").filter(Boolean)[1];
+        return id ? `https://www.youtube.com/embed/${id}` : raw;
+      }
+    }
+  } catch {
+    return raw;
+  }
+
+  return raw;
+}
+
 function HomepageVideo() {
   const { value: videoUrl, update } = useSiteSetting(
     "homepage_video_url",
     "https://www.youtube.com/embed/LShHHIJ4urk?si=vU14gKywHmaSw2wr"
   );
 
+  const embedUrl = normalizeYouTubeEmbedUrl(videoUrl);
+
+  const handleSave = async (newUrl: string) => {
+    await update(normalizeYouTubeEmbedUrl(newUrl));
+  };
+
   return (
-    <AdminEditOverlay value={videoUrl} onSave={update} label="Editar vídeo" type="url">
+    <AdminEditOverlay value={videoUrl} onSave={handleSave} label="Editar vídeo" type="url">
       <div className="max-w-3xl mx-auto aspect-video rounded-xl overflow-hidden border border-border shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
         <iframe
-          src={videoUrl}
+          src={embedUrl}
           title="YouTube video player"
           className="w-full h-full"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
