@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Instagram, Youtube, Linkedin, Music } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { AdminImage } from "@/components/admin/AdminImage";
 import sobrePhoto2 from "@/assets/quinzinho-sobre-2.jpeg";
 import sobreInfancia from "@/assets/sobre-infancia.jpeg";
 import sobreDesenhos from "@/assets/sobre-desenhos.jpeg";
@@ -93,7 +94,7 @@ const Sobre = () => {
               transition={{ delay: 0.2, duration: 0.7 }}
               className="md:col-span-2 flex justify-center"
             >
-              <img src={sobrePhoto2} alt="Quinzinho Oliveira" className="w-64 sm:w-80 rounded-2xl shadow-2xl object-cover aspect-[3/4]" />
+              <AdminImage settingKey="sobre_hero_photo" fallbackSrc={sobrePhoto2} alt="Quinzinho Oliveira" className="w-64 sm:w-80 rounded-2xl shadow-2xl object-cover aspect-[3/4]" />
             </motion.div>
           </div>
         </div>
@@ -120,8 +121,9 @@ const Sobre = () => {
                       <p className="text-muted-foreground leading-relaxed">{item.text}</p>
                     </div>
                     <div className={`${!isEven ? "md:order-1" : ""} flex justify-center`}>
-                      <img
-                        src={item.image}
+                      <AdminImage
+                        settingKey={`sobre_timeline_${i}`}
+                        fallbackSrc={item.image}
                         alt={item.title}
                         className="w-full max-w-sm rounded-2xl shadow-xl object-cover aspect-[4/5]"
                       />
@@ -183,7 +185,13 @@ const Sobre = () => {
                 { src: sobreGaleria, pos: "object-top" },
                 { src: sobreCrianca, pos: "object-center" },
               ].map((item, i) => (
-                <img key={i} src={item.src} alt="" className={`w-full aspect-square object-cover rounded-xl grayscale ${item.pos}`} />
+                <AdminImage
+                  key={i}
+                  settingKey={`sobre_gallery_${i}`}
+                  fallbackSrc={item.src}
+                  alt="Galeria"
+                  className={`w-full aspect-square object-cover rounded-xl grayscale ${item.pos}`}
+                />
               ))}
             </div>
           </div>

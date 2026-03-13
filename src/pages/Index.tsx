@@ -3,6 +3,7 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useSiteSetting } from "@/hooks/use-site-settings";
+import { AdminImage } from "@/components/admin/AdminImage";
 import { AdminEditOverlay } from "@/components/admin/AdminEditOverlay";
 import quinzinhoHero from "@/assets/quinzinho-hero.jpg";
 import quinzinhoAbout from "@/assets/quinzinho-new.jpg";
@@ -173,8 +174,9 @@ const Index = () => {
       {/* Hero */}
       <section className="relative min-h-[80vh] sm:min-h-[90vh] flex items-center overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>
         <div className="absolute inset-0">
-          <img
-            src={quinzinhoHero}
+          <AdminImage
+            settingKey="homepage_hero_image"
+            fallbackSrc={quinzinhoHero}
             alt="Quinzinho Oliveira"
             className="w-full h-full object-cover object-top"
           />
@@ -254,7 +256,7 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             <FadeUp>
               <div className="flex justify-center">
-                <img src={quinzinhoAbout} alt="Quinzinho Oliveira" className="w-56 sm:w-72 mx-auto rounded-xl shadow-2xl img-bw" />
+                <AdminImage settingKey="homepage_about_image" fallbackSrc={quinzinhoAbout} alt="Quinzinho Oliveira" className="w-56 sm:w-72 mx-auto rounded-xl shadow-2xl img-bw" />
               </div>
             </FadeUp>
             <FadeUp delay={0.15}>

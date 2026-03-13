@@ -17,6 +17,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import quinzinhoImg from "@/assets/quinzinho-consultoria.jpg";
+import { AdminImageOverlay } from "@/components/admin/AdminImageOverlay";
+import { useSiteSetting } from "@/hooks/use-site-settings";
 
 /* ───── Animation Helpers ───── */
 
@@ -525,6 +527,7 @@ const ScrollCTA = ({ text, variant = "primary" }: { text: string; variant?: "pri
 
 const Consultoria = () => {
   const { theme } = useTheme();
+  const { value: consultoriaPhoto, update: updateConsultoriaPhoto } = useSiteSetting("consultoria_photo", quinzinhoImg);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -671,13 +674,15 @@ const Consultoria = () => {
           <FadeUp className="order-2 md:order-1">
             <div className="relative flex justify-center">
               <div className="absolute -inset-4 bg-gradient-to-br from-primary/10 to-transparent rounded-3xl blur-2xl" />
+              <AdminImageOverlay settingKey="consultoria_photo" currentSrc={consultoriaPhoto} onUpdate={updateConsultoriaPhoto}>
               <motion.img
-                src={quinzinhoImg}
+                src={consultoriaPhoto}
                 alt="Quinzinho Oliveira, Consultor Financeiro"
                 className="relative w-full max-w-[280px] sm:max-w-[380px] rounded-2xl shadow-2xl object-cover aspect-[3/4]"
                 whileHover={{ scale: 1.02, rotate: -1 }}
                 transition={{ duration: 0.3 }}
               />
+              </AdminImageOverlay>
               <motion.div
                 className="absolute -bottom-3 -right-2 sm:-bottom-4 sm:-right-4 md:right-0 bg-card border border-border rounded-xl px-3 py-2 sm:px-4 sm:py-3 shadow-lg"
                 initial={{ opacity: 0, y: 20 }}
