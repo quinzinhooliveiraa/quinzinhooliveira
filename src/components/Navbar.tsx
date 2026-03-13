@@ -54,12 +54,25 @@ const Navbar = () => {
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <Link
-            to="/contato"
-            className="px-5 py-2 text-sm font-medium border border-primary text-primary rounded-full transition-colors hover:bg-primary hover:text-primary-foreground"
-          >
-            CONTATO
-          </Link>
+          {location.pathname === "/consultoria" ? (
+            <a
+              href="#formulario"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("formulario")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="px-5 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-full transition-all hover:bg-primary/90 animate-pulse hover:animate-none"
+            >
+              AGENDAR ANÁLISE
+            </a>
+          ) : (
+            <Link
+              to="/contato"
+              className="px-5 py-2 text-sm font-medium border border-primary text-primary rounded-full transition-colors hover:bg-primary hover:text-primary-foreground"
+            >
+              CONTATO
+            </Link>
+          )}
         </div>
 
         {/* Mobile */}

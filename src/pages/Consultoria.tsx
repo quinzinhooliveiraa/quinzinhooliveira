@@ -538,6 +538,21 @@ const Consultoria = () => {
   return (
   <div className="pt-16 overflow-hidden">
 
+    {/* Mobile floating CTA */}
+    <motion.a
+      href="#formulario"
+      onClick={(e) => {
+        e.preventDefault();
+        document.getElementById("formulario")?.scrollIntoView({ behavior: "smooth" });
+      }}
+      initial={{ y: 100 }}
+      animate={{ y: 0 }}
+      transition={{ delay: 1, type: "spring", stiffness: 200 }}
+      className="fixed bottom-4 left-4 right-4 z-40 md:hidden flex items-center justify-center gap-2 py-3.5 bg-primary text-primary-foreground font-bold text-sm rounded-xl shadow-lg shadow-primary/25"
+    >
+      <Flame size={16} /> Agendar minha análise
+    </motion.a>
+
     {/* ═══ 1. HERO ═══ */}
     <section className="relative py-12 sm:py-20 md:py-28 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/3" />
@@ -582,38 +597,14 @@ const Consultoria = () => {
             transition={{ delay: 0.25 }}
             className="text-sm sm:text-lg md:text-xl text-muted-foreground mb-4 sm:mb-5 leading-relaxed"
           >
-            Consultoria financeira pessoal certificada pela W1, a maior do Brasil. Uma análise financeira completa custa <strong className="text-foreground line-through opacity-60">R$ 500</strong> — mas eu faço questão de <strong className="text-foreground">pagar essa análise por você</strong>. Eu quero que você acorde pra sua vida financeira.
+            Consultoria financeira pessoal certificada pela W1, a maior do Brasil. Uma análise completa custa <strong className="text-foreground line-through opacity-60">R$ 500</strong>, mas eu pago por você.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.35 }}
-            className="bg-card/50 border border-border rounded-xl p-3 sm:p-4 mb-5 sm:mb-8 inline-block"
-          >
-            <p className="text-foreground font-medium text-xs sm:text-base">
-              ⚠️ <strong>Isso não é sobre investimentos.</strong> É sobre organizar sua vida financeira de verdade.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-10"
-          >
-            {["Eu pago sua análise", "Sem compromisso", "Análise personalizada"].map((badge) => (
-              <span key={badge} className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-primary/10 text-primary text-[10px] sm:text-xs font-semibold rounded-full border border-primary/20">
-                <CheckCircle2 size={10} className="sm:w-3 sm:h-3" /> {badge}
-              </span>
-            ))}
-          </motion.div>
 
           {/* Urgency timer */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.55 }}
+            transition={{ delay: 0.35 }}
             className="mb-6 sm:mb-8"
           >
             <UrgencyTimer />
@@ -954,7 +945,7 @@ const Consultoria = () => {
     </section>
 
     {/* ═══ 10. FORMULÁRIO ═══ */}
-    <section className="py-14 sm:py-28 relative overflow-hidden">
+    <section id="formulario" className="py-14 sm:py-28 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-primary/5" />
       <div className="absolute top-0 right-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-primary/10 rounded-full blur-[150px]" />
       <div className="absolute bottom-0 left-0 w-[200px] sm:w-[400px] h-[200px] sm:h-[400px] bg-primary/5 rounded-full blur-[120px]" />
@@ -967,8 +958,11 @@ const Consultoria = () => {
           <h2 className="font-heading text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6">
             Sua análise financeira, <span className="text-primary">por minha conta.</span>
           </h2>
+          <div className="flex justify-center mb-6">
+            <UrgencyTimer />
+          </div>
           <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Uma análise como essa normalmente custa <strong className="text-foreground line-through opacity-60">R$ 500</strong>. Mas eu acredito tanto que isso pode mudar sua vida que <strong className="text-foreground">eu pago por você</strong>. Só preencha o formulário.
+            Preencha o formulário e eu cuido do resto.
           </p>
         </FadeUp>
         
