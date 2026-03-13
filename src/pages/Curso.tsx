@@ -439,41 +439,58 @@ const Curso = () => {
       </section>
 
       {/* ══════ RESULTS / PROOF ══════ */}
-      <section className="py-16 sm:py-24">
-        <div className="section-container max-w-5xl">
+      <section className="py-16 sm:py-24 overflow-hidden">
+        <div className="section-container max-w-6xl">
           <FadeUp>
             <span className="text-[hsl(262_83%_58%)] font-heading font-bold text-sm uppercase tracking-[0.2em] mb-4 block text-center">
               Resultados Reais
             </span>
             <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center">
-              Provas de que o método funciona
+              Números que falam por si
             </h2>
             <p className="text-center text-muted-foreground mb-10 sm:mb-14 max-w-2xl mx-auto text-sm sm:text-base">
-              Dashboards de insights, feedbacks e contas que eu cresci — resultados reais, sem filtro.
+              Dashboards reais, feedbacks de alunos e faturamento 100% orgânico. Sem filtro, sem edição — direto do meu celular.
             </p>
           </FadeUp>
 
-          {/* Scrolling image gallery placeholder — replace with real screenshots */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <FadeUp key={i} delay={i * 0.08}>
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  className="aspect-[4/5] bg-card border border-border rounded-2xl overflow-hidden flex items-center justify-center"
-                >
-                  <div className="text-center p-4">
-                    <ImageIcon size={32} className="text-muted-foreground/30 mx-auto mb-2" />
-                    <p className="text-xs text-muted-foreground/50">Foto {i}</p>
-                    <p className="text-[10px] text-muted-foreground/30 mt-1">Dashboard / Feedback / Resultado</p>
-                  </div>
-                </motion.div>
-              </FadeUp>
+          {/* Creative collage layout */}
+          <div className="relative mx-auto" style={{ height: "clamp(500px, 80vw, 900px)" }}>
+            {[
+              { src: proof1, rotate: -4, top: "0%", left: "2%", w: "w-[45%] sm:w-[32%]", z: 3, label: "" },
+              { src: proof2, rotate: 3, top: "5%", left: "30%", w: "w-[40%] sm:w-[28%]", z: 4, label: "" },
+              { src: proof3, rotate: -2, top: "2%", left: "58%", w: "w-[42%] sm:w-[30%]", z: 2, label: "" },
+              { src: proof4, rotate: 5, top: "35%", left: "0%", w: "w-[38%] sm:w-[26%]", z: 5, label: "" },
+              { src: proof5, rotate: -6, top: "32%", left: "25%", w: "w-[44%] sm:w-[30%]", z: 6, label: "" },
+              { src: proof6, rotate: 2, top: "38%", left: "52%", w: "w-[40%] sm:w-[28%]", z: 4, label: "" },
+              { src: proof7, rotate: -3, top: "30%", left: "75%", w: "w-[35%] sm:w-[24%]", z: 3, label: "" },
+              { src: proof8, rotate: 4, top: "62%", left: "8%", w: "w-[42%] sm:w-[30%]", z: 7, label: "" },
+              { src: proof9, rotate: -5, top: "65%", left: "45%", w: "w-[44%] sm:w-[32%]", z: 5, label: "" },
+            ].map((img, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.8, rotate: img.rotate * 2 }}
+                whileInView={{ opacity: 1, scale: 1, rotate: img.rotate }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ scale: 1.08, rotate: 0, zIndex: 50 }}
+                className={`absolute ${img.w} cursor-pointer`}
+                style={{ top: img.top, left: img.left, zIndex: img.z }}
+              >
+                <div className="rounded-xl overflow-hidden shadow-2xl border-2 border-background/50 bg-card">
+                  <img
+                    src={img.src}
+                    alt={`Resultado real ${i + 1}`}
+                    className="w-full h-auto object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              </motion.div>
             ))}
           </div>
 
-          <FadeUp delay={0.5} className="mt-10 text-center">
-            <p className="text-sm text-muted-foreground italic">
-              📸 Imagens reais serão adicionadas em breve
+          <FadeUp delay={0.4} className="mt-8 text-center">
+            <p className="text-sm text-muted-foreground">
+              📸 Screenshots reais tiradas direto das plataformas — sem edição, sem enrolação.
             </p>
           </FadeUp>
         </div>
