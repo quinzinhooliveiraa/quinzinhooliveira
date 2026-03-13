@@ -17,6 +17,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import quinzinhoImg from "@/assets/quinzinho-consultoria.jpg";
+import { AdminImageOverlay } from "@/components/admin/AdminImageOverlay";
+import { useSiteSetting } from "@/hooks/use-site-settings";
 
 /* ───── Animation Helpers ───── */
 
