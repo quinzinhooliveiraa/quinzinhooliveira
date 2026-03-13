@@ -555,7 +555,7 @@ const Consultoria = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
           >
-            <ScrollCTA text="Quero meu diagnóstico gratuito" />
+            <ScrollCTA text="Quero minha análise paga pelo Quinzinho" />
           </motion.div>
         </div>
       </div>
