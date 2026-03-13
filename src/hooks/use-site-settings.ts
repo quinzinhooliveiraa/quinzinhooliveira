@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 export function useSiteSetting(key: string, fallback: string = "") {
   const [value, setValue] = useState(fallback);
@@ -7,21 +8,27 @@ export function useSiteSetting(key: string, fallback: string = "") {
 
   useEffect(() => {
     supabase
-      .from("site_settings" as any)
+      .from("site_settings")
       .select("value")
       .eq("key", key)
-      .single()
-      .then(({ data }) => {
-        if (data && (data as any).value) setValue((data as any).value);
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (data?.value) setValue(data.value);
         setLoading(false);
       });
   }, [key]);
 
   const update = async (newValue: string) => {
+    const prev = value;
     setValue(newValue);
-    await supabase
-      .from("site_settings" as any)
-      .upsert({ key, value: newValue, updated_at: new Date().toISOString() } as any);
+    const { error } = await supabase
+      .from("site_settings")
+      .upsert({ key, value: newValue, updated_at: new Date().toISOString() });
+    if (error) {
+      console.error("Failed to save setting:", error);
+      setValue(prev);
+      toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
+    }
   };
 
   return { value, loading, update };
