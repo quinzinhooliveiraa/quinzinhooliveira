@@ -19,13 +19,11 @@ const services = [
     icon: Code,
     title: "Vibe Coding",
     desc: "Desenvolvimento de aplicativos, plataformas e projetos digitais usando IA como copiloto. Da ideia ao produto, com velocidade e qualidade.",
-    link: "/servicos/vibe-coding",
   },
   {
     icon: Smartphone,
     title: "Aplicativos",
     desc: "Criação de apps sob medida, desde MVPs até produtos completos. Foco em experiência do usuário e funcionalidade real.",
-    link: "/servicos/aplicativo",
   },
   {
     icon: Users,
