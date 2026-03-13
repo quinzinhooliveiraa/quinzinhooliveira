@@ -538,6 +538,21 @@ const Consultoria = () => {
   return (
   <div className="pt-16 overflow-hidden">
 
+    {/* Mobile floating CTA */}
+    <motion.a
+      href="#formulario"
+      onClick={(e) => {
+        e.preventDefault();
+        document.getElementById("formulario")?.scrollIntoView({ behavior: "smooth" });
+      }}
+      initial={{ y: 100 }}
+      animate={{ y: 0 }}
+      transition={{ delay: 1, type: "spring", stiffness: 200 }}
+      className="fixed bottom-4 left-4 right-4 z-40 md:hidden flex items-center justify-center gap-2 py-3.5 bg-primary text-primary-foreground font-bold text-sm rounded-xl shadow-lg shadow-primary/25"
+    >
+      <Flame size={16} /> Agendar minha análise
+    </motion.a>
+
     {/* ═══ 1. HERO ═══ */}
     <section className="relative py-12 sm:py-20 md:py-28 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/3" />
