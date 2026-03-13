@@ -112,7 +112,7 @@ const faqs = [
   { q: "Qual a diferença entre consultor e assessor financeiro?", a: "O consultor analisa sua vida financeira inteira, cria um planejamento personalizado e te acompanha. Não vende produto, orienta sobre todas as áreas: orçamento, dívidas, seguros, aposentadoria. O assessor foca em investimentos. Na W1, você tem acesso aos dois." },
   { q: "O que é consultoria financeira?", a: "É ter um profissional que entende sua realidade e monta um plano sob medida. Orçamento, grandes compras, patrimônio, aposentadoria, seguros, impostos: tudo é coberto." },
   { q: "Para quem é?", a: "Para qualquer pessoa que queira tomar decisões financeiras melhores. Esteja no vermelho, no zero ou no positivo, a consultoria é adaptada ao seu momento." },
-  { q: "O diagnóstico é realmente gratuito?", a: "Sim. O diagnóstico inicial é 100% gratuito e sem compromisso. Serve para entender sua situação e mostrar como a consultoria pode ajudar." },
+  { q: "Eu realmente não pago nada?", a: "Não. A análise financeira completa normalmente custa R$ 500, mas eu pago por você. Sem compromisso. Quero que você tenha clareza sobre sua vida financeira." },
   { q: "Preciso ter muito dinheiro?", a: "Não. A consultoria é para quem quer organizar o que tem, pouco ou muito. O trabalho é feito com a sua realidade." },
 ];
 
