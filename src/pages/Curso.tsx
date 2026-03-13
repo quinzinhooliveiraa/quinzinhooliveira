@@ -3,8 +3,18 @@ import { motion, useInView } from "framer-motion";
 import {
   ArrowRight, CheckCircle2, Star, Play, Shield, Users, TrendingUp,
   Award, Target, DollarSign, PiggyBank, Sparkles, Clock, BookOpen, Video,
-  Scissors, Zap, Brain, Rocket, ImageIcon, BarChart3
+  Scissors, Zap, Brain, Rocket, BarChart3
 } from "lucide-react";
+
+import proof1 from "@/assets/proof-1.jpeg";
+import proof2 from "@/assets/proof-2.jpeg";
+import proof3 from "@/assets/proof-3.jpeg";
+import proof4 from "@/assets/proof-4.jpeg";
+import proof5 from "@/assets/proof-5.jpeg";
+import proof6 from "@/assets/proof-6.jpeg";
+import proof7 from "@/assets/proof-7.jpeg";
+import proof8 from "@/assets/proof-8.jpeg";
+import proof9 from "@/assets/proof-9.jpeg";
 import { Button } from "@/components/ui/button";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription
