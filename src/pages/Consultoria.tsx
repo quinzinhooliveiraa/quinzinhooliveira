@@ -550,6 +550,16 @@ const Consultoria = () => {
             ))}
           </motion.div>
 
+          {/* Urgency timer */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.55 }}
+            className="mb-6 sm:mb-8"
+          >
+            <UrgencyTimer />
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
