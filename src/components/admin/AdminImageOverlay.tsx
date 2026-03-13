@@ -41,8 +41,8 @@ export function AdminImageOverlay({ settingKey, currentSrc, onUpdate, children, 
 
       // Save to site_settings
       await supabase
-        .from("site_settings" as any)
-        .upsert({ key: settingKey, value: publicUrl, updated_at: new Date().toISOString() } as any);
+        .from("site_settings")
+        .upsert({ key: settingKey, value: publicUrl, updated_at: new Date().toISOString() });
 
       onUpdate(publicUrl);
     } catch (err) {
