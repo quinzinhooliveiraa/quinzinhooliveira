@@ -251,7 +251,7 @@ const Curso = () => {
               className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4 mt-8"
             >
               <span className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                <Shield size={16} className="text-[hsl(262_83%_58%)]" /> Garantia de 30 dias
+                <Shield size={16} className="text-[hsl(262_83%_58%)]" /> Garantia de 7 dias
               </span>
               <span className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                 <TrendingUp size={16} className="text-[hsl(262_83%_58%)]" /> +20M de contas alcançadas
