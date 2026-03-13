@@ -451,7 +451,7 @@ const Curso = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {[
               proof1, proof2, proof3, proof4, proof5, 
-              proof6, proof7, proof8, proof9
+              proof7, proof8, proof9
             ].map((src, i) => (
               <motion.div
                 key={i}
