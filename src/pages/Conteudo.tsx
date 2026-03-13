@@ -32,7 +32,7 @@ const pessoais = [
     color: "hsl(330, 70%, 50%)",
     purpose: "Onde me sinto à vontade",
     description: "O meu Instagram pessoal é onde sou mais livre. Posto quando quero, o que quero, na hora que quero. Sem regras, sem pressão de crescer ou fechar contratos. É o lugar onde o conteúdo é genuinamente para mim.",
-    link: "https://www.instagram.com/quinzinhooliveira_",
+    link: "https://www.instagram.com/quinzinhooliveiraa_",
     external: true,
   },
   {
