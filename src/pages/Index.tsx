@@ -221,16 +221,7 @@ const Index = () => {
         <section className="py-12 sm:py-16">
           <div className="section-container">
             <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold mb-6 sm:mb-8 text-center">Último do Canal</h2>
-            <div className="max-w-3xl mx-auto aspect-video rounded-xl overflow-hidden border border-border shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
-              <iframe
-                src="https://www.youtube.com/embed/LShHHIJ4urk?si=vU14gKywHmaSw2wr"
-                title="YouTube video player"
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
-            </div>
+            <HomepageVideo />
           </div>
         </section>
       </FadeUp>
