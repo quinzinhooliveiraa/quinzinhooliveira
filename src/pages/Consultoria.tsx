@@ -523,7 +523,7 @@ const Consultoria = () => {
             transition={{ delay: 0.25 }}
             className="text-sm sm:text-lg md:text-xl text-muted-foreground mb-4 sm:mb-5 leading-relaxed"
           >
-            Consultoria financeira pessoal certificada pela W1, a maior do Brasil. Solicite seu <strong className="text-foreground">diagnóstico financeiro gratuito</strong> e descubra o que ajustar para alcançar seus objetivos mais rápido.
+            Consultoria financeira pessoal certificada pela W1, a maior do Brasil. Uma análise financeira completa custa <strong className="text-foreground line-through opacity-60">R$ 500</strong> — mas eu faço questão de <strong className="text-foreground">pagar essa análise por você</strong>. Eu quero que você acorde pra sua vida financeira.
           </motion.p>
 
           <motion.div
