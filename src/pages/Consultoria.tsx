@@ -135,6 +135,65 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
+/* ───── Urgency Timer ───── */
+
+const UrgencyTimer = () => {
+  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    // Set deadline to end of current day (midnight)
+    const getDeadline = () => {
+      const now = new Date();
+      const end = new Date(now);
+      end.setHours(23, 59, 59, 999);
+      return end;
+    };
+
+    const tick = () => {
+      const now = new Date();
+      const diff = Math.max(0, getDeadline().getTime() - now.getTime());
+      setTimeLeft({
+        hours: Math.floor(diff / (1000 * 60 * 60)),
+        minutes: Math.floor((diff / (1000 * 60)) % 60),
+        seconds: Math.floor((diff / 1000) % 60),
+      });
+    };
+
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const pad = (n: number) => String(n).padStart(2, "0");
+
+  return (
+    <div className="inline-flex flex-col items-center gap-2 sm:gap-3 px-4 py-3 sm:px-6 sm:py-4 bg-destructive/10 border border-destructive/20 rounded-xl">
+      <div className="flex items-center gap-1.5 text-destructive">
+        <Flame size={14} className="sm:w-4 sm:h-4 animate-pulse" />
+        <span className="font-heading font-bold text-[10px] sm:text-xs uppercase tracking-wider">
+          Vagas limitadas — Oferta expira em
+        </span>
+      </div>
+      <div className="flex items-center gap-1.5 sm:gap-2 font-heading font-bold">
+        {[
+          { value: pad(timeLeft.hours), label: "h" },
+          { value: pad(timeLeft.minutes), label: "m" },
+          { value: pad(timeLeft.seconds), label: "s" },
+        ].map((unit, i) => (
+          <div key={i} className="flex items-baseline gap-0.5">
+            <span className="text-lg sm:text-2xl text-foreground tabular-nums">{unit.value}</span>
+            <span className="text-[10px] sm:text-xs text-muted-foreground">{unit.label}</span>
+            {i < 2 && <span className="text-muted-foreground mx-0.5 sm:mx-1">:</span>}
+          </div>
+        ))}
+      </div>
+      <p className="text-[10px] sm:text-xs text-muted-foreground">
+        Estou pagando sua análise de <strong className="text-foreground line-through opacity-60">R$ 500</strong> por tempo limitado
+      </p>
+    </div>
+  );
+};
+
 /* ───── Contact Form ───── */
 
 const DiagnosticoForm = () => {
