@@ -582,38 +582,14 @@ const Consultoria = () => {
             transition={{ delay: 0.25 }}
             className="text-sm sm:text-lg md:text-xl text-muted-foreground mb-4 sm:mb-5 leading-relaxed"
           >
-            Consultoria financeira pessoal certificada pela W1, a maior do Brasil. Uma análise financeira completa custa <strong className="text-foreground line-through opacity-60">R$ 500</strong> — mas eu faço questão de <strong className="text-foreground">pagar essa análise por você</strong>. Eu quero que você acorde pra sua vida financeira.
+            Consultoria financeira pessoal certificada pela W1, a maior do Brasil. Uma análise completa custa <strong className="text-foreground line-through opacity-60">R$ 500</strong>, mas eu pago por você.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.35 }}
-            className="bg-card/50 border border-border rounded-xl p-3 sm:p-4 mb-5 sm:mb-8 inline-block"
-          >
-            <p className="text-foreground font-medium text-xs sm:text-base">
-              ⚠️ <strong>Isso não é sobre investimentos.</strong> É sobre organizar sua vida financeira de verdade.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-10"
-          >
-            {["Eu pago sua análise", "Sem compromisso", "Análise personalizada"].map((badge) => (
-              <span key={badge} className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 bg-primary/10 text-primary text-[10px] sm:text-xs font-semibold rounded-full border border-primary/20">
-                <CheckCircle2 size={10} className="sm:w-3 sm:h-3" /> {badge}
-              </span>
-            ))}
-          </motion.div>
 
           {/* Urgency timer */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.55 }}
+            transition={{ delay: 0.35 }}
             className="mb-6 sm:mb-8"
           >
             <UrgencyTimer />
