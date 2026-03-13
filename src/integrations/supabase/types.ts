@@ -248,6 +248,24 @@ export type Database = {
           },
         ]
       }
+      site_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
       tags: {
         Row: {
           created_at: string
