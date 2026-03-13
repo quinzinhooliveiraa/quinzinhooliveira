@@ -943,8 +943,11 @@ const Consultoria = () => {
           <h2 className="font-heading text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6">
             Sua análise financeira, <span className="text-primary">por minha conta.</span>
           </h2>
+          <div className="flex justify-center mb-6">
+            <UrgencyTimer />
+          </div>
           <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Uma análise como essa normalmente custa <strong className="text-foreground line-through opacity-60">R$ 500</strong>. Mas eu acredito tanto que isso pode mudar sua vida que <strong className="text-foreground">eu pago por você</strong>. Só preencha o formulário.
+            Preencha o formulário e eu cuido do resto.
           </p>
         </FadeUp>
         
