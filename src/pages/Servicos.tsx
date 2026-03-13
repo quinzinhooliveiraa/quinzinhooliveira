@@ -92,11 +92,9 @@ const Servicos = () => {
                   </div>
                   <h3 className="font-heading text-lg sm:text-xl font-bold mb-3">{service.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed flex-1">{service.desc}</p>
-                  {service.link && (
-                    <Link to={service.link} className="inline-flex items-center gap-2 text-primary text-sm font-medium mt-4 hover:opacity-80 transition-opacity">
-                      Saiba mais <ArrowRight size={14} />
-                    </Link>
-                  )}
+                  <Link to="/contato" className="inline-flex items-center gap-2 text-primary text-sm font-medium mt-4 hover:opacity-80 transition-opacity">
+                    Entre em contato <ArrowRight size={14} />
+                  </Link>
                 </div>
               </FadeUp>
             ))}

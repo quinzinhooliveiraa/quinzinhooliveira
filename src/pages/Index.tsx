@@ -109,7 +109,7 @@ function NetflixRow({ title, items }: { title: string; items: ProjectItem[] }) {
                 className="group relative flex-shrink-0 w-36 sm:w-44 md:w-52 lg:w-60 cursor-pointer snap-start"
               >
                 <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-card border border-border transition-all duration-300 group-hover:scale-105 group-hover:z-10 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.6)] group-hover:border-primary/40">
-                  <img src={item.image} alt={item.label} className="w-full h-full object-cover" loading="lazy" />
+                  <img src={item.image} alt={item.label} className={`w-full h-full object-cover ${title === "Conteúdo" ? "grayscale hover:grayscale-0 transition-all duration-500" : ""}`} loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
                   {item.badge && (
                     <span className="absolute top-2 right-2 sm:top-3 sm:right-3 category-badge text-[9px] sm:text-[10px]">{item.badge}</span>

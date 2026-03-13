@@ -50,8 +50,6 @@ const AppLayout = () => {
         <Route path="/consultoria" element={<Consultoria />} />
         <Route path="/curso" element={<Curso />} />
         <Route path="/olivar-global" element={<OlivarGlobal />} />
-        <Route path="/servicos/vibe-coding" element={<VibeCoding />} />
-        <Route path="/servicos/aplicativo" element={<Aplicativo />} />
         <Route path="/servicos" element={<Servicos />} />
         <Route path="/conteudo" element={<Conteudo />} />
         <Route path="/sobre" element={<Sobre />} />
