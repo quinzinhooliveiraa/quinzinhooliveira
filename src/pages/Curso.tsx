@@ -30,56 +30,60 @@ const FadeUp = ({ children, delay = 0, className = "" }: { children: React.React
 
 const modules = [
   {
-    icon: Target,
-    title: "Módulo 1: Fundamentos do Conteúdo",
+    icon: Video,
+    title: "Módulo 1: TikTok & Reels",
     items: [
-      "Como descobrir seu nicho e se posicionar",
-      "Os 7 tipos de conteúdo que mais engajam",
-      "Criar um calendário editorial estratégico"
+      "Como funciona o algoritmo e como usá-lo a seu favor",
+      "Formatos que viralizam: o que postar e quando",
+      "Como criar conteúdo que engaja na prática",
+      "Edição de vídeo do zero ao avançado",
+      "Como publicar para maximizar alcance"
     ]
   },
   {
     icon: DollarSign,
-    title: "Módulo 2: Criação de Conteúdo",
+    title: "Módulo 2: Monetização",
     items: [
-      "Copywriting para redes sociais (fórmulas que vendem)",
-      "Como criar reels/vídeos que viralizam",
-      "Design para redes: canva, templates e identidade visual"
+      "Introdução à monetização para criadores",
+      "Como buscar e fechar parcerias com marcas",
+      "Monetização direta: formas de ganhar dinheiro",
+      "Como monetizar com conteúdo dark",
+      "IA para criadores: brainstorming e roteiros com inteligência artificial"
     ]
   },
   {
-    icon: PiggyBank,
-    title: "Módulo 3: Crescimento e Engajamento",
+    icon: Target,
+    title: "Módulo 3: Setup Inicial",
     items: [
-      "Estratégias de crescimento orgânico comprovadas",
-      "Como usar o algoritmo a seu favor",
-      "Técnicas de engajamento e construção de comunidade"
+      "Como criar sua conta no TikTok do jeito certo",
+      "Otimização de perfil: bio, foto e destaques",
+      "Como encontrar o nicho certo pra você"
     ]
   },
   {
-    icon: TrendingUp,
-    title: "Módulo 4: Monetização",
+    icon: Scissors,
+    title: "Módulo 4: Minissérie de Edição",
     items: [
-      "Como vender produtos/serviços pelas redes sociais",
-      "Tráfego pago: Instagram Ads e Meta Ads do zero",
-      "Parcerias, monetização e como fechar contratos"
+      "O processo completo de edição de vídeos",
+      "Efeitos e transições que prendem a atenção",
+      "Técnicas avançadas de edição para creators"
     ]
   },
 ];
 
 const bonuses = [
-  { icon: BookOpen, title: "Pack de Templates Prontos", value: "R$ 297", desc: "Mais de 100 templates editáveis para Canva e CapCut" },
-  { icon: Video, title: "Aulas ao Vivo Mensais", value: "R$ 297", desc: "Análise de perfis e estratégias atualizadas" },
-  { icon: Users, title: "Comunidade Exclusiva", value: "R$ 497", desc: "Networking e troca com outros criadores" },
+  { icon: Rocket, title: "Desafio 30 Dias", value: "R$ 197", desc: "Desafios diários para crescer sua conta em 30 dias com ações práticas" },
+  { icon: BookOpen, title: "Roteiros Prontos", value: "R$ 297", desc: "Pack de roteiros prontos para você adaptar e usar nos seus vídeos" },
 ];
 
 const faqs = [
   { q: "Preciso ter conhecimento prévio?", a: "Não! O curso foi feito para quem está começando do zero. Eu explico tudo passo a passo, desde criar o perfil até monetizar." },
   { q: "Quanto tempo leva para ver resultados?", a: "Depende da sua dedicação, mas quem aplica as estratégias com consistência costuma ver crescimento nas primeiras semanas." },
-  { q: "O curso é ao vivo ou gravado?", a: "O conteúdo principal é gravado para você assistir no seu ritmo. Além disso, você terá acesso a aulas ao vivo mensais para análise de perfis e novidades." },
+  { q: "O curso é ao vivo ou gravado?", a: "O conteúdo é 100% gravado para você assistir no seu ritmo, quando e onde quiser. Além disso, você recebe packs prontos de roteiros e desafios práticos." },
   { q: "Funciona para qualquer nicho?", a: "Sim! As estratégias funcionam para qualquer área: negócios, estilo de vida, educação, vendas, infoprodutos, etc." },
-  { q: "Tem garantia?", a: "Sim! Se você assistir o curso, aplicar o método e não ver resultados em 30 dias, eu devolvo 100% do seu dinheiro. Sem perguntas." },
+  { q: "Tem garantia?", a: "Sim! Se em 7 dias você sentir que o curso não é pra você, devolvo 100% do seu dinheiro. Sem perguntas, sem burocracia." },
   { q: "Por quanto tempo tenho acesso?", a: "Acesso vitalício! Você pode assistir quantas vezes quiser, para sempre." },
+  { q: "Tem aulas ao vivo ou comunidade?", a: "O curso é focado em conteúdo prático e direto ao ponto, com aulas gravadas e materiais prontos. Não tem aulas ao vivo nem comunidade." },
 ];
 
 const Curso = () => {
