@@ -185,8 +185,12 @@ const Sobre = () => {
                 { src: sobreGaleria, pos: "object-top" },
                 { src: sobreCrianca, pos: "object-center" },
               ].map((item, i) => (
-                <img key={i} src={item.src} alt="" className={`w-full aspect-square object-cover rounded-xl grayscale ${item.pos}`} />
-              ))}
+                <AdminImage
+                  settingKey={`sobre_gallery_${i}`}
+                  fallbackSrc={item.src}
+                  alt="Galeria"
+                  className={`w-full aspect-square object-cover rounded-xl grayscale ${item.pos}`}
+                />
             </div>
           </div>
         </section>
