@@ -171,7 +171,7 @@ const DiagnosticoForm = () => {
           <CheckCircle2 size={48} className="text-primary mx-auto mb-4 sm:w-14 sm:h-14" />
         </motion.div>
         <h3 className="font-heading text-lg sm:text-xl font-bold mb-2">Diagnóstico solicitado!</h3>
-        <p className="text-sm sm:text-base text-muted-foreground">Eu vou entrar em contato em breve para realizar seu diagnóstico gratuito.</p>
+        <p className="text-sm sm:text-base text-muted-foreground">Eu vou entrar em contato em breve para realizar sua análise — por minha conta.</p>
       </motion.div>
     );
   }
