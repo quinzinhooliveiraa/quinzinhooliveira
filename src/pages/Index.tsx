@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useSiteSetting } from "@/hooks/use-site-settings";
+import { AdminEditOverlay } from "@/components/admin/AdminEditOverlay";
 import quinzinhoHero from "@/assets/quinzinho-hero.jpg";
 import quinzinhoAbout from "@/assets/quinzinho-new.jpg";
 
@@ -143,6 +145,28 @@ function NetflixRow({ title, items }: { title: string; items: ProjectItem[] }) {
   );
 }
 
+function HomepageVideo() {
+  const { value: videoUrl, update } = useSiteSetting(
+    "homepage_video_url",
+    "https://www.youtube.com/embed/LShHHIJ4urk?si=vU14gKywHmaSw2wr"
+  );
+
+  return (
+    <AdminEditOverlay value={videoUrl} onSave={update} label="Editar vídeo" type="url">
+      <div className="max-w-3xl mx-auto aspect-video rounded-xl overflow-hidden border border-border shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
+        <iframe
+          src={videoUrl}
+          title="YouTube video player"
+          className="w-full h-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      </div>
+    </AdminEditOverlay>
+  );
+}
+
 const Index = () => {
   return (
     <div className="pt-16">
@@ -219,16 +243,7 @@ const Index = () => {
         <section className="py-12 sm:py-16">
           <div className="section-container">
             <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold mb-6 sm:mb-8 text-center">Último do Canal</h2>
-            <div className="max-w-3xl mx-auto aspect-video rounded-xl overflow-hidden border border-border shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
-              <iframe
-                src="https://www.youtube.com/embed/LShHHIJ4urk?si=vU14gKywHmaSw2wr"
-                title="YouTube video player"
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
-            </div>
+            <HomepageVideo />
           </div>
         </section>
       </FadeUp>

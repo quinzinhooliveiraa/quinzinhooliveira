@@ -84,7 +84,7 @@ const Sobre = () => {
                 transition={{ delay: 0.3 }}
                 className="text-[hsl(0,0%,55%)] text-lg leading-relaxed max-w-xl"
               >
-                Tenho 22 anos e desde sempre fui movido por criar coisas. Não importa o formato. O que me motiva é tirar algo da cabeça e colocar no mundo.
+                Tenho 24 anos e desde sempre fui movido por criar coisas. Não importa o formato. O que me motiva é tirar algo da cabeça e colocar no mundo.
               </motion.p>
             </div>
             <motion.div
