@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useSiteSetting } from "@/hooks/use-site-settings";
 import { AdminImage } from "@/components/admin/AdminImage";
+import { AdminEditOverlay } from "@/components/admin/AdminEditOverlay";
 import quinzinhoHero from "@/assets/quinzinho-hero.jpg";
 import quinzinhoAbout from "@/assets/quinzinho-new.jpg";
 
