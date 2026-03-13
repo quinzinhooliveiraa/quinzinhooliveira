@@ -930,7 +930,7 @@ const Consultoria = () => {
     </section>
 
     {/* ═══ 10. FORMULÁRIO ═══ */}
-    <section className="py-14 sm:py-28 relative overflow-hidden">
+    <section id="formulario" className="py-14 sm:py-28 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-primary/5" />
       <div className="absolute top-0 right-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-primary/10 rounded-full blur-[150px]" />
       <div className="absolute bottom-0 left-0 w-[200px] sm:w-[400px] h-[200px] sm:h-[400px] bg-primary/5 rounded-full blur-[120px]" />
