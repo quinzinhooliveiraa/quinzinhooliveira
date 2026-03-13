@@ -22,8 +22,6 @@ import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import VibeCoding from "./pages/VibeCoding";
-import Aplicativo from "./pages/Aplicativo";
 import Servicos from "./pages/Servicos";
 import Conteudo from "./pages/Conteudo";
 import Sobre from "./pages/Sobre";
@@ -52,8 +50,6 @@ const AppLayout = () => {
         <Route path="/consultoria" element={<Consultoria />} />
         <Route path="/curso" element={<Curso />} />
         <Route path="/olivar-global" element={<OlivarGlobal />} />
-        <Route path="/servicos/vibe-coding" element={<VibeCoding />} />
-        <Route path="/servicos/aplicativo" element={<Aplicativo />} />
         <Route path="/servicos" element={<Servicos />} />
         <Route path="/conteudo" element={<Conteudo />} />
         <Route path="/sobre" element={<Sobre />} />

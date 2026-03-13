@@ -19,13 +19,11 @@ const services = [
     icon: Code,
     title: "Vibe Coding",
     desc: "Desenvolvimento de aplicativos, plataformas e projetos digitais usando IA como copiloto. Da ideia ao produto, com velocidade e qualidade.",
-    link: "/servicos/vibe-coding",
   },
   {
     icon: Smartphone,
     title: "Aplicativos",
     desc: "Criação de apps sob medida, desde MVPs até produtos completos. Foco em experiência do usuário e funcionalidade real.",
-    link: "/servicos/aplicativo",
   },
   {
     icon: Users,
@@ -94,11 +92,9 @@ const Servicos = () => {
                   </div>
                   <h3 className="font-heading text-lg sm:text-xl font-bold mb-3">{service.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed flex-1">{service.desc}</p>
-                  {service.link && (
-                    <Link to={service.link} className="inline-flex items-center gap-2 text-primary text-sm font-medium mt-4 hover:opacity-80 transition-opacity">
-                      Saiba mais <ArrowRight size={14} />
-                    </Link>
-                  )}
+                  <Link to="/contato" className="inline-flex items-center gap-2 text-primary text-sm font-medium mt-4 hover:opacity-80 transition-opacity">
+                    Entre em contato <ArrowRight size={14} />
+                  </Link>
                 </div>
               </FadeUp>
             ))}
