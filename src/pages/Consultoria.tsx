@@ -742,33 +742,40 @@ const Consultoria = () => {
             </div>
           </FadeUp>
 
-          <FadeUp delay={0.2}>
-            <div className="p-5 sm:p-8 bg-card border-2 border-primary/20 rounded-2xl text-center h-full">
+          <div className="p-5 sm:p-8 bg-card border-2 border-primary/20 rounded-2xl text-center h-full">
               <h3 className="font-heading text-sm sm:text-base font-bold mb-4 sm:mb-6 text-muted-foreground">
                 O que <span className="text-primary">realmente</span> fazemos:
               </h3>
-              <Stagger className="space-y-1.5 sm:space-y-2">
-                {planejamento360.map((item) => (
-                  <StaggerItem key={item.title}>
-                    <motion.div
-                      whileHover={{ x: 4, scale: 1.02 }}
-                      className={`py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl font-medium text-xs sm:text-sm transition-all flex items-start gap-2 sm:gap-3 ${
-                        item.title === "Dívidas"
-                          ? "bg-primary/15 text-primary border border-primary/25"
-                          : "bg-muted/30 text-foreground/80 border border-border/40 hover:border-primary/20"
-                      }`}
-                    >
-                      <item.icon size={16} className="mt-0.5 shrink-0 sm:w-[18px] sm:h-[18px]" />
-                      <div>
-                        <div className="font-semibold">{item.title}</div>
-                        <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{item.desc}</div>
-                      </div>
-                    </motion.div>
-                  </StaggerItem>
+              <div className="space-y-2 sm:space-y-3">
+                {planejamento360.map((item, i) => (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, margin: "-20px" }}
+                    transition={{
+                      duration: 0.5,
+                      delay: i * 0.1,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    whileHover={{ x: 6, scale: 1.03 }}
+                    className={`py-3 sm:py-4 px-4 sm:px-5 rounded-xl font-medium text-xs sm:text-sm transition-all flex items-start gap-2 sm:gap-3 shadow-md ${
+                      item.title === "Dívidas"
+                        ? "bg-primary/15 text-primary border border-primary/25 shadow-primary/10"
+                        : "bg-muted/30 text-foreground/80 border border-border/40 hover:border-primary/20 hover:shadow-lg"
+                    }`}
+                  >
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <item.icon size={16} className="text-primary sm:w-[18px] sm:h-[18px]" />
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold">{item.title}</div>
+                      <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{item.desc}</div>
+                    </div>
+                  </motion.div>
                 ))}
-              </Stagger>
+              </div>
             </div>
-          </FadeUp>
         </div>
       </div>
     </section>
