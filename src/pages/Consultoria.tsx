@@ -433,9 +433,9 @@ const DiagnosticoForm = () => {
           whileTap={{ scale: 0.98 }}
           className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-primary text-primary-foreground font-bold rounded-xl transition-colors hover:bg-primary/90 text-sm sm:text-base"
         >
-          Solicitar Diagnóstico Gratuito <ArrowRight size={18} />
+          Solicitar Minha Análise <ArrowRight size={18} />
         </motion.button>
-        <p className="text-[10px] sm:text-xs text-muted-foreground text-center !mt-3">100% gratuito • Sem compromisso • Seus dados estão protegidos</p>
+        <p className="text-[10px] sm:text-xs text-muted-foreground text-center !mt-3">Eu pago sua análise • Sem compromisso • Seus dados estão protegidos</p>
       </motion.form>
     </Form>
   );
