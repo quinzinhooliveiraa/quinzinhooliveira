@@ -256,7 +256,7 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             <FadeUp>
               <div className="flex justify-center">
-                <img src={quinzinhoAbout} alt="Quinzinho Oliveira" className="w-56 sm:w-72 mx-auto rounded-xl shadow-2xl img-bw" />
+                <AdminImage settingKey="homepage_about_image" fallbackSrc={quinzinhoAbout} alt="Quinzinho Oliveira" className="w-56 sm:w-72 mx-auto rounded-xl shadow-2xl img-bw" />
               </div>
             </FadeUp>
             <FadeUp delay={0.15}>
