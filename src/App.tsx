@@ -20,6 +20,8 @@ import Curso from "./pages/Curso";
 import OlivarGlobal from "./pages/OlivarGlobal";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import VibeCoding from "./pages/VibeCoding";
 import Aplicativo from "./pages/Aplicativo";
 import Servicos from "./pages/Servicos";
