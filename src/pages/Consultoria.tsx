@@ -527,6 +527,7 @@ const ScrollCTA = ({ text, variant = "primary" }: { text: string; variant?: "pri
 
 const Consultoria = () => {
   const { theme } = useTheme();
+  const { value: consultoriaPhoto, update: updateConsultoriaPhoto } = useSiteSetting("consultoria_photo", quinzinhoImg);
 
   useEffect(() => {
     const root = document.documentElement;
