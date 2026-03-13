@@ -952,10 +952,10 @@ const Consultoria = () => {
             Seu futuro financeiro começa com uma decisão
           </h2>
           <p className="text-sm sm:text-lg text-muted-foreground mb-8 sm:mb-10">
-            Solicite seu diagnóstico gratuito e dê o primeiro passo rumo a uma vida financeira organizada, sem compromisso.
+            Solicite sua análise financeira — eu pago por você. Dê o primeiro passo rumo a uma vida financeira organizada.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <ScrollCTA text="Solicitar Diagnóstico Gratuito" />
+            <ScrollCTA text="Quero minha análise paga pelo Quinzinho" />
           </div>
         </FadeUp>
       </div>
