@@ -363,16 +363,16 @@ const Livro = () => (
             Disponível em
           </p>
           <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-10 max-w-4xl mx-auto">
-            {stores.map((store) => (
-              <a
+            {defaultStores.map((store) => (
+              <AdminEditableLink
                 key={store.name}
-                href={store.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                settingKey={store.settingKey}
+                defaultHref={store.url}
+                external
                 className="group transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-105"
               >
                 <img src={store.logo} alt={store.name} className="h-10 sm:h-12 md:h-14 w-auto object-contain rounded-lg" />
-              </a>
+              </AdminEditableLink>
             ))}
           </div>
         </div>
