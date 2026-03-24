@@ -69,7 +69,7 @@ const AppLayout = () => {
         <Route path="/admin/post/:id" element={<Suspense fallback={<div className="pt-16 min-h-screen flex items-center justify-center"><p>Carregando...</p></div>}><PostEditor /></Suspense>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {!isAdmin && <Footer />}
+      {!isAdmin && !isStandaloneLp && <Footer />}
     </>
   );
 };
