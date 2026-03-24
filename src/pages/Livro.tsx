@@ -66,14 +66,14 @@ const realReviews = [
 
 const BuyButton = ({ className = "" }: { className?: string }) => (
   <div className={`flex flex-col sm:flex-row flex-wrap gap-3 ${className}`}>
-    <a
-      href="https://www.amazon.com.br/Casa-dos-20-Quinzinho-Oliveira/dp/B0CWW9JR92/"
-      target="_blank"
-      rel="noopener noreferrer"
+    <AdminEditableLink
+      settingKey="livro_buy_url"
+      defaultHref="https://www.amazon.com.br/Casa-dos-20-Quinzinho-Oliveira/dp/B0CWW9JR92/"
+      external
       className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary text-primary-foreground font-bold rounded-lg transition-all hover:opacity-90 hover:scale-[1.02] text-base sm:text-lg"
     >
       <ShoppingCart size={20} /> Comprar Agora
-    </a>
+    </AdminEditableLink>
     <a
       href="#onde-encontrar"
       className="px-6 py-3 sm:py-4 border border-border text-foreground font-medium rounded-lg transition-colors hover:border-primary hover:text-primary text-center"

@@ -1008,12 +1008,12 @@ const Consultoria = () => {
       <div className="section-container text-center">
         <p className="text-muted-foreground text-sm mb-4">Acompanhe a consultoria nas redes</p>
         <div className="flex justify-center gap-4 flex-wrap">
-          <a href="https://www.instagram.com/oliveiracapital_" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-full hover:border-primary/30 transition-colors text-sm font-medium">
+          <AdminEditableLink settingKey="consultoria_instagram" defaultHref="https://www.instagram.com/oliveiracapital_" external className="flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-full hover:border-primary/30 transition-colors text-sm font-medium">
             <Instagram size={16} className="text-primary" /> Instagram
-          </a>
-          <a href="https://www.tiktok.com/@oliveiracapital_" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-full hover:border-primary/30 transition-colors text-sm font-medium">
+          </AdminEditableLink>
+          <AdminEditableLink settingKey="consultoria_tiktok" defaultHref="https://www.tiktok.com/@oliveiracapital_" external className="flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-full hover:border-primary/30 transition-colors text-sm font-medium">
             <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-primary"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.88-2.88 2.89 2.89 0 0 1 2.88-2.88c.28 0 .56.04.82.11v-3.5a6.37 6.37 0 0 0-.82-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V9.17a8.16 8.16 0 0 0 4.76 1.53v-3.5a4.78 4.78 0 0 1-1-.51z"/></svg> TikTok
-          </a>
+          </AdminEditableLink>
         </div>
       </div>
     </section>
