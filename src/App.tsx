@@ -26,6 +26,9 @@ import Servicos from "./pages/Servicos";
 import Conteudo from "./pages/Conteudo";
 import Sobre from "./pages/Sobre";
 import OlsProject from "./pages/OlsProject";
+import Projetos from "./pages/Projetos";
+import VytalLP from "./pages/VytalLP";
+import CasaDos20LP from "./pages/CasaDos20LP";
 
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const PostEditor = lazy(() => import("./pages/PostEditor"));
