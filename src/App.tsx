@@ -39,7 +39,7 @@ const AppLayout = () => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith("/admin");
   const isStandaloneLp = location.pathname === "/vytal" || location.pathname === "/casados20";
-
+  useTrackVisit();
   return (
     <>
       <ScrollToTop />
