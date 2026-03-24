@@ -47,12 +47,12 @@ const benefits = [
   "Sentir que alguém realmente te entende, porque entende",
 ];
 
-const stores = [
-  { name: "Amazon", url: "https://www.amazon.com.br/Casa-dos-20-Quinzinho-Oliveira/dp/B0CWW9JR92/", logo: logoAmazon },
-  { name: "Apple Books", url: "https://books.apple.com/us/book/a-casa-dos-20/id6760140786", logo: logoAppleBooks },
-  { name: "Magazine Luiza", url: "https://www.magazineluiza.com.br/a-casa-dos-20-refletindo-sobre-os-desafios-da-transicao-para-a-vida-adulta-clube-de-autores/p/hb991841h6/li/best/", logo: logoMagalu },
-  { name: "Americanas", url: "https://www.americanas.com.br", logo: logoAmericanas },
-  { name: "Clube de Autores", url: "https://clubedeautores.pt/livro/a-casa-dos", logo: logoClubeAutores },
+const defaultStores = [
+  { name: "Amazon", settingKey: "livro_store_amazon", url: "https://www.amazon.com.br/Casa-dos-20-Quinzinho-Oliveira/dp/B0CWW9JR92/", logo: logoAmazon },
+  { name: "Apple Books", settingKey: "livro_store_applebooks", url: "https://books.apple.com/us/book/a-casa-dos-20/id6760140786", logo: logoAppleBooks },
+  { name: "Magazine Luiza", settingKey: "livro_store_magalu", url: "https://www.magazineluiza.com.br/a-casa-dos-20-refletindo-sobre-os-desafios-da-transicao-para-a-vida-adulta-clube-de-autores/p/hb991841h6/li/best/", logo: logoMagalu },
+  { name: "Americanas", settingKey: "livro_store_americanas", url: "https://www.americanas.com.br", logo: logoAmericanas },
+  { name: "Clube de Autores", settingKey: "livro_store_clubeautores", url: "https://clubedeautores.pt/livro/a-casa-dos", logo: logoClubeAutores },
 ];
 
 const realReviews = [
