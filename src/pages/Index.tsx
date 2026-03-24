@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { useSiteSetting } from "@/hooks/use-site-settings";
 import { AdminImage } from "@/components/admin/AdminImage";
 import { AdminEditOverlay } from "@/components/admin/AdminEditOverlay";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 import quinzinhoHero from "@/assets/quinzinho-hero.jpg";
 import quinzinhoAbout from "@/assets/quinzinho-new.jpg";
 
@@ -256,18 +257,20 @@ const Index = () => {
               transition={{ delay: 0.5 }}
               className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4"
             >
-              <Link
-                to="/contato"
+              <AdminEditableLink
+                settingKey="hero_cta_contato"
+                defaultHref="/contato"
                 className="px-8 py-3 bg-primary text-primary-foreground font-bold rounded-full transition-all hover:opacity-90 hover:scale-[1.02] uppercase tracking-wide text-sm text-center"
               >
                 Entrar em Contato
-              </Link>
-              <Link
-                to="/livro"
+              </AdminEditableLink>
+              <AdminEditableLink
+                settingKey="hero_cta_livro"
+                defaultHref="/livro"
                 className="px-8 py-3 border border-[hsl(0,0%,30%)] text-[hsl(0,0%,95%)] font-bold rounded-full transition-all hover:border-primary hover:text-primary uppercase tracking-wide text-sm text-center"
               >
                 Ler o Livro
-              </Link>
+              </AdminEditableLink>
             </motion.div>
           </div>
         </div>

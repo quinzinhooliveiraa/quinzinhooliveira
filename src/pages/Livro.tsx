@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { Check, Star, ArrowRight, ShoppingCart, Smartphone, ExternalLink, Instagram } from "lucide-react";
 import { motion, useInView } from "framer-motion";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 import bookImg from "@/assets/book-cover-new.png";
 import bookPhysical from "@/assets/book-physical.png";
 import bookDigital from "@/assets/book-digital.png";
@@ -46,12 +47,12 @@ const benefits = [
   "Sentir que alguém realmente te entende, porque entende",
 ];
 
-const stores = [
-  { name: "Amazon", url: "https://www.amazon.com.br/Casa-dos-20-Quinzinho-Oliveira/dp/B0CWW9JR92/", logo: logoAmazon },
-  { name: "Apple Books", url: "https://books.apple.com/us/book/a-casa-dos-20/id6760140786", logo: logoAppleBooks },
-  { name: "Magazine Luiza", url: "https://www.magazineluiza.com.br/a-casa-dos-20-refletindo-sobre-os-desafios-da-transicao-para-a-vida-adulta-clube-de-autores/p/hb991841h6/li/best/", logo: logoMagalu },
-  { name: "Americanas", url: "https://www.americanas.com.br", logo: logoAmericanas },
-  { name: "Clube de Autores", url: "https://clubedeautores.pt/livro/a-casa-dos", logo: logoClubeAutores },
+const defaultStores = [
+  { name: "Amazon", settingKey: "livro_store_amazon", url: "https://www.amazon.com.br/Casa-dos-20-Quinzinho-Oliveira/dp/B0CWW9JR92/", logo: logoAmazon },
+  { name: "Apple Books", settingKey: "livro_store_applebooks", url: "https://books.apple.com/us/book/a-casa-dos-20/id6760140786", logo: logoAppleBooks },
+  { name: "Magazine Luiza", settingKey: "livro_store_magalu", url: "https://www.magazineluiza.com.br/a-casa-dos-20-refletindo-sobre-os-desafios-da-transicao-para-a-vida-adulta-clube-de-autores/p/hb991841h6/li/best/", logo: logoMagalu },
+  { name: "Americanas", settingKey: "livro_store_americanas", url: "https://www.americanas.com.br", logo: logoAmericanas },
+  { name: "Clube de Autores", settingKey: "livro_store_clubeautores", url: "https://clubedeautores.pt/livro/a-casa-dos", logo: logoClubeAutores },
 ];
 
 const realReviews = [
@@ -65,14 +66,14 @@ const realReviews = [
 
 const BuyButton = ({ className = "" }: { className?: string }) => (
   <div className={`flex flex-col sm:flex-row flex-wrap gap-3 ${className}`}>
-    <a
-      href="https://www.amazon.com.br/Casa-dos-20-Quinzinho-Oliveira/dp/B0CWW9JR92/"
-      target="_blank"
-      rel="noopener noreferrer"
+    <AdminEditableLink
+      settingKey="livro_buy_url"
+      defaultHref="https://www.amazon.com.br/Casa-dos-20-Quinzinho-Oliveira/dp/B0CWW9JR92/"
+      external
       className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary text-primary-foreground font-bold rounded-lg transition-all hover:opacity-90 hover:scale-[1.02] text-base sm:text-lg"
     >
       <ShoppingCart size={20} /> Comprar Agora
-    </a>
+    </AdminEditableLink>
     <a
       href="#onde-encontrar"
       className="px-6 py-3 sm:py-4 border border-border text-foreground font-medium rounded-lg transition-colors hover:border-primary hover:text-primary text-center"
@@ -362,16 +363,16 @@ const Livro = () => (
             Disponível em
           </p>
           <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-10 max-w-4xl mx-auto">
-            {stores.map((store) => (
-              <a
+            {defaultStores.map((store) => (
+              <AdminEditableLink
                 key={store.name}
-                href={store.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                settingKey={store.settingKey}
+                defaultHref={store.url}
+                external
                 className="group transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-105"
               >
                 <img src={store.logo} alt={store.name} className="h-10 sm:h-12 md:h-14 w-auto object-contain rounded-lg" />
-              </a>
+              </AdminEditableLink>
             ))}
           </div>
         </div>
