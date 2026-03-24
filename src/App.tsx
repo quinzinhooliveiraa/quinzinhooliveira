@@ -26,6 +26,9 @@ import Servicos from "./pages/Servicos";
 import Conteudo from "./pages/Conteudo";
 import Sobre from "./pages/Sobre";
 import OlsProject from "./pages/OlsProject";
+import Projetos from "./pages/Projetos";
+import VytalLP from "./pages/VytalLP";
+import CasaDos20LP from "./pages/CasaDos20LP";
 
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const PostEditor = lazy(() => import("./pages/PostEditor"));
@@ -35,12 +38,12 @@ const queryClient = new QueryClient();
 const AppLayout = () => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith("/admin");
+  const isStandaloneLp = location.pathname === "/vytal" || location.pathname === "/casados20";
   useTrackVisit();
-
   return (
     <>
       <ScrollToTop />
-      {!isAdmin && <Navbar />}
+      {!isAdmin && !isStandaloneLp && <Navbar />}
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/livro" element={<Livro />} />
@@ -55,6 +58,9 @@ const AppLayout = () => {
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/olsproject" element={<OlsProject />} />
         <Route path="/ols-project" element={<OlsProject />} />
+        <Route path="/projetos" element={<Projetos />} />
+        <Route path="/vytal" element={<VytalLP />} />
+        <Route path="/casados20" element={<CasaDos20LP />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -63,7 +69,7 @@ const AppLayout = () => {
         <Route path="/admin/post/:id" element={<Suspense fallback={<div className="pt-16 min-h-screen flex items-center justify-center"><p>Carregando...</p></div>}><PostEditor /></Suspense>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {!isAdmin && <Footer />}
+      {!isAdmin && !isStandaloneLp && <Footer />}
     </>
   );
 };

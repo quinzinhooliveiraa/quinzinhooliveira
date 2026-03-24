@@ -8,6 +8,7 @@ import { useAdminStatus } from "@/hooks/use-admin-status";
 const navItems = [
   { label: "INÍCIO", path: "/" },
   { label: "SOBRE", path: "/sobre" },
+  { label: "PROJETOS", path: "/projetos" },
   { label: "BLOG", path: "/blog" },
   { label: "CONTATO", path: "/contato" },
 ];
