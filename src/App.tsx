@@ -38,7 +38,7 @@ const queryClient = new QueryClient();
 const AppLayout = () => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith("/admin");
-  useTrackVisit();
+  const isStandaloneLp = location.pathname === "/vytal" || location.pathname === "/casados20";
 
   return (
     <>
