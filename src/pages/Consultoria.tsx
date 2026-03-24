@@ -19,6 +19,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import quinzinhoImg from "@/assets/quinzinho-consultoria.jpg";
 import { AdminImageOverlay } from "@/components/admin/AdminImageOverlay";
 import { useSiteSetting } from "@/hooks/use-site-settings";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 
 /* ───── Animation Helpers ───── */
 
