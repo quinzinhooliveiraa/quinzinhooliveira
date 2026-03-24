@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { Check, Star, ArrowRight, ShoppingCart, Smartphone, ExternalLink, Instagram } from "lucide-react";
 import { motion, useInView } from "framer-motion";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 import bookImg from "@/assets/book-cover-new.png";
 import bookPhysical from "@/assets/book-physical.png";
 import bookDigital from "@/assets/book-digital.png";
