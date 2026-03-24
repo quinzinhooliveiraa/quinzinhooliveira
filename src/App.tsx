@@ -43,7 +43,7 @@ const AppLayout = () => {
   return (
     <>
       <ScrollToTop />
-      {!isAdmin && <Navbar />}
+      {!isAdmin && !isStandaloneLp && <Navbar />}
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/livro" element={<Livro />} />
