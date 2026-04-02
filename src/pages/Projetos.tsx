@@ -1,11 +1,12 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
-import { ArrowRight, ExternalLink, Smartphone, Dumbbell, BookOpen, Bird } from "lucide-react";
+import { ArrowRight, ExternalLink, Smartphone, Dumbbell, BookOpen, Bird, Cross } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import appVytal from "@/assets/app-vytal.png";
 import appCasaDos20 from "@/assets/app-casados20.png";
 import appPingo from "@/assets/app-pingo.png";
+import app365Deus from "@/assets/app-365deus.jpg";
 
 const FadeUp = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => {
   const ref = useRef(null);
@@ -61,6 +62,16 @@ const apps: AppProject[] = [
     icon: <Bird size={20} />,
     appUrl: "https://pingo-habits.replit.app",
     tags: ["PWA", "Hábitos", "Produtividade", "Tracking"],
+  },
+  {
+    name: "365 Encontros com Deus",
+    tagline: "Devocional diário para fortalecer sua fé",
+    description: "Aplicativo de devocional cristão com 365 encontros diários com Deus. Login com Google e Apple, interface elegante e conteúdo inspirador para cada dia do ano.",
+    image: app365Deus,
+    color: "#8B7355",
+    icon: <Cross size={20} />,
+    appUrl: "https://365-com-deus-1.replit.app",
+    tags: ["PWA", "Devocional", "Fé", "Cristão"],
   },
 ];
 
@@ -170,7 +181,7 @@ const Projetos = () => {
                 Eu transformo ideias em produtos reais. Se você tem um projeto em mente, vamos conversar.
               </p>
               <Link
-                to="/contato"
+                to="/criar-app"
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors"
               >
                 Entrar em Contato <ArrowRight size={14} />

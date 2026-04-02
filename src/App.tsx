@@ -29,6 +29,7 @@ import OlsProject from "./pages/OlsProject";
 import Projetos from "./pages/Projetos";
 import VytalLP from "./pages/VytalLP";
 import CasaDos20LP from "./pages/CasaDos20LP";
+import CriarApp from "./pages/CriarApp";
 
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const PostEditor = lazy(() => import("./pages/PostEditor"));
@@ -38,7 +39,7 @@ const queryClient = new QueryClient();
 const AppLayout = () => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith("/admin");
-  const isStandaloneLp = location.pathname === "/vytal" || location.pathname === "/casados20";
+  const isStandaloneLp = location.pathname === "/vytal" || location.pathname === "/casados20" || location.pathname === "/criar-app";
   useTrackVisit();
   return (
     <>
@@ -61,6 +62,7 @@ const AppLayout = () => {
         <Route path="/projetos" element={<Projetos />} />
         <Route path="/vytal" element={<VytalLP />} />
         <Route path="/casados20" element={<CasaDos20LP />} />
+        <Route path="/criar-app" element={<CriarApp />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
