@@ -181,7 +181,7 @@ const Projetos = () => {
                 Eu transformo ideias em produtos reais. Se você tem um projeto em mente, vamos conversar.
               </p>
               <Link
-                to="/contato"
+                to="/criar-app"
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 transition-colors"
               >
                 Entrar em Contato <ArrowRight size={14} />
