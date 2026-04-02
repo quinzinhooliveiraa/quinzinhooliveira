@@ -1,11 +1,12 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
-import { ArrowRight, ExternalLink, Smartphone, Dumbbell, BookOpen, Bird } from "lucide-react";
+import { ArrowRight, ExternalLink, Smartphone, Dumbbell, BookOpen, Bird, Cross } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import appVytal from "@/assets/app-vytal.png";
 import appCasaDos20 from "@/assets/app-casados20.png";
 import appPingo from "@/assets/app-pingo.png";
+import app365Deus from "@/assets/app-365deus.jpg";
 
 const FadeUp = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => {
   const ref = useRef(null);
