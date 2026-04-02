@@ -63,6 +63,16 @@ const apps: AppProject[] = [
     appUrl: "https://pingo-habits.replit.app",
     tags: ["PWA", "Hábitos", "Produtividade", "Tracking"],
   },
+  {
+    name: "365 Encontros com Deus",
+    tagline: "Devocional diário para fortalecer sua fé",
+    description: "Aplicativo de devocional cristão com 365 encontros diários com Deus. Login com Google e Apple, interface elegante e conteúdo inspirador para cada dia do ano.",
+    image: app365Deus,
+    color: "#8B7355",
+    icon: <Cross size={20} />,
+    appUrl: "https://365-com-deus-1.replit.app",
+    tags: ["PWA", "Devocional", "Fé", "Cristão"],
+  },
 ];
 
 const Projetos = () => {
