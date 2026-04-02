@@ -62,6 +62,7 @@ const AppLayout = () => {
         <Route path="/projetos" element={<Projetos />} />
         <Route path="/vytal" element={<VytalLP />} />
         <Route path="/casados20" element={<CasaDos20LP />} />
+        <Route path="/criar-app" element={<CriarApp />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
