@@ -409,7 +409,7 @@ const Livro = () => (
               </ul>
 
               <a
-                href="https://adulting-quinzinho-y49vdv48vx.replit.app/"
+                href="https://acasados20.replit.app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary text-primary-foreground font-bold rounded-lg transition-all hover:opacity-90 hover:scale-[1.02] text-base sm:text-lg mb-4"
