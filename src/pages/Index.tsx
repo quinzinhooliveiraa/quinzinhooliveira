@@ -19,6 +19,7 @@ import thumbInstaPessoal from "@/assets/thumb-insta-pessoal.png";
 import thumbOlsProject from "@/assets/thumb-olsproject.png";
 import thumbBlog from "@/assets/thumb-blog.jpg";
 import thumbServicos from "@/assets/thumb-servicos.jpg";
+import thumbCriarApp from "@/assets/thumb-criar-app.jpg";
 import thumbConteudo from "@/assets/thumb-conteudo.jpg";
 import thumbTiktokPessoal from "@/assets/thumb-tiktok-pessoal.jpeg";
 import thumbLinkedin from "@/assets/thumb-linkedin.jpeg";
@@ -37,7 +38,7 @@ const projetos: ProjectItem[] = [
   { label: "Consultoria Financeira", desc: "Planejamento pessoal", image: thumbConsultoria, link: "/consultoria" },
   { label: "Curso Redes Sociais", desc: "Em breve", image: thumbCurso, badge: "EM BREVE", link: "/curso" },
   { label: "Olivar Global", desc: "Comércio exterior", image: thumbOlivarContent, link: "/olivar-global" },
-  { label: "Criar App", desc: "Transformo a tua ideia em app", image: thumbServicos, badge: "NOVO", link: "/projetos" },
+  { label: "Criar App", desc: "Transformo a tua ideia em app", image: thumbCriarApp, badge: "NOVO", link: "/projetos" },
   { label: "OLSPROJECT", desc: "Comunidade de desenvolvimento pessoal e profissional", image: thumbOlsProject, badge: "NOVO", link: "/olsproject" },
   { label: "Rborn", desc: "Marca de roupas", image: thumbRoupa, badge: "EM DEV" },
   { label: "Serviços", desc: "Todos num só lugar", image: thumbServicos, link: "/servicos" },
