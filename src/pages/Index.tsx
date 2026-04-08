@@ -19,6 +19,7 @@ import thumbInstaPessoal from "@/assets/thumb-insta-pessoal.png";
 import thumbOlsProject from "@/assets/thumb-olsproject.png";
 import thumbBlog from "@/assets/thumb-blog.jpg";
 import thumbServicos from "@/assets/thumb-servicos.jpg";
+import thumbCriarApp from "@/assets/thumb-criar-app.jpg";
 import thumbConteudo from "@/assets/thumb-conteudo.jpg";
 import thumbTiktokPessoal from "@/assets/thumb-tiktok-pessoal.jpeg";
 import thumbLinkedin from "@/assets/thumb-linkedin.jpeg";
