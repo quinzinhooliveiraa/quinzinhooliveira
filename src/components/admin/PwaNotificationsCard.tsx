@@ -3,13 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Bell, Download, Check, BellOff, Smartphone } from "lucide-react";
 import {
   canInstall,
+  getPushSubscription,
   isStandalone,
   onInstallAvailabilityChange,
   promptInstall,
   requestNotificationPermission,
   showNotification,
+  unsubscribePush,
 } from "@/lib/pwa";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const PwaNotificationsCard = () => {
   const { toast } = useToast();
@@ -44,22 +47,62 @@ const PwaNotificationsCard = () => {
   const handleEnableNotifications = async () => {
     const result = await requestNotificationPermission();
     setPermission(result);
-    if (result === "granted") {
-      toast({ title: "Notificações ativadas!", description: "Você será avisado de visitas e mensagens." });
-      setTimeout(() => {
-        showNotification(
-          "Notificações ativas ✅",
-          "Você verá um aviso aqui quando alguém visitar o site.",
-          "/admin",
-          "welcome"
-        );
-      }, 600);
-    } else {
+    if (result !== "granted") {
       toast({
         title: "Notificações bloqueadas",
         description: "Habilite nas configurações do navegador para receber avisos.",
         variant: "destructive",
       });
+      return;
+    }
+
+    // Register a Web Push subscription so we receive notifications even when
+    // the app is closed.
+    const sub = await getPushSubscription();
+    if (sub) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await (supabase as any).from("push_subscriptions").upsert(
+          {
+            user_id: user.id,
+            endpoint: sub.endpoint,
+            p256dh: sub.p256dh,
+            auth: sub.auth,
+            user_agent: navigator.userAgent,
+          },
+          { onConflict: "endpoint" }
+        );
+      }
+    }
+
+    toast({
+      title: "Notificações ativadas!",
+      description: sub
+        ? "Você receberá avisos mesmo com o app fechado."
+        : "Avisos ativos enquanto o app estiver aberto.",
+    });
+    setTimeout(() => {
+      showNotification(
+        "Notificações ativas ✅",
+        "Você verá um aviso aqui quando alguém visitar o site.",
+        "/admin",
+        "welcome"
+      );
+    }, 600);
+  };
+
+  const handleDisableNotifications = async () => {
+    try {
+      const sub = await navigator.serviceWorker.ready
+        .then((r) => r.pushManager.getSubscription())
+        .catch(() => null);
+      if (sub) {
+        await (supabase as any).from("push_subscriptions").delete().eq("endpoint", sub.endpoint);
+      }
+      await unsubscribePush();
+      toast({ title: "Push desativado", description: "Você não receberá mais notificações em segundo plano." });
+    } catch {
+      // ignore
     }
   };
 
@@ -93,9 +136,14 @@ const PwaNotificationsCard = () => {
         )}
 
         {permission === "granted" ? (
-          <div className="flex items-center gap-2 px-3 py-2 bg-green-500/10 text-green-500 rounded-lg text-xs font-medium">
-            <Check size={14} /> Notificações ativas
-          </div>
+          <>
+            <div className="flex items-center gap-2 px-3 py-2 bg-green-500/10 text-green-500 rounded-lg text-xs font-medium">
+              <Check size={14} /> Notificações ativas
+            </div>
+            <Button onClick={handleDisableNotifications} variant="ghost" size="sm" className="gap-2 text-muted-foreground">
+              <BellOff size={14} /> Desativar push
+            </Button>
+          </>
         ) : permission === "denied" ? (
           <div className="flex items-center gap-2 px-3 py-2 bg-destructive/10 text-destructive rounded-lg text-xs font-medium">
             <BellOff size={14} /> Bloqueadas no navegador

@@ -1,10 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { showNotification } from "@/lib/pwa";
 
 export function useVisitNotifications(enabled: boolean) {
+  const [hasPush, setHasPush] = useState(false);
+
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled || !("serviceWorker" in navigator)) return;
+    let mounted = true;
+    navigator.serviceWorker.ready
+      .then((reg) => reg.pushManager.getSubscription())
+      .then((sub) => {
+        if (mounted) setHasPush(!!sub);
+      })
+      .catch(() => null);
+    return () => {
+      mounted = false;
+    };
+  }, [enabled]);
+
+  useEffect(() => {
+    if (!enabled || hasPush) return;
     const channel = supabase
       .channel("admin-visit-notifications")
       .on(
@@ -40,5 +56,5 @@ export function useVisitNotifications(enabled: boolean) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [enabled]);
+  }, [enabled, hasPush]);
 }

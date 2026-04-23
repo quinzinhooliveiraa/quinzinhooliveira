@@ -66,6 +66,61 @@ export function onInstallAvailabilityChange(cb: (canInstall: boolean) => void): 
   return () => installListeners.delete(cb);
 }
 
+export const VAPID_PUBLIC_KEY =
+  "BK0OwdFsJyyHsvwNbkYQ6QDUJ24A2weyC0woM6efUacpgam6ObxP_EhNad0RTfEjOVHckDGipC1VSYVLmKYRm8c";
+
+function urlBase64ToUint8Array(base64String: string): Uint8Array {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const raw = atob(base64);
+  const arr = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
+  return arr;
+}
+
+function bufferToBase64(buf: ArrayBuffer | null): string {
+  if (!buf) return "";
+  const bytes = new Uint8Array(buf);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+export async function getPushSubscription(): Promise<{
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+} | null> {
+  if (typeof window === "undefined" || !("serviceWorker" in navigator) || !("PushManager" in window))
+    return null;
+  const reg = await navigator.serviceWorker.ready;
+  let sub = await reg.pushManager.getSubscription();
+  if (!sub) {
+    try {
+      sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+      });
+    } catch (err) {
+      console.warn("[PWA] push subscribe failed:", err);
+      return null;
+    }
+  }
+  const json = sub.toJSON() as any;
+  return {
+    endpoint: sub.endpoint,
+    p256dh: json?.keys?.p256dh || bufferToBase64(sub.getKey("p256dh")),
+    auth: json?.keys?.auth || bufferToBase64(sub.getKey("auth")),
+  };
+}
+
+export async function unsubscribePush(): Promise<void> {
+  if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
+  const reg = await navigator.serviceWorker.ready;
+  const sub = await reg.pushManager.getSubscription();
+  if (sub) await sub.unsubscribe();
+}
+
 export function isStandalone(): boolean {
   if (typeof window === "undefined") return false;
   return (
