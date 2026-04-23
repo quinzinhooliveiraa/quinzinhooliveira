@@ -7,7 +7,7 @@ import {
   Bold, Italic, Strikethrough, List, ListOrdered, Heading1, Heading2, Heading3,
   Quote, Code, Link as LinkIcon, Image as ImageIcon, Undo, Redo, Minus
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { useCallback } from "react";
 
 interface RichTextEditorProps {
@@ -48,14 +48,12 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file || !editor) return;
 
-      const ext = file.name.split(".").pop();
-      const path = `posts/${Date.now()}.${ext}`;
-      
-      const { error } = await supabase.storage.from("blog-images").upload(path, file);
-      if (error) return;
-
-      const { data: { publicUrl } } = supabase.storage.from("blog-images").getPublicUrl(path);
-      editor.chain().focus().setImage({ src: publicUrl }).run();
+      try {
+        const res = await api.upload<{ url: string }>("/admin/upload", file);
+        editor.chain().focus().setImage({ src: res.url }).run();
+      } catch (err) {
+        console.warn("[RichTextEditor] image upload failed:", err);
+      }
     };
     input.click();
   }, [editor]);

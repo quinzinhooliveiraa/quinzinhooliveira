@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Mail, Instagram, Youtube, Linkedin } from "lucide-react";
 import { motion, useInView } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 const FadeUp = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => {
@@ -35,20 +35,20 @@ const Contato = () => {
       return;
     }
     setSending(true);
-    const { error } = await supabase.from("contact_submissions").insert({
-      name: name.trim(),
-      email: email.trim(),
-      subject: subject.trim() || null,
-      message: message.trim(),
-      source: "contato",
-    });
-    setSending(false);
-    if (error) {
-      toast({ title: "Erro ao enviar", description: error.message, variant: "destructive" });
-      return;
+    try {
+      await api.post("/contact", {
+        name: name.trim(),
+        email: email.trim(),
+        subject: subject.trim() || null,
+        message: message.trim(),
+        source: "contato",
+      });
+      toast({ title: "Mensagem enviada! ✉️", description: "Responderei em breve." });
+      setName(""); setEmail(""); setSubject(""); setMessage("");
+    } catch (err: any) {
+      toast({ title: "Erro ao enviar", description: err.message, variant: "destructive" });
     }
-    toast({ title: "Mensagem enviada! ✉️", description: "Responderei em breve." });
-    setName(""); setEmail(""); setSubject(""); setMessage("");
+    setSending(false);
   };
 
   return (

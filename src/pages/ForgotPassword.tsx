@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, ArrowLeft } from "lucide-react";
@@ -9,20 +9,18 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [resetToken, setResetToken] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-
-    if (error) {
-      toast({ title: "Erro", description: error.message, variant: "destructive" });
-    } else {
+    try {
+      const res = await api.post("/auth/forgot", { email });
+      if (res?.token) setResetToken(res.token);
       setSent(true);
+    } catch (err: any) {
+      toast({ title: "Erro", description: err.message, variant: "destructive" });
     }
     setLoading(false);
   };
@@ -36,15 +34,23 @@ const ForgotPassword = () => {
           </div>
           <h1 className="font-heading text-2xl font-bold">Redefinir senha</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {sent ? "Verifique seu e-mail" : "Insira seu e-mail para receber o link"}
+            {sent ? "Use o link abaixo para redefinir" : "Insira seu e-mail para gerar um link"}
           </p>
         </div>
 
         {sent ? (
           <div className="text-center space-y-4">
             <p className="text-sm text-muted-foreground">
-              Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha.
+              Se o e-mail estiver cadastrado, abaixo está o link de redefinição.
             </p>
+            {resetToken && (
+              <Link
+                to={`/reset-password?token=${encodeURIComponent(resetToken)}`}
+                className="inline-block w-full px-4 py-3 bg-primary text-primary-foreground rounded-lg text-sm font-medium"
+              >
+                Abrir link de redefinição
+              </Link>
+            )}
             <Link to="/admin/login" className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
               <ArrowLeft size={14} /> Voltar ao login
             </Link>
@@ -60,7 +66,7 @@ const ForgotPassword = () => {
               className="w-full px-4 py-3 bg-card border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Enviando..." : "Enviar link"}
+              {loading ? "Gerando..." : "Gerar link"}
             </Button>
             <div className="text-center">
               <Link to="/admin/login" className="text-sm text-muted-foreground hover:text-foreground">

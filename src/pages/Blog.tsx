@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Search, Plus } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import NewsletterSection from "@/components/NewsletterSection";
@@ -13,10 +13,10 @@ interface Post {
   title: string;
   slug: string;
   excerpt: string | null;
-  cover_image_url: string | null;
-  published_at: string | null;
-  created_at: string;
-  categories: { name: string; slug: string } | null;
+  coverImageUrl: string | null;
+  publishedAt: string | null;
+  createdAt: string;
+  category: { name: string; slug: string } | null;
 }
 
 interface Category {
@@ -35,27 +35,17 @@ const Blog = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchData();
+    Promise.all([api.get<Post[]>("/posts"), api.get<Category[]>("/categories")])
+      .then(([p, c]) => {
+        setPosts(p || []);
+        setCategories(c || []);
+      })
+      .finally(() => setLoading(false));
   }, []);
-
-  const fetchData = async () => {
-    const [postsRes, catsRes] = await Promise.all([
-      supabase
-        .from("blog_posts")
-        .select("id, title, slug, excerpt, cover_image_url, published_at, created_at, categories(name, slug)")
-        .eq("status", "published")
-        .order("published_at", { ascending: false }),
-      supabase.from("categories").select("*").order("name"),
-    ]);
-
-    if (postsRes.data) setPosts(postsRes.data as unknown as Post[]);
-    if (catsRes.data) setCategories(catsRes.data);
-    setLoading(false);
-  };
 
   const filtered = posts.filter((p) => {
     const matchesSearch = !search || p.title.toLowerCase().includes(search.toLowerCase()) || (p.excerpt || "").toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = !activeCategory || p.categories?.slug === activeCategory;
+    const matchesCategory = !activeCategory || p.category?.slug === activeCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -71,7 +61,6 @@ const Blog = () => {
       </Helmet>
 
       <div className="pt-16">
-        {/* Header */}
         <section className="py-16">
           <div className="section-container flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
@@ -103,7 +92,6 @@ const Blog = () => {
           </div>
         </section>
 
-        {/* Category filter */}
         {categories.length > 0 && (
           <section className="pb-8">
             <div className="section-container">
@@ -146,17 +134,17 @@ const Blog = () => {
                 <div className="section-container">
                   <Link to={`/blog/${featured.slug}`} className="block group">
                     <div className="relative rounded-2xl overflow-hidden h-80 md:h-96">
-                      {featured.cover_image_url ? (
-                        <img src={featured.cover_image_url} alt={featured.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                      {featured.coverImageUrl ? (
+                        <img src={featured.coverImageUrl} alt={featured.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                       ) : (
                         <div className="w-full h-full bg-secondary" />
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent" />
                       <div className="absolute bottom-0 left-0 p-6 md:p-10">
                         <div className="flex items-center gap-3 mb-3">
-                          {featured.categories?.name && <span className="category-badge">{featured.categories.name}</span>}
+                          {featured.category?.name && <span className="category-badge">{featured.category.name}</span>}
                           <span className="text-xs text-muted-foreground">
-                            {format(new Date(featured.published_at || featured.created_at), "d 'de' MMM, yyyy", { locale: ptBR })}
+                            {format(new Date(featured.publishedAt || featured.createdAt), "d 'de' MMM, yyyy", { locale: ptBR })}
                           </span>
                         </div>
                         <h2 className="font-heading text-2xl md:text-3xl font-bold mb-2">{featured.title}</h2>
@@ -176,16 +164,16 @@ const Blog = () => {
                       <Link to={`/blog/${a.slug}`} key={a.id}>
                         <article className="card-hover group">
                           <div className="rounded-xl overflow-hidden h-56 mb-4">
-                            {a.cover_image_url ? (
-                              <img src={a.cover_image_url} alt={a.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+                            {a.coverImageUrl ? (
+                              <img src={a.coverImageUrl} alt={a.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
                             ) : (
                               <div className="w-full h-full bg-secondary" />
                             )}
                           </div>
                           <div className="flex items-center gap-3 mb-2">
-                            {a.categories?.name && <span className="category-badge">{a.categories.name}</span>}
+                            {a.category?.name && <span className="category-badge">{a.category.name}</span>}
                             <span className="text-xs text-muted-foreground">
-                              {format(new Date(a.published_at || a.created_at), "d 'de' MMM, yyyy", { locale: ptBR })}
+                              {format(new Date(a.publishedAt || a.createdAt), "d 'de' MMM, yyyy", { locale: ptBR })}
                             </span>
                           </div>
                           <h3 className="font-heading text-lg font-bold mb-1">{a.title}</h3>

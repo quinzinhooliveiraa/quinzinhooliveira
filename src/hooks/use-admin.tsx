@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 
 export function useAdmin() {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
@@ -8,40 +8,29 @@ export function useAdmin() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
+    let cancelled = false;
+    api
+      .get("/auth/me")
+      .then((data) => {
+        if (cancelled) return;
+        if (data?.user?.isAdmin) {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+          navigate("/admin/login");
+        }
+      })
+      .catch(() => {
+        if (cancelled) return;
         setIsAdmin(false);
-        setLoading(false);
         navigate("/admin/login");
-        return;
-      }
-
-      const { data: roles } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", session.user.id)
-        .eq("role", "admin");
-
-      if (!roles || roles.length === 0) {
-        setIsAdmin(false);
-        setLoading(false);
-        navigate("/admin/login");
-        return;
-      }
-
-      setIsAdmin(true);
-      setLoading(false);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
     };
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      checkAdmin();
-    });
-
-    checkAdmin();
-
-    return () => subscription.unsubscribe();
   }, [navigate]);
 
   return { isAdmin, loading };

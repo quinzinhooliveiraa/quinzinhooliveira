@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { getSessionId } from "./use-session-id";
 
 export function useTrackVisit() {
@@ -9,14 +9,9 @@ export function useTrackVisit() {
 
   useEffect(() => {
     if (!sessionId) return;
-
-    // Debounce to avoid double-tracking on fast navigation
     const timer = setTimeout(() => {
-      supabase.functions.invoke("track-visit", {
-        body: { session_id: sessionId, page: location.pathname },
-      }).catch(() => {});
+      api.post("/visits", { sessionId, page: location.pathname }).catch(() => {});
     }, 500);
-
     return () => clearTimeout(timer);
   }, [location.pathname, sessionId]);
 }

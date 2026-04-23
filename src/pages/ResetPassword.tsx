@@ -1,63 +1,54 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Lock } from "lucide-react";
 
 const ResetPassword = () => {
+  const [params] = useSearchParams();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
-  const [ready, setReady] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Listen for the PASSWORD_RECOVERY event
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setReady(true);
-      }
-    });
-
-    // Also check if we already have a session (user clicked the link)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setReady(true);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+    const t = params.get("token");
+    setToken(t);
+  }, [params]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    if (!token) {
+      toast({ title: "Token inválido", variant: "destructive" });
+      return;
+    }
     if (password !== confirm) {
       toast({ title: "Erro", description: "As senhas não coincidem.", variant: "destructive" });
       return;
     }
-
     if (password.length < 6) {
       toast({ title: "Erro", description: "A senha deve ter no mínimo 6 caracteres.", variant: "destructive" });
       return;
     }
 
     setLoading(true);
-    const { error } = await supabase.auth.updateUser({ password });
-
-    if (error) {
-      toast({ title: "Erro", description: error.message, variant: "destructive" });
-    } else {
+    try {
+      await api.post("/auth/reset", { token, password });
       toast({ title: "Senha atualizada!", description: "Você será redirecionado." });
-      setTimeout(() => navigate("/admin"), 1500);
+      setTimeout(() => navigate("/admin/login"), 1200);
+    } catch (err: any) {
+      toast({ title: "Erro", description: err.message, variant: "destructive" });
     }
     setLoading(false);
   };
 
-  if (!ready) {
+  if (!token) {
     return (
       <div className="pt-16 min-h-screen flex items-center justify-center">
-        <p className="text-muted-foreground">Verificando link de redefinição...</p>
+        <p className="text-muted-foreground">Link de redefinição inválido ou expirado.</p>
       </div>
     );
   }

@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
-import { Camera, Check, X, Loader2 } from "lucide-react";
+import { Camera, Loader2 } from "lucide-react";
 import { useAdminStatus } from "@/hooks/use-admin-status";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 
 interface AdminImageOverlayProps {
   settingKey: string;
@@ -11,7 +11,7 @@ interface AdminImageOverlayProps {
   className?: string;
 }
 
-export function AdminImageOverlay({ settingKey, currentSrc, onUpdate, children, className = "" }: AdminImageOverlayProps) {
+export function AdminImageOverlay({ settingKey, onUpdate, children, className = "" }: AdminImageOverlayProps) {
   const { isAdmin } = useAdminStatus();
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -21,30 +21,11 @@ export function AdminImageOverlay({ settingKey, currentSrc, onUpdate, children, 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     setUploading(true);
     try {
-      const ext = file.name.split(".").pop();
-      const path = `${settingKey}-${Date.now()}.${ext}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from("site-images")
-        .upload(path, file, { upsert: true });
-
-      if (uploadError) throw uploadError;
-
-      const { data: urlData } = supabase.storage
-        .from("site-images")
-        .getPublicUrl(path);
-
-      const publicUrl = urlData.publicUrl;
-
-      // Save to site_settings
-      await supabase
-        .from("site_settings")
-        .upsert({ key: settingKey, value: publicUrl, updated_at: new Date().toISOString() });
-
-      onUpdate(publicUrl);
+      const res = await api.upload<{ url: string }>("/admin/upload", file);
+      await api.patch("/admin/site-settings", { key: settingKey, value: res.url });
+      onUpdate(res.url);
     } catch (err) {
       console.error("Upload failed:", err);
     } finally {
@@ -55,13 +36,7 @@ export function AdminImageOverlay({ settingKey, currentSrc, onUpdate, children, 
   return (
     <div className={`relative group/admin-img ${className}`}>
       {children}
-      <input
-        ref={fileRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={handleUpload}
-      />
+      <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleUpload} />
       <button
         onClick={() => fileRef.current?.click()}
         disabled={uploading}

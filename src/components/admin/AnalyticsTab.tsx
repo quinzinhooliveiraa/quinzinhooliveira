@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { BarChart3, Globe, Users, Eye } from "lucide-react";
 import { format, subDays } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import AnalyticsGlobe from "./AnalyticsGlobe";
 
 interface Visit {
@@ -12,7 +11,7 @@ interface Visit {
   city: string | null;
   lat: number | null;
   lng: number | null;
-  created_at: string;
+  createdAt: string;
 }
 
 interface GlobePoint {
@@ -29,52 +28,45 @@ export default function AnalyticsTab() {
   const [period, setPeriod] = useState<"7d" | "30d" | "all">("7d");
 
   useEffect(() => {
-    fetchVisits();
-    // Realtime subscription
-    const channel = supabase
-      .channel("page_visits_realtime")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "page_visits" }, (payload) => {
-        setVisits((prev) => [payload.new as Visit, ...prev]);
-      })
-      .subscribe();
+    api
+      .get<Visit[]>("/admin/visits")
+      .then((d) => setVisits(d || []))
+      .finally(() => setLoading(false));
 
-    return () => { supabase.removeChannel(channel); };
+    const es = new EventSource("/api/admin/events", { withCredentials: true } as any);
+    es.addEventListener("visit", (e: MessageEvent) => {
+      try {
+        const v = JSON.parse(e.data);
+        setVisits((prev) => [v, ...prev]);
+      } catch {
+        // ignore
+      }
+    });
+    return () => es.close();
   }, []);
-
-  const fetchVisits = async () => {
-    const { data } = await supabase
-      .from("page_visits")
-      .select("id, page, country, city, lat, lng, created_at")
-      .order("created_at", { ascending: false })
-      .limit(1000);
-    if (data) setVisits(data as Visit[]);
-    setLoading(false);
-  };
 
   const filteredVisits = visits.filter((v) => {
     if (period === "all") return true;
     const days = period === "7d" ? 7 : 30;
-    return new Date(v.created_at) > subDays(new Date(), days);
+    return new Date(v.createdAt) > subDays(new Date(), days);
   });
 
-  // Aggregate globe points
   const globePoints: GlobePoint[] = [];
   const pointMap = new Map<string, GlobePoint>();
   filteredVisits.forEach((v) => {
     if (v.lat != null && v.lng != null && v.country) {
-      const key = `${v.lat.toFixed(1)}_${v.lng.toFixed(1)}`;
+      const key = `${Number(v.lat).toFixed(1)}_${Number(v.lng).toFixed(1)}`;
       const existing = pointMap.get(key);
       if (existing) {
         existing.count++;
       } else {
-        const p = { lat: v.lat, lng: v.lng, country: v.country, city: v.city, count: 1 };
+        const p = { lat: Number(v.lat), lng: Number(v.lng), country: v.country, city: v.city, count: 1 };
         pointMap.set(key, p);
         globePoints.push(p);
       }
     }
   });
 
-  // Stats
   const totalVisits = filteredVisits.length;
   const uniqueCountries = new Set(filteredVisits.map((v) => v.country).filter(Boolean)).size;
   const topPages = Object.entries(
@@ -91,10 +83,9 @@ export default function AnalyticsTab() {
     }, {})
   ).sort((a, b) => b[1] - a[1]).slice(0, 8);
 
-  // Daily visits for chart-like display
   const dailyVisits = Object.entries(
     filteredVisits.reduce<Record<string, number>>((acc, v) => {
-      const day = format(new Date(v.created_at), "dd/MM");
+      const day = format(new Date(v.createdAt), "dd/MM");
       acc[day] = (acc[day] || 0) + 1;
       return acc;
     }, {})
@@ -108,7 +99,6 @@ export default function AnalyticsTab() {
 
   return (
     <div className="space-y-6">
-      {/* Period filter */}
       <div className="flex gap-2">
         {(["7d", "30d", "all"] as const).map((p) => (
           <button
@@ -123,7 +113,6 @@ export default function AnalyticsTab() {
         ))}
       </div>
 
-      {/* Stats cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
@@ -142,7 +131,7 @@ export default function AnalyticsTab() {
             <Users size={16} /> <span className="text-xs font-medium uppercase tracking-wider">Hoje</span>
           </div>
           <p className="font-heading text-2xl font-bold">
-            {filteredVisits.filter((v) => new Date(v.created_at).toDateString() === new Date().toDateString()).length}
+            {filteredVisits.filter((v) => new Date(v.createdAt).toDateString() === new Date().toDateString()).length}
           </p>
         </div>
         <div className="bg-card border border-border rounded-xl p-4">
@@ -153,7 +142,6 @@ export default function AnalyticsTab() {
         </div>
       </div>
 
-      {/* Globe */}
       <div>
         <h3 className="font-heading text-lg font-bold mb-3 flex items-center gap-2">
           <Globe size={18} className="text-primary" /> Acessos em tempo real
@@ -162,9 +150,7 @@ export default function AnalyticsTab() {
         <AnalyticsGlobe points={globePoints} />
       </div>
 
-      {/* Charts area */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Daily visits bar chart */}
         <div className="bg-card border border-border rounded-xl p-4">
           <h4 className="font-heading text-sm font-bold mb-4 uppercase tracking-wider text-muted-foreground">Visitas por dia</h4>
           <div className="flex items-end gap-1 h-32">
@@ -180,7 +166,6 @@ export default function AnalyticsTab() {
           </div>
         </div>
 
-        {/* Top countries */}
         <div className="bg-card border border-border rounded-xl p-4">
           <h4 className="font-heading text-sm font-bold mb-4 uppercase tracking-wider text-muted-foreground">Top países</h4>
           <div className="space-y-2">
@@ -200,7 +185,6 @@ export default function AnalyticsTab() {
         </div>
       </div>
 
-      {/* Top pages */}
       <div className="bg-card border border-border rounded-xl p-4">
         <h4 className="font-heading text-sm font-bold mb-4 uppercase tracking-wider text-muted-foreground">Páginas mais visitadas</h4>
         <div className="space-y-2">

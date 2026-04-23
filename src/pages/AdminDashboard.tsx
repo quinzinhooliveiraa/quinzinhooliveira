@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/use-admin";
 import { Plus, FileText, Eye, Pencil, LogOut, Calendar, Mail, Trash2, CheckCircle, UserPlus, Send, BarChart3 } from "lucide-react";
@@ -17,8 +17,8 @@ interface Post {
   title: string;
   slug: string;
   status: string;
-  published_at: string | null;
-  created_at: string;
+  publishedAt: string | null;
+  createdAt: string;
   categories: { name: string } | null;
 }
 
@@ -29,7 +29,7 @@ interface Submission {
   subject: string | null;
   message: string;
   read: boolean;
-  created_at: string;
+  createdAt: string;
   source: string;
 }
 
@@ -50,61 +50,48 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("posts");
   const [sourceFilter, setSourceFilter] = useState<string>("all");
   const [inviteEmail, setInviteEmail] = useState("");
+  const [invitePassword, setInvitePassword] = useState("");
   const [inviting, setInviting] = useState(false);
 
-  useVisitNotifications(isAdmin);
+  useVisitNotifications(isAdmin === true);
 
   useEffect(() => {
     if (isAdmin) {
-      fetchPosts();
-      fetchSubmissions();
+      api.get<Post[]>("/admin/posts").then((d) => setPosts(d || []));
+      api.get<Submission[]>("/admin/contact-submissions").then((d) => setSubmissions(d || []));
     }
   }, [isAdmin]);
 
-  const fetchPosts = async () => {
-    const { data } = await supabase
-      .from("blog_posts")
-      .select("id, title, slug, status, published_at, created_at, categories(name)")
-      .order("created_at", { ascending: false });
-    if (data) setPosts(data as unknown as Post[]);
-  };
-
-  const fetchSubmissions = async () => {
-    const { data } = await supabase
-      .from("contact_submissions")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (data) setSubmissions(data as Submission[]);
-  };
-
   const markAsRead = async (id: string) => {
-    await supabase.from("contact_submissions").update({ read: true }).eq("id", id);
+    await api.patch(`/admin/contact-submissions/${id}`, { read: true });
     setSubmissions((prev) => prev.map((s) => (s.id === id ? { ...s, read: true } : s)));
   };
 
   const deleteSubmission = async (id: string) => {
-    await supabase.from("contact_submissions").delete().eq("id", id);
+    await api.del(`/admin/contact-submissions/${id}`);
     setSubmissions((prev) => prev.filter((s) => s.id !== id));
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await api.post("/auth/logout");
     navigate("/");
   };
 
   const handleInvite = async () => {
-    if (!inviteEmail.trim()) return;
-    setInviting(true);
-    const { error } = await supabase.functions.invoke("setup-admin", {
-      body: { email: inviteEmail.trim() },
-    });
-    setInviting(false);
-    if (error) {
-      toast({ title: "Erro ao convidar", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Convite enviado! ✉️", description: `Admin adicionado: ${inviteEmail}` });
-      setInviteEmail("");
+    if (!inviteEmail.trim() || !invitePassword.trim()) {
+      toast({ title: "Email e senha obrigatórios", variant: "destructive" });
+      return;
     }
+    setInviting(true);
+    try {
+      await api.post("/admin/invite", { email: inviteEmail.trim(), password: invitePassword });
+      toast({ title: "Admin criado! ✉️", description: `Adicionado: ${inviteEmail}` });
+      setInviteEmail("");
+      setInvitePassword("");
+    } catch (err: any) {
+      toast({ title: "Erro ao convidar", description: err.message, variant: "destructive" });
+    }
+    setInviting(false);
   };
 
   const filteredPosts = posts.filter((p) => {
@@ -122,7 +109,6 @@ const AdminDashboard = () => {
   return (
     <div className="pt-16 min-h-screen bg-background">
       <div className="max-w-5xl mx-auto px-4 py-8">
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="font-heading text-3xl font-bold">Painel Admin</h1>
@@ -130,9 +116,7 @@ const AdminDashboard = () => {
           </div>
           <div className="flex items-center gap-3">
             <Link to="/">
-              <Button variant="outline" className="gap-2">
-                Voltar ao Site
-              </Button>
+              <Button variant="outline" className="gap-2">Voltar ao Site</Button>
             </Link>
             <Button variant="ghost" onClick={handleLogout} className="gap-2 text-muted-foreground">
               <LogOut size={16} /> Sair
@@ -161,7 +145,6 @@ const AdminDashboard = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* ── Posts Tab ── */}
           <TabsContent value="posts">
             <div className="flex items-center justify-between mb-6">
               <div className="flex gap-2">
@@ -212,7 +195,7 @@ const AdminDashboard = () => {
                       <h3 className="font-heading font-bold truncate">{post.title}</h3>
                       <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
                         <Calendar size={12} />
-                        {format(new Date(post.created_at), "d 'de' MMM, yyyy", { locale: ptBR })}
+                        {format(new Date(post.createdAt), "d 'de' MMM, yyyy", { locale: ptBR })}
                       </p>
                     </div>
                     <div className="flex items-center gap-2 ml-4">
@@ -231,9 +214,7 @@ const AdminDashboard = () => {
             )}
           </TabsContent>
 
-          {/* ── Messages Tab ── */}
           <TabsContent value="messages">
-            {/* Source filter */}
             <div className="flex gap-2 mb-6">
               <button
                 onClick={() => setSourceFilter("all")}
@@ -284,7 +265,7 @@ const AdminDashboard = () => {
                         {sub.subject && <p className="text-sm font-medium mb-1">{sub.subject}</p>}
                         <p className="text-sm text-muted-foreground whitespace-pre-wrap">{sub.message}</p>
                         <p className="text-[11px] text-muted-foreground mt-2">
-                          {format(new Date(sub.created_at), "d 'de' MMM, yyyy 'às' HH:mm", { locale: ptBR })}
+                          {format(new Date(sub.createdAt), "d 'de' MMM, yyyy 'às' HH:mm", { locale: ptBR })}
                         </p>
                       </div>
                       <div className="flex items-center gap-1">
@@ -304,32 +285,37 @@ const AdminDashboard = () => {
             )}
           </TabsContent>
 
-          {/* ── Analytics Tab ── */}
           <TabsContent value="analytics">
             <AnalyticsTab />
           </TabsContent>
 
-          {/* ── Admin Invite Tab ── */}
           <TabsContent value="admin">
             <div className="max-w-lg">
-              <h2 className="font-heading text-xl font-bold mb-2">Convidar Admin</h2>
+              <h2 className="font-heading text-xl font-bold mb-2">Adicionar Admin</h2>
               <p className="text-sm text-muted-foreground mb-6">
-                Adicione outro administrador para gerenciar posts e mensagens.
+                Crie credenciais para outro administrador gerenciar posts e mensagens.
               </p>
-              <div className="flex gap-3">
+              <div className="space-y-3">
                 <input
                   type="email"
                   value={inviteEmail}
                   onChange={(e) => setInviteEmail(e.target.value)}
                   placeholder="Email do novo admin"
-                  className="flex-1 px-4 py-3 bg-card border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-4 py-3 bg-card border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
-                <Button onClick={handleInvite} disabled={inviting} className="gap-2">
-                  <Send size={16} /> {inviting ? "Enviando..." : "Convidar"}
+                <input
+                  type="password"
+                  value={invitePassword}
+                  onChange={(e) => setInvitePassword(e.target.value)}
+                  placeholder="Senha temporária"
+                  className="w-full px-4 py-3 bg-card border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <Button onClick={handleInvite} disabled={inviting} className="gap-2 w-full">
+                  <Send size={16} /> {inviting ? "Criando..." : "Criar Admin"}
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground mt-3">
-                O usuário precisa ter uma conta cadastrada. O email deve ser o mesmo usado no cadastro.
+                Compartilhe o email e a senha com o novo admin. Ele pode redefinir depois.
               </p>
             </div>
           </TabsContent>

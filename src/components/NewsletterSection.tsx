@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
 const NewsletterSection = () => {
@@ -11,20 +11,20 @@ const NewsletterSection = () => {
     e.preventDefault();
     if (!email.trim()) return;
     setSending(true);
-    const { error } = await supabase.from("contact_submissions").insert({
-      name: "Newsletter",
-      email: email.trim(),
-      subject: "Inscrição Newsletter",
-      message: "Inscrição via newsletter do site.",
-      source: "newsletter",
-    });
-    setSending(false);
-    if (error) {
-      toast({ title: "Erro ao inscrever", description: error.message, variant: "destructive" });
-      return;
+    try {
+      await api.post("/contact", {
+        name: "Newsletter",
+        email: email.trim(),
+        subject: "Inscrição Newsletter",
+        message: "Inscrição via newsletter do site.",
+        source: "newsletter",
+      });
+      toast({ title: "Inscrito com sucesso! 🎉", description: "Você receberá nossos conteúdos." });
+      setEmail("");
+    } catch (err: any) {
+      toast({ title: "Erro ao inscrever", description: err.message, variant: "destructive" });
     }
-    toast({ title: "Inscrito com sucesso! 🎉", description: "Você receberá nossos conteúdos." });
-    setEmail("");
+    setSending(false);
   };
 
   return (

@@ -20,7 +20,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 
 const FadeUp = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => {
   const ref = useRef(null);
@@ -107,13 +107,17 @@ const Curso = () => {
   const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!waitlistEmail.trim() || !waitlistName.trim()) return;
-    await supabase.from("contact_submissions").insert({
-      name: waitlistName.trim(),
-      email: waitlistEmail.trim(),
-      subject: "Lista de Espera - Curso Redes Sociais",
-      message: "Interesse na lista de espera do curso.",
-      source: "curso",
-    });
+    try {
+      await api.post("/contact", {
+        name: waitlistName.trim(),
+        email: waitlistEmail.trim(),
+        subject: "Lista de Espera - Curso Redes Sociais",
+        message: "Interesse na lista de espera do curso.",
+        source: "curso",
+      });
+    } catch (err) {
+      console.warn("[Curso] waitlist submit failed", err);
+    }
     setSubmitted(true);
     toast({
       title: "Você está na lista! 🎉",

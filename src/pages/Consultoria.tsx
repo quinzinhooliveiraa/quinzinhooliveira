@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useTheme } from "@/hooks/use-theme";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { motion, useInView } from "framer-motion";
 import {
   ArrowRight, TrendingUp, Wallet, Home, GraduationCap, Plane, Heart, Briefcase,
@@ -216,13 +216,17 @@ const DiagnosticoForm = () => {
 
   const onSubmit = async (data: FormData) => {
     const message = `Situação: ${data.situacaoFinanceira}\nPoupança: ${data.capacidadePoupanca}\nObjetivos: ${data.objetivos.join(", ")}\nDesenvolvimento: ${data.interesseDesenvolvimento}${data.comentarios ? `\nComentários: ${data.comentarios}` : ""}`;
-    await supabase.from("contact_submissions").insert({
-      name: data.nome,
-      email: data.email,
-      subject: `Diagnóstico - Tel: ${data.telefone}`,
-      message,
-      source: "consultoria",
-    });
+    try {
+      await api.post("/contact", {
+        name: data.nome,
+        email: data.email,
+        subject: `Diagnóstico - Tel: ${data.telefone}`,
+        message,
+        source: "consultoria",
+      });
+    } catch (err) {
+      console.warn("[Consultoria] submit failed", err);
+    }
     setSent(true);
   };
 

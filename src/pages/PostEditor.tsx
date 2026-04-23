@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Save, Eye, Trash2, Sparkles, Loader2 } from "lucide-react";
@@ -48,6 +48,7 @@ const PostEditor = () => {
   useEffect(() => {
     fetchCategoriesAndTags();
     if (id) fetchPost();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {
@@ -55,86 +56,64 @@ const PostEditor = () => {
       setSlug(slugify(title));
       if (!metaTitle) setMetaTitle(title);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [title, id]);
 
   const fetchCategoriesAndTags = async () => {
-    const [catRes, tagRes] = await Promise.all([
-      supabase.from("categories").select("*").order("name"),
-      supabase.from("tags").select("*").order("name"),
-    ]);
-    if (catRes.data) setCategories(catRes.data);
-    if (tagRes.data) setTags(tagRes.data);
+    const [c, t] = await Promise.all([api.get<Category[]>("/categories"), api.get<Tag[]>("/tags")]);
+    setCategories(c || []);
+    setTags(t || []);
   };
 
   const fetchPost = async () => {
-    const { data: post } = await supabase
-      .from("blog_posts")
-      .select("*")
-      .eq("id", id!)
-      .single();
-
+    const post: any = await api.get(`/admin/posts/${id}`);
     if (post) {
       setTitle(post.title);
       setSlug(post.slug);
       setExcerpt(post.excerpt || "");
-      setContent(post.content);
-      setCoverUrl(post.cover_image_url || "");
-      setCategoryId(post.category_id || "");
-      setMetaTitle(post.meta_title || "");
-      setMetaDescription(post.meta_description || "");
-      setStatus(post.status as "draft" | "published");
+      setContent(post.content || "");
+      setCoverUrl(post.cover_image_url || post.coverImageUrl || "");
+      setCategoryId(post.category_id || post.categoryId || "");
+      setMetaTitle(post.meta_title || post.metaTitle || "");
+      setMetaDescription(post.meta_description || post.metaDescription || "");
+      setStatus((post.status as "draft" | "published") || "draft");
+      setSelectedTags(post.tag_ids || []);
     }
-
-    const { data: postTags } = await supabase
-      .from("post_tags")
-      .select("tag_id")
-      .eq("post_id", id!);
-
-    if (postTags) setSelectedTags(postTags.map((pt) => pt.tag_id));
   };
 
   const addCategory = async () => {
     if (!newCategory.trim()) return;
-    const { data, error } = await supabase
-      .from("categories")
-      .insert({ name: newCategory.trim(), slug: slugify(newCategory) })
-      .select()
-      .single();
-    if (data) {
-      setCategories((prev) => [...prev, data]);
-      setCategoryId(data.id);
+    try {
+      const created = await api.post<Category>("/admin/categories", { name: newCategory.trim() });
+      setCategories((prev) => prev.find((c) => c.id === created.id) ? prev : [...prev, created]);
+      setCategoryId(created.id);
       setNewCategory("");
+    } catch (err: any) {
+      toast({ title: "Erro", description: err.message, variant: "destructive" });
     }
-    if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
   };
 
   const addTag = async () => {
     if (!newTag.trim()) return;
-    const { data, error } = await supabase
-      .from("tags")
-      .insert({ name: newTag.trim(), slug: slugify(newTag) })
-      .select()
-      .single();
-    if (data) {
-      setTags((prev) => [...prev, data]);
-      setSelectedTags((prev) => [...prev, data.id]);
+    try {
+      const created = await api.post<Tag>("/admin/tags", { name: newTag.trim() });
+      setTags((prev) => prev.find((t) => t.id === created.id) ? prev : [...prev, created]);
+      setSelectedTags((prev) => prev.includes(created.id) ? prev : [...prev, created.id]);
       setNewTag("");
+    } catch (err: any) {
+      toast({ title: "Erro", description: err.message, variant: "destructive" });
     }
-    if (error) toast({ title: "Erro", description: error.message, variant: "destructive" });
   };
 
   const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const ext = file.name.split(".").pop();
-    const path = `covers/${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from("blog-images").upload(path, file);
-    if (error) {
-      toast({ title: "Erro no upload", description: error.message, variant: "destructive" });
-      return;
+    try {
+      const res = await api.upload<{ url: string }>("/admin/upload", file);
+      setCoverUrl(res.url);
+    } catch (err: any) {
+      toast({ title: "Erro no upload", description: err.message, variant: "destructive" });
     }
-    const { data: { publicUrl } } = supabase.storage.from("blog-images").getPublicUrl(path);
-    setCoverUrl(publicUrl);
   };
 
   const generateSeo = async () => {
@@ -144,45 +123,29 @@ const PostEditor = () => {
     }
     setGeneratingSeo(true);
     try {
-      const { data, error } = await supabase.functions.invoke("generate-seo", {
-        body: { title, content, excerpt },
-      });
-      if (error) throw error;
+      const data: any = await api.post("/admin/generate-seo", { title, content, excerpt });
       if (data.meta_title) setMetaTitle(data.meta_title);
       if (data.meta_description) setMetaDescription(data.meta_description);
       if (data.suggested_excerpt && !excerpt) setExcerpt(data.suggested_excerpt);
-      // Auto-create/select category
       if (data.suggested_category && !categoryId) {
         const existingCat = categories.find((c) => c.name.toLowerCase() === data.suggested_category.toLowerCase());
         if (existingCat) {
           setCategoryId(existingCat.id);
         } else {
-          const { data: newCatData } = await supabase
-            .from("categories")
-            .insert({ name: data.suggested_category, slug: slugify(data.suggested_category) })
-            .select()
-            .single();
-          if (newCatData) {
-            setCategories((prev) => [...prev, newCatData]);
-            setCategoryId(newCatData.id);
-          }
+          const created = await api.post<Category>("/admin/categories", { name: data.suggested_category });
+          setCategories((prev) => [...prev, created]);
+          setCategoryId(created.id);
         }
       }
-      if (data.suggested_tags && Array.isArray(data.suggested_tags)) {
+      if (Array.isArray(data.suggested_tags)) {
         for (const tagName of data.suggested_tags) {
           const existing = tags.find((t) => t.name.toLowerCase() === tagName.toLowerCase());
           if (existing) {
             setSelectedTags((prev) => prev.includes(existing.id) ? prev : [...prev, existing.id]);
           } else {
-            const { data: newTagData } = await supabase
-              .from("tags")
-              .insert({ name: tagName, slug: slugify(tagName) })
-              .select()
-              .single();
-            if (newTagData) {
-              setTags((prev) => [...prev, newTagData]);
-              setSelectedTags((prev) => [...prev, newTagData.id]);
-            }
+            const created = await api.post<Tag>("/admin/tags", { name: tagName });
+            setTags((prev) => [...prev, created]);
+            setSelectedTags((prev) => [...prev, created.id]);
           }
         }
       }
@@ -198,62 +161,48 @@ const PostEditor = () => {
       toast({ title: "Título e slug são obrigatórios", variant: "destructive" });
       return;
     }
-
     setSaving(true);
     const finalStatus = publishStatus || status;
-    const postData = {
+    const body = {
       title: title.trim(),
       slug: slug.trim(),
       excerpt: excerpt.trim() || null,
       content,
-      cover_image_url: coverUrl || null,
-      category_id: categoryId || null,
-      meta_title: metaTitle.trim() || title.trim(),
-      meta_description: metaDescription.trim() || excerpt.trim() || null,
+      coverImageUrl: coverUrl || null,
+      categoryId: categoryId || null,
+      metaTitle: metaTitle.trim() || title.trim(),
+      metaDescription: metaDescription.trim() || excerpt.trim() || null,
       status: finalStatus,
-      published_at: finalStatus === "published" ? new Date().toISOString() : null,
+      tagIds: selectedTags,
     };
 
-    let postId = id;
-
-    if (id) {
-      const { error } = await supabase.from("blog_posts").update(postData).eq("id", id);
-      if (error) {
-        toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
-        setSaving(false);
-        return;
+    try {
+      let postId = id;
+      if (id) {
+        await api.patch(`/admin/posts/${id}`, body);
+      } else {
+        const created: any = await api.post("/admin/posts", body);
+        postId = created.id;
       }
-    } else {
-      const { data, error } = await supabase.from("blog_posts").insert(postData).select().single();
-      if (error) {
-        toast({ title: "Erro ao criar", description: error.message, variant: "destructive" });
-        setSaving(false);
-        return;
-      }
-      postId = data.id;
+      toast({ title: finalStatus === "published" ? "Post publicado! 🎉" : "Rascunho salvo!" });
+      setStatus(finalStatus);
+      if (!id && postId) navigate(`/admin/post/${postId}`);
+    } catch (err: any) {
+      toast({ title: "Erro ao salvar", description: err.message, variant: "destructive" });
     }
-
-    // Sync tags
-    if (postId) {
-      await supabase.from("post_tags").delete().eq("post_id", postId);
-      if (selectedTags.length > 0) {
-        await supabase.from("post_tags").insert(
-          selectedTags.map((tagId) => ({ post_id: postId!, tag_id: tagId }))
-        );
-      }
-    }
-
-    toast({ title: finalStatus === "published" ? "Post publicado! 🎉" : "Rascunho salvo!" });
     setSaving(false);
-    if (!id && postId) navigate(`/admin/post/${postId}`);
   };
 
   const handleDelete = async () => {
     if (!id) return;
     if (!confirm("Tem certeza que deseja excluir este post?")) return;
-    await supabase.from("blog_posts").delete().eq("id", id);
-    toast({ title: "Post excluído" });
-    navigate("/admin");
+    try {
+      await api.del(`/admin/posts/${id}`);
+      toast({ title: "Post excluído" });
+      navigate("/admin");
+    } catch (err: any) {
+      toast({ title: "Erro", description: err.message, variant: "destructive" });
+    }
   };
 
   if (adminLoading) return <div className="pt-16 min-h-screen flex items-center justify-center"><p>Carregando...</p></div>;
@@ -262,7 +211,6 @@ const PostEditor = () => {
   return (
     <div className="pt-16 min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Button variant="ghost" onClick={() => navigate("/admin")} className="gap-2">
             <ArrowLeft size={18} /> Voltar
@@ -283,7 +231,6 @@ const PostEditor = () => {
         </div>
 
         <div className="grid lg:grid-cols-[1fr_320px] gap-8">
-          {/* Main editor */}
           <div className="space-y-6">
             <input
               type="text"
@@ -292,13 +239,10 @@ const PostEditor = () => {
               placeholder="Título do post"
               className="w-full text-3xl font-heading font-bold bg-transparent border-none outline-none placeholder:text-muted-foreground/40"
             />
-
             <RichTextEditor content={content} onChange={setContent} />
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Slug */}
             <div className="p-4 bg-card border border-border rounded-lg space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Slug (URL)</label>
               <input
@@ -309,7 +253,6 @@ const PostEditor = () => {
               />
             </div>
 
-            {/* Excerpt */}
             <div className="p-4 bg-card border border-border rounded-lg space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Resumo</label>
               <textarea
@@ -321,7 +264,6 @@ const PostEditor = () => {
               />
             </div>
 
-            {/* Cover image */}
             <div className="p-4 bg-card border border-border rounded-lg space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Imagem de Capa</label>
               {coverUrl && (
@@ -330,7 +272,6 @@ const PostEditor = () => {
               <input type="file" accept="image/*" onChange={handleCoverUpload} className="text-sm" />
             </div>
 
-            {/* Category */}
             <div className="p-4 bg-card border border-border rounded-lg space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Categoria</label>
               <select
@@ -356,7 +297,6 @@ const PostEditor = () => {
               </div>
             </div>
 
-            {/* Tags */}
             <div className="p-4 bg-card border border-border rounded-lg space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Tags</label>
               <div className="flex flex-wrap gap-1.5 mb-2">
@@ -392,7 +332,6 @@ const PostEditor = () => {
               </div>
             </div>
 
-            {/* SEO */}
             <div className="p-4 bg-card border border-border rounded-lg space-y-3">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">SEO</label>
@@ -428,7 +367,6 @@ const PostEditor = () => {
                   className="w-full px-3 py-2 bg-background border border-border rounded-md text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
-              {/* SEO Preview */}
               <div className="p-3 bg-background rounded-md border border-border">
                 <p className="text-xs text-muted-foreground mb-1">Preview no Google:</p>
                 <p className="text-sm text-primary font-medium truncate">{metaTitle || title || "Título do post"}</p>

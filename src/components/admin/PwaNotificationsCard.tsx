@@ -12,7 +12,7 @@ import {
   unsubscribePush,
 } from "@/lib/pwa";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 
 const PwaNotificationsCard = () => {
   const { toast } = useToast();
@@ -56,22 +56,17 @@ const PwaNotificationsCard = () => {
       return;
     }
 
-    // Register a Web Push subscription so we receive notifications even when
-    // the app is closed.
     const sub = await getPushSubscription();
     if (sub) {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        await (supabase as any).from("push_subscriptions").upsert(
-          {
-            user_id: user.id,
-            endpoint: sub.endpoint,
-            p256dh: sub.p256dh,
-            auth: sub.auth,
-            user_agent: navigator.userAgent,
-          },
-          { onConflict: "endpoint" }
-        );
+      try {
+        await api.post("/admin/push-subscriptions", {
+          endpoint: sub.endpoint,
+          p256dh: sub.p256dh,
+          auth: sub.auth,
+          userAgent: navigator.userAgent,
+        });
+      } catch (err) {
+        console.warn("[PWA] failed to register push subscription", err);
       }
     }
 
@@ -97,7 +92,7 @@ const PwaNotificationsCard = () => {
         .then((r) => r.pushManager.getSubscription())
         .catch(() => null);
       if (sub) {
-        await (supabase as any).from("push_subscriptions").delete().eq("endpoint", sub.endpoint);
+        await api.del("/admin/push-subscriptions", { endpoint: sub.endpoint }).catch(() => null);
       }
       await unsubscribePush();
       toast({ title: "Push desativado", description: "Você não receberá mais notificações em segundo plano." });

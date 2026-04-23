@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/lib/api";
 import { ArrowLeft, Calendar, Tag, Eye, Heart } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -14,62 +14,44 @@ interface PostData {
   slug: string;
   excerpt: string | null;
   content: string;
-  cover_image_url: string | null;
-  meta_title: string | null;
-  meta_description: string | null;
-  published_at: string | null;
-  created_at: string;
-  categories: { name: string; slug: string } | null;
-}
-
-interface TagData {
-  tags: { name: string; slug: string };
+  coverImageUrl: string | null;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  publishedAt: string | null;
+  createdAt: string;
+  category: { name: string; slug: string } | null;
+  tags: { name: string; slug: string }[];
 }
 
 const BlogPost = () => {
   const { slug } = useParams();
   const [post, setPost] = useState<PostData | null>(null);
-  const [tags, setTags] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [viewCount, setViewCount] = useState(0);
   const [likeCount, setLikeCount] = useState(0);
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
-    if (slug) fetchPost();
+    if (slug) load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
-  const fetchPost = async () => {
-    const { data } = await supabase
-      .from("blog_posts")
-      .select("*, categories(name, slug)")
-      .eq("slug", slug!)
-      .eq("status", "published")
-      .single();
-
-    if (data) {
-      setPost(data as unknown as PostData);
-
-      const [tagsRes, viewsRes, likesRes] = await Promise.all([
-        supabase.from("post_tags").select("tags(name, slug)").eq("post_id", data.id),
-        supabase.from("post_views").select("id", { count: "exact", head: true }).eq("post_id", data.id),
-        supabase.from("post_likes").select("id, session_id", { count: "exact" }).eq("post_id", data.id),
-      ]);
-
-      if (tagsRes.data) {
-        setTags((tagsRes.data as unknown as TagData[]).map((pt) => pt.tags.name));
-      }
-
-      setViewCount(viewsRes.count || 0);
-      setLikeCount(likesRes.count || 0);
-
+  const load = async () => {
+    try {
+      const data = await api.get<PostData>(`/posts/${slug}`);
+      setPost(data);
       const sessionId = getSessionId();
-      const alreadyLiked = likesRes.data?.some((l: any) => l.session_id === sessionId);
-      setLiked(!!alreadyLiked);
-
-      // Track view
-      await supabase.from("post_views").insert({ post_id: data.id, session_id: sessionId });
-      setViewCount((c) => c + 1);
+      const [v, l, hasLiked] = await Promise.all([
+        api.get<{ count: number }>(`/post-views/${data.id}/count`),
+        api.get<{ count: number }>(`/post-likes/${data.id}/count`),
+        api.get<{ liked: boolean }>(`/post-likes/${data.id}/has?sessionId=${encodeURIComponent(sessionId)}`),
+      ]);
+      setViewCount(v.count || 0);
+      setLikeCount(l.count || 0);
+      setLiked(!!hasLiked.liked);
+      api.post("/post-views", { postId: data.id, sessionId }).then(() => setViewCount((c) => c + 1)).catch(() => {});
+    } catch {
+      setPost(null);
     }
     setLoading(false);
   };
@@ -78,11 +60,11 @@ const BlogPost = () => {
     if (!post) return;
     const sessionId = getSessionId();
     if (liked) {
-      await supabase.from("post_likes").delete().eq("post_id", post.id).eq("session_id", sessionId);
+      await api.del("/post-likes", { postId: post.id, sessionId });
       setLiked(false);
       setLikeCount((c) => Math.max(0, c - 1));
     } else {
-      await supabase.from("post_likes").insert({ post_id: post.id, session_id: sessionId });
+      await api.post("/post-likes", { postId: post.id, sessionId });
       setLiked(true);
       setLikeCount((c) => c + 1);
     }
@@ -107,8 +89,8 @@ const BlogPost = () => {
     );
   }
 
-  const pageTitle = post.meta_title || post.title;
-  const pageDescription = post.meta_description || post.excerpt || "";
+  const pageTitle = post.metaTitle || post.title;
+  const pageDescription = post.metaDescription || post.excerpt || "";
   const canonicalUrl = `${window.location.origin}/blog/${post.slug}`;
 
   const jsonLd = {
@@ -116,9 +98,9 @@ const BlogPost = () => {
     "@type": "BlogPosting",
     headline: post.title,
     description: pageDescription,
-    image: post.cover_image_url || undefined,
-    datePublished: post.published_at || post.created_at,
-    dateModified: post.created_at,
+    image: post.coverImageUrl || undefined,
+    datePublished: post.publishedAt || post.createdAt,
+    dateModified: post.createdAt,
     author: { "@type": "Person", name: "Quinzinho Oliveira" },
     publisher: { "@type": "Organization", name: "Quinzinho" },
     mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
@@ -134,18 +116,18 @@ const BlogPost = () => {
         <meta property="og:description" content={pageDescription} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={canonicalUrl} />
-        {post.cover_image_url && <meta property="og:image" content={post.cover_image_url} />}
+        {post.coverImageUrl && <meta property="og:image" content={post.coverImageUrl} />}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={pageDescription} />
-        {post.cover_image_url && <meta name="twitter:image" content={post.cover_image_url} />}
+        {post.coverImageUrl && <meta name="twitter:image" content={post.coverImageUrl} />}
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
       <div className="pt-16">
-        {post.cover_image_url && (
+        {post.coverImageUrl && (
           <div className="w-full h-64 md:h-96 overflow-hidden">
-            <img src={post.cover_image_url} alt={post.title} className="w-full h-full object-cover" loading="lazy" />
+            <img src={post.coverImageUrl} alt={post.title} className="w-full h-full object-cover" loading="lazy" />
           </div>
         )}
 
@@ -156,10 +138,10 @@ const BlogPost = () => {
             </Link>
 
             <div className="flex flex-wrap items-center gap-3 mb-4">
-              {post.categories?.name && <span className="category-badge">{post.categories.name}</span>}
+              {post.category?.name && <span className="category-badge">{post.category.name}</span>}
               <span className="text-sm text-muted-foreground flex items-center gap-1">
                 <Calendar size={14} />
-                {format(new Date(post.published_at || post.created_at), "d 'de' MMMM, yyyy", { locale: ptBR })}
+                {format(new Date(post.publishedAt || post.createdAt), "d 'de' MMMM, yyyy", { locale: ptBR })}
               </span>
               <span className="text-sm text-muted-foreground flex items-center gap-1">
                 <Eye size={14} /> {viewCount}
@@ -177,7 +159,6 @@ const BlogPost = () => {
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 
-            {/* Like + Tags */}
             <div className="mt-12 pt-8 border-t border-border">
               <div className="flex items-center justify-between mb-4">
                 <button
@@ -191,11 +172,11 @@ const BlogPost = () => {
                 </button>
               </div>
 
-              {tags.length > 0 && (
+              {post.tags && post.tags.length > 0 && (
                 <div className="flex flex-wrap items-center gap-2">
                   <Tag size={16} className="text-muted-foreground" />
-                  {tags.map((tag) => (
-                    <span key={tag} className="px-3 py-1 bg-secondary text-sm rounded-full text-muted-foreground">{tag}</span>
+                  {post.tags.map((tag) => (
+                    <span key={tag.slug} className="px-3 py-1 bg-secondary text-sm rounded-full text-muted-foreground">{tag.name}</span>
                   ))}
                 </div>
               )}
