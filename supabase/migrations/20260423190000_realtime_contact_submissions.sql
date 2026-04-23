@@ -1,0 +1,11 @@
+-- Add contact_submissions to realtime publication so admins can receive
+-- live notifications when new messages arrive.
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_publication_tables
+    WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'contact_submissions'
+  ) THEN
+    ALTER PUBLICATION supabase_realtime ADD TABLE public.contact_submissions;
+  END IF;
+END$$;

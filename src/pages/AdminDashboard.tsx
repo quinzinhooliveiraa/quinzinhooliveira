@@ -9,6 +9,8 @@ import { ptBR } from "date-fns/locale";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import AnalyticsTab from "@/components/admin/AnalyticsTab";
+import PwaNotificationsCard from "@/components/admin/PwaNotificationsCard";
+import { useVisitNotifications } from "@/hooks/use-visit-notifications";
 
 interface Post {
   id: string;
@@ -49,6 +51,8 @@ const AdminDashboard = () => {
   const [sourceFilter, setSourceFilter] = useState<string>("all");
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviting, setInviting] = useState(false);
+
+  useVisitNotifications(isAdmin);
 
   useEffect(() => {
     if (isAdmin) {
@@ -135,6 +139,8 @@ const AdminDashboard = () => {
             </Button>
           </div>
         </div>
+
+        <PwaNotificationsCard />
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-6">
