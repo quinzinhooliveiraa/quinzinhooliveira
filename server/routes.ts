@@ -356,6 +356,9 @@ export function makeRouter(): Router {
   r.post("/visits", async (req, res) => {
     const { sessionId, page, referrer } = req.body || {};
     if (!sessionId) return res.status(400).json({ error: "sessionId required" });
+    // Skip admin's own visits and any /admin/* page
+    if (readSession(req)) return res.json({ ok: true, skipped: "admin" });
+    if (typeof page === "string" && page.startsWith("/admin")) return res.json({ ok: true, skipped: "admin-page" });
     const xff = req.headers["x-forwarded-for"];
     const ip =
       (typeof xff === "string" ? xff.split(",")[0].trim() : Array.isArray(xff) ? xff[0] : null) ||
