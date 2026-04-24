@@ -131,6 +131,21 @@ export const siteSettings = pgTable("site_settings", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const lpPixels = pgTable("lp_pixels", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  route: text("route").notNull().unique(),
+  label: text("label").notNull(),
+  enabled: boolean("enabled").notNull().default(true),
+  facebookPixelId: text("facebook_pixel_id"),
+  tiktokPixelId: text("tiktok_pixel_id"),
+  gaMeasurementId: text("ga_measurement_id"),
+  gtmId: text("gtm_id"),
+  customHead: text("custom_head"),
+  customBodyEnd: text("custom_body_end"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const pushSubscriptions = pgTable("push_subscriptions", {
   id: uuid("id").primaryKey().defaultRandom(),
   adminId: uuid("admin_id")

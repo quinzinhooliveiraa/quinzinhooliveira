@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { HelmetProvider } from "react-helmet-async";
 import { useTrackVisit } from "@/hooks/use-track-visit";
+import PagePixels from "./components/PagePixels";
 import Navbar from "./components/Navbar";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
@@ -45,6 +46,7 @@ const AppLayout = () => {
   return (
     <>
       <ScrollToTop />
+      <PagePixels />
       {!isAdmin && !isStandaloneLp && <Navbar />}
       <Routes>
         <Route path="/" element={<Index />} />

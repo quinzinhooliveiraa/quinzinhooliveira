@@ -10,6 +10,7 @@ import {
   blogPosts,
   categories,
   contactSubmissions,
+  lpPixels,
   pageVisits,
   postLikes,
   postTags,
@@ -468,6 +469,55 @@ export function makeRouter(): Router {
         .values({ key: k, value: String(v), updatedAt: new Date() })
         .onConflictDoUpdate({ target: siteSettings.key, set: { value: String(v), updatedAt: new Date() } });
     }
+    res.json({ ok: true });
+  });
+
+  // ────── LP Pixels ──────
+  r.get("/pixels", async (req, res) => {
+    const route = String(req.query.route || "").trim();
+    if (!route) return res.json(null);
+    const rows = await db.select().from(lpPixels).where(and(eq(lpPixels.route, route), eq(lpPixels.enabled, true))).limit(1);
+    if (!rows[0]) return res.json(null);
+    const p = rows[0];
+    res.json({
+      route: p.route,
+      facebookPixelId: p.facebookPixelId,
+      tiktokPixelId: p.tiktokPixelId,
+      gaMeasurementId: p.gaMeasurementId,
+      gtmId: p.gtmId,
+      customHead: p.customHead,
+      customBodyEnd: p.customBodyEnd,
+    });
+  });
+  r.get("/admin/pixels", requireAdmin, async (_req, res) => {
+    const rows = await db.select().from(lpPixels).orderBy(lpPixels.label);
+    res.json(rows);
+  });
+  r.put("/admin/pixels", requireAdmin, async (req, res) => {
+    const { route, label, enabled, facebookPixelId, tiktokPixelId, gaMeasurementId, gtmId, customHead, customBodyEnd } = req.body || {};
+    if (!route || !label) return res.status(400).json({ error: "Rota e nome são obrigatórios" });
+    const cleanRoute = String(route).trim();
+    const values = {
+      route: cleanRoute,
+      label: String(label).trim(),
+      enabled: enabled !== false,
+      facebookPixelId: facebookPixelId?.trim() || null,
+      tiktokPixelId: tiktokPixelId?.trim() || null,
+      gaMeasurementId: gaMeasurementId?.trim() || null,
+      gtmId: gtmId?.trim() || null,
+      customHead: customHead || null,
+      customBodyEnd: customBodyEnd || null,
+      updatedAt: new Date(),
+    };
+    const [row] = await db
+      .insert(lpPixels)
+      .values(values)
+      .onConflictDoUpdate({ target: lpPixels.route, set: values })
+      .returning();
+    res.json(row);
+  });
+  r.delete("/admin/pixels/:id", requireAdmin, async (req, res) => {
+    await db.delete(lpPixels).where(eq(lpPixels.id, req.params.id));
     res.json({ ok: true });
   });
 

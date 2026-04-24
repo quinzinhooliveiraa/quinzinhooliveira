@@ -3,13 +3,14 @@ import { useNavigate, Link } from "react-router-dom";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/use-admin";
-import { Plus, FileText, Eye, Pencil, LogOut, Calendar, Mail, Trash2, CheckCircle, UserPlus, Send, BarChart3, Layout } from "lucide-react";
+import { Plus, FileText, Eye, Pencil, LogOut, Calendar, Mail, Trash2, CheckCircle, UserPlus, Send, BarChart3, Layout, Target } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import AnalyticsTab from "@/components/admin/AnalyticsTab";
 import PagesTab from "@/components/admin/PagesTab";
+import PixelsTab from "@/components/admin/PixelsTab";
 import PwaNotificationsCard from "@/components/admin/PwaNotificationsCard";
 import { useVisitNotifications } from "@/hooks/use-visit-notifications";
 
@@ -140,6 +141,9 @@ const AdminDashboard = () => {
             </TabsTrigger>
             <TabsTrigger value="analytics" className="gap-2">
               <BarChart3 size={14} /> Analytics
+            </TabsTrigger>
+            <TabsTrigger value="pixels" className="gap-2">
+              <Target size={16} /> Pixels
             </TabsTrigger>
             <TabsTrigger value="pages" className="gap-2">
               <Layout size={14} /> Páginas
@@ -291,6 +295,10 @@ const AdminDashboard = () => {
 
           <TabsContent value="analytics">
             <AnalyticsTab />
+          </TabsContent>
+
+          <TabsContent value="pixels">
+            <PixelsTab />
           </TabsContent>
 
           <TabsContent value="pages">
