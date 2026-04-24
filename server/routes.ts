@@ -62,6 +62,38 @@ function parseUA(ua: unknown): { device: string; browser: string } {
   return { device, browser };
 }
 
+function normalizeReferrer(raw: string | null | undefined): string {
+  if (!raw) return "Direto";
+  let url = String(raw).trim();
+  if (!url) return "Direto";
+  let host = "";
+  try {
+    host = new URL(url).hostname.toLowerCase().replace(/^www\./, "");
+  } catch {
+    host = url.toLowerCase().replace(/^www\./, "");
+  }
+  if (!host) return "Direto";
+  const map: Array<[RegExp, string]> = [
+    [/(^|\.)instagram\.com$|^l\.instagram\.com$|^lm?\.instagram\.com$/, "Instagram"],
+    [/(^|\.)tiktok\.com$|^vm\.tiktok\.com$/, "TikTok"],
+    [/(^|\.)(facebook|fb)\.com$|^l\.facebook\.com$|^m\.facebook\.com$/, "Facebook"],
+    [/(^|\.)twitter\.com$|^t\.co$|^x\.com$/, "Twitter / X"],
+    [/(^|\.)linkedin\.com$|^lnkd\.in$/, "LinkedIn"],
+    [/(^|\.)youtube\.com$|^youtu\.be$/, "YouTube"],
+    [/(^|\.)whatsapp\.com$|^wa\.me$|^api\.whatsapp\.com$/, "WhatsApp"],
+    [/(^|\.)telegram\.org$|^t\.me$/, "Telegram"],
+    [/(^|\.)google\.[a-z.]+$/, "Google"],
+    [/(^|\.)bing\.com$/, "Bing"],
+    [/(^|\.)duckduckgo\.com$/, "DuckDuckGo"],
+    [/(^|\.)reddit\.com$/, "Reddit"],
+    [/(^|\.)pinterest\.[a-z.]+$/, "Pinterest"],
+    [/(^|\.)threads\.net$/, "Threads"],
+    [/(^|\.)discord\.(com|gg)$/, "Discord"],
+  ];
+  for (const [re, label] of map) if (re.test(host)) return label;
+  return host;
+}
+
 function slugify(s: string): string {
   return s
     .toLowerCase()
@@ -518,16 +550,48 @@ export function makeRouter(): Router {
       GROUP BY browser ORDER BY visits DESC LIMIT 8
     `);
 
-    const referrers = await db.execute(sql`
-      SELECT COALESCE(NULLIF(referrer, ''), 'Direto') AS source, count(*)::int AS visits
+    const rawReferrers = await db.execute(sql`
+      SELECT referrer, count(*)::int AS visits
       FROM page_visits WHERE created_at > now() - ${interval}
-      GROUP BY source ORDER BY visits DESC LIMIT 10
+      GROUP BY referrer
     `);
+    const refMap = new Map<string, number>();
+    for (const row of rawReferrers.rows as any[]) {
+      const label = normalizeReferrer(row.referrer);
+      refMap.set(label, (refMap.get(label) || 0) + row.visits);
+    }
+    const referrers = Array.from(refMap.entries())
+      .map(([source, visits]) => ({ source, visits }))
+      .sort((a, b) => b.visits - a.visits)
+      .slice(0, 12);
 
     const recent = await db.execute(sql`
-      SELECT id, page, country, country_code AS "countryCode", city, device, browser, created_at AS "createdAt"
+      SELECT id, page, country, country_code AS "countryCode", city, device, browser, referrer, created_at AS "createdAt"
       FROM page_visits ORDER BY created_at DESC LIMIT 20
     `);
+    const recentRows = (recent.rows as any[]).map((r) => ({ ...r, source: normalizeReferrer(r.referrer) }));
+
+    const mapPointsRaw = await db.execute(sql`
+      SELECT lat, lng, country, country_code AS "countryCode", city,
+             count(*)::int AS visits,
+             count(DISTINCT session_id)::int AS unique_visitors
+      FROM page_visits
+      WHERE lat IS NOT NULL AND lng IS NOT NULL AND created_at > now() - ${interval}
+      GROUP BY lat, lng, country, country_code, city
+      ORDER BY visits DESC
+      LIMIT 500
+    `);
+
+    const liveVisitorsRaw = await db.execute(sql`
+      SELECT DISTINCT ON (session_id)
+        session_id AS "sessionId", page, country, country_code AS "countryCode",
+        city, device, browser, lat, lng, referrer, created_at AS "createdAt"
+      FROM page_visits
+      WHERE created_at > now() - interval '5 minutes'
+      ORDER BY session_id, created_at DESC
+      LIMIT 50
+    `);
+    const liveVisitors = (liveVisitorsRaw.rows as any[]).map((v) => ({ ...v, source: normalizeReferrer(v.referrer) }));
 
     const totals = await db.execute(sql`
       SELECT
@@ -551,8 +615,10 @@ export function makeRouter(): Router {
       cities: cities.rows,
       devices: devices.rows,
       browsers: browsers.rows,
-      referrers: referrers.rows,
-      recent: recent.rows,
+      referrers,
+      recent: recentRows,
+      mapPoints: mapPointsRaw.rows,
+      liveVisitors,
       totals: totals.rows[0] || {},
     });
   });

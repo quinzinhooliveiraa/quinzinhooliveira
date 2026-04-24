@@ -2,11 +2,37 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { api } from "@/lib/api";
 import {
   Eye, Users, Globe, Smartphone, Monitor, Tablet, Radio, ArrowUp, ArrowDown, FileText, ExternalLink,
+  Instagram, Music2, Facebook, Twitter, Linkedin, Youtube, MessageCircle, Send, Search, Link2,
 } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import VisitorsMap from "./VisitorsMap";
 
 type Range = "7d" | "30d" | "90d" | "all";
+
+interface MapPoint {
+  lat: number;
+  lng: number;
+  country: string | null;
+  countryCode: string | null;
+  city: string | null;
+  visits: number;
+  unique_visitors: number;
+}
+
+interface LiveVisitor {
+  sessionId: string;
+  page: string;
+  country: string | null;
+  countryCode: string | null;
+  city: string | null;
+  device: string | null;
+  browser: string | null;
+  lat: number | null;
+  lng: number | null;
+  source: string;
+  createdAt: string;
+}
 
 interface AnalyticsData {
   range: Range;
@@ -20,8 +46,10 @@ interface AnalyticsData {
   referrers: { source: string; visits: number }[];
   recent: {
     id: string; page: string; country: string | null; countryCode: string | null;
-    city: string | null; device: string | null; browser: string | null; createdAt: string;
+    city: string | null; device: string | null; browser: string | null; source: string; createdAt: string;
   }[];
+  mapPoints: MapPoint[];
+  liveVisitors: LiveVisitor[];
   totals: {
     totalVisits: number;
     totalUniqueVisitors: number;
@@ -33,6 +61,31 @@ interface AnalyticsData {
     publishedPosts: number;
     unreadMessages: number;
   };
+}
+
+const SOURCE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  Instagram, TikTok: Music2, Facebook, "Twitter / X": Twitter, LinkedIn: Linkedin, YouTube: Youtube,
+  WhatsApp: MessageCircle, Telegram: Send, Google: Search, Bing: Search, DuckDuckGo: Search,
+  Direto: Link2,
+};
+const SOURCE_COLORS: Record<string, string> = {
+  Instagram: "text-pink-500 bg-pink-500/10",
+  TikTok: "text-foreground bg-secondary",
+  Facebook: "text-blue-600 bg-blue-600/10",
+  "Twitter / X": "text-foreground bg-secondary",
+  LinkedIn: "text-blue-700 bg-blue-700/10",
+  YouTube: "text-red-600 bg-red-600/10",
+  WhatsApp: "text-green-600 bg-green-600/10",
+  Telegram: "text-sky-500 bg-sky-500/10",
+  Google: "text-amber-500 bg-amber-500/10",
+  Direto: "text-muted-foreground bg-secondary",
+};
+function sourceColor(s: string) {
+  return SOURCE_COLORS[s] || "text-primary bg-primary/10";
+}
+function SourceIcon({ source, size = 14 }: { source: string; size?: number }) {
+  const Icon = SOURCE_ICONS[source] || Link2;
+  return <Icon size={size} />;
 }
 
 function flagEmoji(code: string | null | undefined): string {
@@ -359,33 +412,107 @@ export default function AnalyticsTab() {
           </div>
         </div>
 
-        {/* Referrers */}
+        {/* Referrers (sources) */}
         <div className="bg-card border border-border rounded-2xl p-5 lg:col-span-2">
-          <h3 className="font-heading font-bold mb-4">De onde vêm</h3>
-          <div className="grid sm:grid-cols-2 gap-x-6 gap-y-2.5">
-            {data.referrers.map((r) => (
-              <div key={r.source}>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm truncate">{r.source}</span>
-                  <span className="text-xs font-bold tabular-nums">{r.visits}</span>
+          <h3 className="font-heading font-bold mb-1">De onde vem o tráfego</h3>
+          <p className="text-xs text-muted-foreground mb-4">Instagram, TikTok, busca, links diretos…</p>
+          {data.referrers.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Sem dados ainda</p>
+          ) : (
+            <div className="grid sm:grid-cols-2 gap-3">
+              {data.referrers.map((r) => {
+                const pct = (r.visits / maxRef) * 100;
+                return (
+                  <div key={r.source} className="flex items-center gap-3 p-2 rounded-lg hover:bg-secondary/40 transition-colors">
+                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${sourceColor(r.source)}`}>
+                      <SourceIcon source={r.source} size={16} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1 gap-2">
+                        <span className="text-sm font-medium truncate">{r.source}</span>
+                        <span className="text-xs font-bold tabular-nums whitespace-nowrap">{r.visits.toLocaleString("pt-BR")}</span>
+                      </div>
+                      <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+                        <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${pct}%` }} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* World map */}
+      <div className="bg-card border border-border rounded-2xl p-5">
+        <div className="flex items-center justify-between mb-4 gap-2">
+          <div>
+            <h3 className="font-heading font-bold flex items-center gap-2">
+              <Globe size={16} className="text-primary" /> Mapa de visitantes
+            </h3>
+            <p className="text-xs text-muted-foreground">Heatmap dos acessos por localização</p>
+          </div>
+          <span className="text-xs text-muted-foreground">{data.mapPoints.length} pontos</span>
+        </div>
+        <VisitorsMap points={data.mapPoints} live={data.liveVisitors} />
+      </div>
+
+      {/* Live visitors */}
+      <div className="bg-card border border-border rounded-2xl p-5">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-heading font-bold flex items-center gap-2">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+            </span>
+            Online agora
+          </h3>
+          <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-green-500/10 text-green-500">
+            {data.liveVisitors.length} {data.liveVisitors.length === 1 ? "pessoa" : "pessoas"}
+          </span>
+        </div>
+        {data.liveVisitors.length === 0 ? (
+          <p className="text-sm text-muted-foreground py-6 text-center">Ninguém no site neste momento</p>
+        ) : (
+          <div className="space-y-1.5">
+            {data.liveVisitors.map((v) => (
+              <div key={v.sessionId} className="flex items-center gap-3 py-2 px-2 rounded-md hover:bg-secondary/40 text-sm">
+                <span className="text-lg leading-none">{flagEmoji(v.countryCode)}</span>
+                <div className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 ${sourceColor(v.source)}`}>
+                  <SourceIcon source={v.source} size={12} />
                 </div>
-                <Bar value={r.visits} max={maxRef} />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-0.5">
+                    <span className="truncate">{[v.city, v.country].filter(Boolean).join(", ") || "Local desconhecido"}</span>
+                    <span className="text-muted-foreground/60">·</span>
+                    <span className="truncate">{v.source}</span>
+                  </div>
+                  <code className="font-mono text-xs truncate block">{v.page}</code>
+                </div>
+                <span className="text-muted-foreground"><DeviceIcon d={v.device || "desktop"} /></span>
+                <span className="text-[11px] text-muted-foreground tabular-nums whitespace-nowrap">
+                  {formatDistanceToNow(new Date(v.createdAt), { locale: ptBR, addSuffix: false })}
+                </span>
               </div>
             ))}
           </div>
-        </div>
+        )}
       </div>
 
       {/* Recent activity */}
       <div className="bg-card border border-border rounded-2xl p-5">
         <h3 className="font-heading font-bold mb-4 flex items-center gap-2">
-          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" /> Atividade recente
+          <span className="w-2 h-2 bg-primary rounded-full animate-pulse" /> Atividade recente
         </h3>
         <div className="space-y-1.5">
           {data.recent.length === 0 && <p className="text-sm text-muted-foreground">Nenhuma visita ainda</p>}
           {data.recent.map((v) => (
             <div key={v.id} className="flex items-center gap-3 py-1.5 px-2 rounded-md hover:bg-secondary/40 text-sm">
               <span className="text-base">{flagEmoji(v.countryCode)}</span>
+              <span className={`w-6 h-6 rounded-md flex items-center justify-center shrink-0 ${sourceColor(v.source)}`}>
+                <SourceIcon source={v.source} size={11} />
+              </span>
               <span className="text-muted-foreground"><DeviceIcon d={v.device || "desktop"} /></span>
               <code className="font-mono text-xs flex-1 truncate">{v.page}</code>
               <span className="text-xs text-muted-foreground hidden sm:inline">
