@@ -91,10 +91,15 @@ export const pageVisits = pgTable("page_visits", {
   sessionId: text("session_id").notNull(),
   page: text("page").notNull().default("/"),
   country: text("country"),
+  countryCode: text("country_code"),
   city: text("city"),
   lat: doublePrecision("lat"),
   lng: doublePrecision("lng"),
   ip: text("ip"),
+  userAgent: text("user_agent"),
+  referrer: text("referrer"),
+  device: text("device"),
+  browser: text("browser"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

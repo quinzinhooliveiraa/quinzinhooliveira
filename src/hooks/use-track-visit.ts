@@ -10,7 +10,8 @@ export function useTrackVisit() {
   useEffect(() => {
     if (!sessionId) return;
     const timer = setTimeout(() => {
-      api.post("/visits", { sessionId, page: location.pathname }).catch(() => {});
+      const ref = document.referrer && !document.referrer.includes(window.location.host) ? document.referrer : "";
+      api.post("/visits", { sessionId, page: location.pathname, referrer: ref }).catch(() => {});
     }, 500);
     return () => clearTimeout(timer);
   }, [location.pathname, sessionId]);

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTheme } from "@/hooks/use-theme";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAdminStatus } from "@/hooks/use-admin-status";
+import { useHiddenPages } from "@/hooks/use-page-visibility";
 
 const navItems = [
   { label: "INÍCIO", path: "/" },
@@ -17,10 +18,13 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { isAdmin } = useAdminStatus();
+  const { hidden } = useHiddenPages();
 
+  const visibleNavItems = navItems.filter((item) => isAdmin || !hidden.includes(item.path));
   const allItems = isAdmin
-    ? [...navItems, { label: "PAINEL", path: "/admin" }]
-    : navItems;
+    ? [...visibleNavItems, { label: "PAINEL", path: "/admin" }]
+    : visibleNavItems;
+  const contactHidden = !isAdmin && hidden.includes("/contato");
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b" style={{ backgroundColor: 'hsla(0, 0%, 7%, 0.9)', borderColor: 'hsl(0, 0%, 18%)', color: 'hsl(0, 0%, 95%)' }}>
@@ -65,14 +69,14 @@ const Navbar = () => {
             >
               AGENDAR ANÁLISE
             </a>
-          ) : (
+          ) : !contactHidden ? (
             <Link
               to="/contato"
               className="px-5 py-2 text-sm font-medium border border-primary text-primary rounded-full transition-colors hover:bg-primary hover:text-primary-foreground"
             >
               CONTATO
             </Link>
-          )}
+          ) : null}
         </div>
 
         {/* Mobile */}
@@ -121,19 +125,21 @@ const Navbar = () => {
                   </Link>
                 </motion.div>
               ))}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.15 }}
-              >
-                <Link
-                  to="/contato"
-                  onClick={() => setMobileOpen(false)}
-                  className="block mt-2 px-5 py-3 text-sm font-medium border border-primary text-primary rounded-full transition-colors hover:bg-primary hover:text-primary-foreground text-center"
+              {!contactHidden && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 }}
                 >
-                  CONTATO
-                </Link>
-              </motion.div>
+                  <Link
+                    to="/contato"
+                    onClick={() => setMobileOpen(false)}
+                    className="block mt-2 px-5 py-3 text-sm font-medium border border-primary text-primary rounded-full transition-colors hover:bg-primary hover:text-primary-foreground text-center"
+                  >
+                    CONTATO
+                  </Link>
+                </motion.div>
+              )}
             </div>
           </motion.div>
         )}

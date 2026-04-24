@@ -10,6 +10,7 @@ import { useTrackVisit } from "@/hooks/use-track-visit";
 import Navbar from "./components/Navbar";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
+import PageGuard from "./components/PageGuard";
 import Index from "./pages/Index";
 import Livro from "./pages/Livro";
 import Blog from "./pages/Blog";
@@ -47,22 +48,22 @@ const AppLayout = () => {
       {!isAdmin && !isStandaloneLp && <Navbar />}
       <Routes>
         <Route path="/" element={<Index />} />
-        <Route path="/livro" element={<Livro />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/contato" element={<Contato />} />
-        <Route path="/consultoria" element={<Consultoria />} />
-        <Route path="/curso" element={<Curso />} />
-        <Route path="/olivar-global" element={<OlivarGlobal />} />
-        <Route path="/servicos" element={<Servicos />} />
-        <Route path="/conteudo" element={<Conteudo />} />
-        <Route path="/sobre" element={<Sobre />} />
-        <Route path="/olsproject" element={<OlsProject />} />
-        <Route path="/ols-project" element={<OlsProject />} />
-        <Route path="/projetos" element={<Projetos />} />
-        <Route path="/vytal" element={<VytalLP />} />
-        <Route path="/casados20" element={<CasaDos20LP />} />
-        <Route path="/criar-app" element={<Projetos />} />
+        <Route path="/livro" element={<PageGuard><Livro /></PageGuard>} />
+        <Route path="/blog" element={<PageGuard><Blog /></PageGuard>} />
+        <Route path="/blog/:slug" element={<PageGuard><BlogPost /></PageGuard>} />
+        <Route path="/contato" element={<PageGuard><Contato /></PageGuard>} />
+        <Route path="/consultoria" element={<PageGuard><Consultoria /></PageGuard>} />
+        <Route path="/curso" element={<PageGuard><Curso /></PageGuard>} />
+        <Route path="/olivar-global" element={<PageGuard><OlivarGlobal /></PageGuard>} />
+        <Route path="/servicos" element={<PageGuard><Servicos /></PageGuard>} />
+        <Route path="/conteudo" element={<PageGuard><Conteudo /></PageGuard>} />
+        <Route path="/sobre" element={<PageGuard><Sobre /></PageGuard>} />
+        <Route path="/olsproject" element={<PageGuard><OlsProject /></PageGuard>} />
+        <Route path="/ols-project" element={<PageGuard><OlsProject /></PageGuard>} />
+        <Route path="/projetos" element={<PageGuard><Projetos /></PageGuard>} />
+        <Route path="/vytal" element={<PageGuard><VytalLP /></PageGuard>} />
+        <Route path="/casados20" element={<PageGuard><CasaDos20LP /></PageGuard>} />
+        <Route path="/criar-app" element={<PageGuard><Projetos /></PageGuard>} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />

@@ -46,6 +46,22 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 });
 
+function parseUA(ua: unknown): { device: string; browser: string } {
+  const s = typeof ua === "string" ? ua : "";
+  if (!s) return { device: "unknown", browser: "unknown" };
+  const lower = s.toLowerCase();
+  let device = "desktop";
+  if (/ipad|tablet|playbook|silk/.test(lower)) device = "tablet";
+  else if (/mobi|iphone|ipod|android.*mobile|windows phone|blackberry|opera mini/.test(lower)) device = "mobile";
+  let browser = "outro";
+  if (/edg\//.test(lower)) browser = "Edge";
+  else if (/opr\/|opera/.test(lower)) browser = "Opera";
+  else if (/chrome\//.test(lower) && !/edg\//.test(lower)) browser = "Chrome";
+  else if (/firefox\//.test(lower)) browser = "Firefox";
+  else if (/safari\//.test(lower) && !/chrome\//.test(lower)) browser = "Safari";
+  return { device, browser };
+}
+
 function slugify(s: string): string {
   return s
     .toLowerCase()
@@ -305,24 +321,28 @@ export function makeRouter(): Router {
 
   // ────── Page visits ──────
   r.post("/visits", async (req, res) => {
-    const { sessionId, page } = req.body || {};
+    const { sessionId, page, referrer } = req.body || {};
     if (!sessionId) return res.status(400).json({ error: "sessionId required" });
     const xff = req.headers["x-forwarded-for"];
     const ip =
       (typeof xff === "string" ? xff.split(",")[0].trim() : Array.isArray(xff) ? xff[0] : null) ||
       req.socket.remoteAddress ||
       null;
+    const userAgent = req.headers["user-agent"] || null;
+    const { device, browser } = parseUA(userAgent);
 
     let country: string | null = null;
+    let countryCode: string | null = null;
     let city: string | null = null;
     let lat: number | null = null;
     let lng: number | null = null;
     if (ip && ip !== "127.0.0.1" && !ip.startsWith("::1")) {
       try {
-        const r = await fetch(`http://ip-api.com/json/${ip}?fields=country,city,lat,lon`);
+        const r = await fetch(`http://ip-api.com/json/${ip}?fields=country,countryCode,city,lat,lon`);
         if (r.ok) {
           const j: any = await r.json();
           country = j.country ?? null;
+          countryCode = j.countryCode ?? null;
           city = j.city ?? null;
           lat = j.lat ?? null;
           lng = j.lon ?? null;
@@ -334,7 +354,20 @@ export function makeRouter(): Router {
 
     const [created] = await db
       .insert(pageVisits)
-      .values({ sessionId, page: page || "/", ip, country, city, lat, lng })
+      .values({
+        sessionId,
+        page: page || "/",
+        ip,
+        country,
+        countryCode,
+        city,
+        lat,
+        lng,
+        userAgent: typeof userAgent === "string" ? userAgent : null,
+        referrer: referrer || null,
+        device,
+        browser,
+      })
       .returning();
     notifyVisit(created).catch(() => null);
     res.json({ ok: true });
@@ -432,38 +465,94 @@ export function makeRouter(): Router {
   });
 
   // ────── Analytics ──────
-  r.get("/admin/analytics", requireAdmin, async (_req, res) => {
-    const visits = await db.execute(sql`
-      SELECT date_trunc('day', created_at)::date AS day, count(*)::int AS visits, count(distinct session_id)::int AS unique_visitors
-      FROM page_visits WHERE created_at > now() - interval '30 days'
-      GROUP BY 1 ORDER BY 1
+  r.get("/admin/analytics", requireAdmin, async (req, res) => {
+    const range = String(req.query.range || "30d");
+    const days = range === "7d" ? 7 : range === "90d" ? 90 : range === "all" ? 3650 : 30;
+    const interval = sql.raw(`interval '${days} days'`);
+
+    const series = await db.execute(sql`
+      WITH days AS (
+        SELECT generate_series(
+          (now() - ${interval})::date,
+          now()::date,
+          interval '1 day'
+        )::date AS day
+      )
+      SELECT d.day,
+             COALESCE(count(v.id), 0)::int AS visits,
+             COALESCE(count(DISTINCT v.session_id), 0)::int AS unique_visitors
+      FROM days d
+      LEFT JOIN page_visits v ON v.created_at::date = d.day
+      GROUP BY d.day ORDER BY d.day
     `);
+
     const topPages = await db.execute(sql`
-      SELECT page, count(*)::int AS c FROM page_visits
-      WHERE created_at > now() - interval '30 days'
-      GROUP BY page ORDER BY c DESC LIMIT 10
+      SELECT page, count(*)::int AS visits, count(DISTINCT session_id)::int AS unique_visitors
+      FROM page_visits WHERE created_at > now() - ${interval}
+      GROUP BY page ORDER BY visits DESC LIMIT 10
     `);
+
     const countries = await db.execute(sql`
-      SELECT country, count(*)::int AS c FROM page_visits
-      WHERE country IS NOT NULL AND created_at > now() - interval '30 days'
-      GROUP BY country ORDER BY c DESC LIMIT 10
+      SELECT country, country_code AS "countryCode", count(*)::int AS visits, count(DISTINCT session_id)::int AS unique_visitors
+      FROM page_visits
+      WHERE country IS NOT NULL AND created_at > now() - ${interval}
+      GROUP BY country, country_code ORDER BY visits DESC LIMIT 12
     `);
+
     const cities = await db.execute(sql`
-      SELECT city, country, lat, lng, count(*)::int AS c FROM page_visits
-      WHERE city IS NOT NULL AND created_at > now() - interval '30 days'
-      GROUP BY city, country, lat, lng ORDER BY c DESC LIMIT 100
+      SELECT city, country, country_code AS "countryCode", count(*)::int AS visits
+      FROM page_visits
+      WHERE city IS NOT NULL AND created_at > now() - ${interval}
+      GROUP BY city, country, country_code ORDER BY visits DESC LIMIT 10
     `);
+
+    const devices = await db.execute(sql`
+      SELECT COALESCE(device, 'unknown') AS device, count(*)::int AS visits
+      FROM page_visits WHERE created_at > now() - ${interval}
+      GROUP BY device ORDER BY visits DESC
+    `);
+
+    const browsers = await db.execute(sql`
+      SELECT COALESCE(browser, 'unknown') AS browser, count(*)::int AS visits
+      FROM page_visits WHERE created_at > now() - ${interval}
+      GROUP BY browser ORDER BY visits DESC LIMIT 8
+    `);
+
+    const referrers = await db.execute(sql`
+      SELECT COALESCE(NULLIF(referrer, ''), 'Direto') AS source, count(*)::int AS visits
+      FROM page_visits WHERE created_at > now() - ${interval}
+      GROUP BY source ORDER BY visits DESC LIMIT 10
+    `);
+
+    const recent = await db.execute(sql`
+      SELECT id, page, country, country_code AS "countryCode", city, device, browser, created_at AS "createdAt"
+      FROM page_visits ORDER BY created_at DESC LIMIT 20
+    `);
+
     const totals = await db.execute(sql`
       SELECT
-        (SELECT count(*)::int FROM page_visits) AS total_visits,
-        (SELECT count(*)::int FROM blog_posts WHERE status='published') AS published_posts,
-        (SELECT count(*)::int FROM contact_submissions WHERE NOT read) AS unread_messages
+        (SELECT count(*)::int FROM page_visits) AS "totalVisits",
+        (SELECT count(DISTINCT session_id)::int FROM page_visits) AS "totalUniqueVisitors",
+        (SELECT count(*)::int FROM page_visits WHERE created_at > now() - ${interval}) AS "rangeVisits",
+        (SELECT count(DISTINCT session_id)::int FROM page_visits WHERE created_at > now() - ${interval}) AS "rangeUniqueVisitors",
+        (SELECT count(*)::int FROM page_visits WHERE created_at::date = now()::date) AS "todayVisits",
+        (SELECT count(DISTINCT session_id)::int FROM page_visits WHERE created_at::date = now()::date) AS "todayUniqueVisitors",
+        (SELECT count(*)::int FROM page_visits WHERE created_at > now() - interval '15 minutes') AS "live",
+        (SELECT count(*)::int FROM blog_posts WHERE status='published') AS "publishedPosts",
+        (SELECT count(*)::int FROM contact_submissions WHERE NOT read) AS "unreadMessages"
     `);
+
     res.json({
-      visits: visits.rows,
+      range,
+      days,
+      series: series.rows,
       topPages: topPages.rows,
       countries: countries.rows,
       cities: cities.rows,
+      devices: devices.rows,
+      browsers: browsers.rows,
+      referrers: referrers.rows,
+      recent: recent.rows,
       totals: totals.rows[0] || {},
     });
   });
