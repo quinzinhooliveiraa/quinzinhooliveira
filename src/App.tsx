@@ -35,6 +35,7 @@ import CasaDos20LP from "./pages/CasaDos20LP";
 
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const PostEditor = lazy(() => import("./pages/PostEditor"));
+const AdminLiveWall = lazy(() => import("./pages/AdminLiveWall"));
 
 const queryClient = new QueryClient();
 
@@ -70,6 +71,7 @@ const AppLayout = () => {
         <Route path="/admin/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/admin" element={<Suspense fallback={<div className="pt-16 min-h-screen flex items-center justify-center"><p>Carregando...</p></div>}><AdminDashboard /></Suspense>} />
+        <Route path="/admin/live" element={<Suspense fallback={<div className="pt-16 min-h-screen flex items-center justify-center"><p>Carregando...</p></div>}><AdminLiveWall /></Suspense>} />
         <Route path="/admin/post/new" element={<Suspense fallback={<div className="pt-16 min-h-screen flex items-center justify-center"><p>Carregando...</p></div>}><PostEditor /></Suspense>} />
         <Route path="/admin/post/:id" element={<Suspense fallback={<div className="pt-16 min-h-screen flex items-center justify-center"><p>Carregando...</p></div>}><PostEditor /></Suspense>} />
         <Route path="*" element={<NotFound />} />

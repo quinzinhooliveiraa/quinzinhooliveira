@@ -369,16 +369,18 @@ export function makeRouter(): Router {
 
     let country: string | null = null;
     let countryCode: string | null = null;
+    let region: string | null = null;
     let city: string | null = null;
     let lat: number | null = null;
     let lng: number | null = null;
     if (ip && ip !== "127.0.0.1" && !ip.startsWith("::1")) {
       try {
-        const r = await fetch(`http://ip-api.com/json/${ip}?fields=country,countryCode,city,lat,lon`);
+        const r = await fetch(`http://ip-api.com/json/${ip}?fields=country,countryCode,regionName,city,lat,lon`);
         if (r.ok) {
           const j: any = await r.json();
           country = j.country ?? null;
           countryCode = j.countryCode ?? null;
+          region = j.regionName ?? null;
           city = j.city ?? null;
           lat = j.lat ?? null;
           lng = j.lon ?? null;
@@ -396,6 +398,7 @@ export function makeRouter(): Router {
         ip,
         country,
         countryCode,
+        region,
         city,
         lat,
         lng,
@@ -625,20 +628,20 @@ export function makeRouter(): Router {
     const recentRows = (recent.rows as any[]).map((r) => ({ ...r, source: normalizeReferrer(r.referrer) }));
 
     const mapPointsRaw = await db.execute(sql`
-      SELECT lat, lng, country, country_code AS "countryCode", city,
+      SELECT lat, lng, country, country_code AS "countryCode", region, city,
              count(*)::int AS visits,
              count(DISTINCT session_id)::int AS unique_visitors
       FROM page_visits
       WHERE lat IS NOT NULL AND lng IS NOT NULL AND created_at > now() - ${interval}
-      GROUP BY lat, lng, country, country_code, city
+      GROUP BY lat, lng, country, country_code, region, city
       ORDER BY visits DESC
-      LIMIT 500
+      LIMIT 1000
     `);
 
     const liveVisitorsRaw = await db.execute(sql`
       SELECT DISTINCT ON (session_id)
         session_id AS "sessionId", page, country, country_code AS "countryCode",
-        city, device, browser, lat, lng, referrer, created_at AS "createdAt"
+        region, city, device, browser, lat, lng, referrer, created_at AS "createdAt"
       FROM page_visits
       WHERE created_at > now() - interval '5 minutes'
       ORDER BY session_id, created_at DESC

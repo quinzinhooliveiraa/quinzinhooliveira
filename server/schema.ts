@@ -92,6 +92,7 @@ export const pageVisits = pgTable("page_visits", {
   page: text("page").notNull().default("/"),
   country: text("country"),
   countryCode: text("country_code"),
+  region: text("region"),
   city: text("city"),
   lat: doublePrecision("lat"),
   lng: doublePrecision("lng"),

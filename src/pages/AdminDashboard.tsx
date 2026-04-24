@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/use-admin";
-import { Plus, FileText, Eye, Pencil, LogOut, Calendar, Mail, Trash2, CheckCircle, UserPlus, Send, BarChart3, Layout, Target } from "lucide-react";
+import { Plus, FileText, Eye, Pencil, LogOut, Calendar, Mail, Trash2, CheckCircle, UserPlus, Send, BarChart3, Layout, Target, Activity } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -117,6 +117,11 @@ const AdminDashboard = () => {
             <p className="text-sm text-muted-foreground mt-1">Gerencie posts, mensagens e admins</p>
           </div>
           <div className="flex items-center gap-3">
+            <Link to="/admin/live">
+              <Button variant="outline" className="gap-2">
+                <Activity size={16} className="text-green-500" /> Live Wall
+              </Button>
+            </Link>
             <Link to="/">
               <Button variant="outline" className="gap-2">Voltar ao Site</Button>
             </Link>
