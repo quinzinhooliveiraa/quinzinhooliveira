@@ -10,7 +10,7 @@ export function useAdminStatus() {
     api
       .get("/auth/me")
       .then((data) => {
-        if (!cancelled) setIsAdmin(!!data?.user?.isAdmin);
+        if (!cancelled) setIsAdmin(!!data?.admin);
       })
       .catch(() => {
         if (!cancelled) setIsAdmin(false);

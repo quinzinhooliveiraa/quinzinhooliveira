@@ -13,7 +13,7 @@ export function useAdmin() {
       .get("/auth/me")
       .then((data) => {
         if (cancelled) return;
-        if (data?.user?.isAdmin) {
+        if (data?.admin) {
           setIsAdmin(true);
         } else {
           setIsAdmin(false);

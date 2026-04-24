@@ -17,7 +17,7 @@ const AdminLogin = () => {
     setLoading(true);
     try {
       const res = await api.post("/auth/login", { email, password });
-      if (!res?.user?.isAdmin) {
+      if (!res?.admin) {
         toast({ title: "Acesso negado", description: "Você não tem permissão de administrador.", variant: "destructive" });
         setLoading(false);
         return;
