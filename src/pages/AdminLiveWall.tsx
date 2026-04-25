@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/lib/api";
 import { useAdmin } from "@/hooks/use-admin";
+import { Loader2 } from "lucide-react";
 import VisitorsMap from "@/components/admin/VisitorsMap";
 import { ArrowLeft, Activity, Globe2, Users, Eye } from "lucide-react";
 import { format, formatDistanceToNowStrict } from "date-fns";
@@ -39,17 +40,13 @@ interface AnalyticsResponse {
 }
 
 export default function AdminLiveWall() {
-  const { admin, loading } = useAdmin();
+  const { isAdmin, loading } = useAdmin();
   const navigate = useNavigate();
   const [data, setData] = useState<AnalyticsResponse | null>(null);
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
-    if (!loading && !admin) navigate("/admin/login");
-  }, [admin, loading, navigate]);
-
-  useEffect(() => {
-    if (!admin) return;
+    if (!isAdmin) return;
     let cancelled = false;
     const load = () => {
       api
@@ -65,7 +62,7 @@ export default function AdminLiveWall() {
       cancelled = true;
       clearInterval(id);
     };
-  }, [admin]);
+  }, [isAdmin]);
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
@@ -81,10 +78,10 @@ export default function AdminLiveWall() {
     [data?.liveVisitors]
   );
 
-  if (loading || !admin) {
+  if (loading || !isAdmin) {
     return (
-      <div className="min-h-screen bg-[hsl(220,30%,5%)] flex items-center justify-center text-muted-foreground">
-        Carregando...
+      <div className="min-h-screen bg-[hsl(220,30%,5%)] flex items-center justify-center text-muted-foreground gap-2">
+        <Loader2 size={16} className="animate-spin" /> Carregando...
       </div>
     );
   }
