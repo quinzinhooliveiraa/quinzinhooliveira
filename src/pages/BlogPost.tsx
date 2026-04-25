@@ -5,7 +5,7 @@ import { ArrowLeft, Calendar, Tag, Eye, Heart } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import NewsletterSection from "@/components/NewsletterSection";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import { getSessionId } from "@/hooks/use-session-id";
 
 interface PostData {
@@ -91,7 +91,8 @@ const BlogPost = () => {
 
   const pageTitle = post.metaTitle || post.title;
   const pageDescription = post.metaDescription || post.excerpt || "";
-  const canonicalUrl = `${window.location.origin}/blog/${post.slug}`;
+  const canonicalPath = `/blog/${post.slug}`;
+  const canonicalUrl = `https://quinzinhooliveira.com.br${canonicalPath}`;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -102,27 +103,22 @@ const BlogPost = () => {
     datePublished: post.publishedAt || post.createdAt,
     dateModified: post.createdAt,
     author: { "@type": "Person", name: "Quinzinho Oliveira" },
-    publisher: { "@type": "Organization", name: "Quinzinho" },
+    publisher: { "@type": "Organization", name: "Quinzinho Oliveira" },
     mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
   };
 
   return (
     <>
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <link rel="canonical" href={canonicalUrl} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={canonicalUrl} />
-        {post.coverImageUrl && <meta property="og:image" content={post.coverImageUrl} />}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        {post.coverImageUrl && <meta name="twitter:image" content={post.coverImageUrl} />}
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      </Helmet>
+      <SEO
+        title={pageTitle}
+        description={pageDescription}
+        image={post.coverImageUrl || undefined}
+        type="article"
+        canonicalPath={canonicalPath}
+        publishedTime={post.publishedAt || post.createdAt}
+        author="Quinzinho Oliveira"
+        jsonLd={jsonLd}
+      />
 
       <div className="pt-16">
         {post.coverImageUrl && (

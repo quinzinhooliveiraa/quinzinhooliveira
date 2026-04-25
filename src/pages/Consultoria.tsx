@@ -545,6 +545,10 @@ const Consultoria = () => {
 
   return (
   <div className="pt-16 overflow-hidden">
+    <SEO
+      title="Consultoria Financeira"
+      description="Consultoria financeira pessoal com Quinzinho Oliveira. Organize suas finanças, planeje seu futuro e tome decisões com clareza."
+    />
 
     {/* Mobile floating CTA */}
     <motion.a

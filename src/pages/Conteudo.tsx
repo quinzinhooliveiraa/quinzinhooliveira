@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Youtube, Instagram, BookOpen, Music, Linkedin, ExternalLink } from "lucide-react";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import thumbTiktokPessoal from "@/assets/thumb-tiktok-pessoal.jpeg";
 import thumbLinkedin from "@/assets/thumb-linkedin.jpeg";
 
@@ -212,10 +212,10 @@ function PlatformCard({ platform }: { platform: PlatformItem }) {
 const Conteudo = () => {
   return (
     <div className="pt-16 min-h-screen bg-background">
-      <Helmet>
-        <title>Conteúdo | Quinzinho Oliveira</title>
-        <meta name="description" content="YouTube, Instagram, TikTok, LinkedIn e Blog. Conheça o propósito de cada plataforma onde o Quinzinho Oliveira cria conteúdo." />
-      </Helmet>
+      <SEO
+        title="Conteúdo"
+        description="YouTube, Instagram, TikTok, LinkedIn e Blog. Conheça o propósito de cada plataforma onde o Quinzinho Oliveira cria conteúdo."
+      />
 
       {/* Hero */}
       <section className="relative py-20 sm:py-28 overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>

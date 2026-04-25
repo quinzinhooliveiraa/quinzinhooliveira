@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import SEO from "@/components/SEO";
 import {
   ArrowRight, CheckCircle2, Star, Play, Shield, Users, TrendingUp,
   Award, Target, DollarSign, PiggyBank, Sparkles, Clock, BookOpen, Video,
@@ -134,6 +135,10 @@ const Curso = () => {
 
   return (
     <div className="pt-16 overflow-hidden [--primary:262_83%_58%] [--primary-foreground:0_0%_100%]">
+      <SEO
+        title="Mentoria Redes Sociais"
+        description="Aprenda a criar conteúdo nas redes sociais com o Quinzinho Oliveira. Mentoria prática para crescer no Instagram, TikTok e YouTube. Em breve."
+      />
       {/* Waitlist Dialog */}
       <Dialog open={showWaitlist} onOpenChange={setShowWaitlist}>
         <DialogContent className="sm:max-w-md mx-4">

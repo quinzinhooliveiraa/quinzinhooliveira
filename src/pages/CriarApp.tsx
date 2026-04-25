@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import {
   ArrowRight, Rocket, Code2, Smartphone, Zap, CheckCircle2,
   MessageSquare, Clock, Shield, Star, ExternalLink,
@@ -85,10 +85,10 @@ const includes = [
 const CriarApp = () => {
   return (
     <>
-      <Helmet>
-        <title>Crie o Seu App | Quinzinho Oliveira</title>
-        <meta name="description" content="Transformo a sua ideia num app real em semanas. Desenvolvimento de aplicativos web modernos com design, backend e suporte incluídos." />
-      </Helmet>
+      <SEO
+        title="Crie o Seu App"
+        description="Transformo a sua ideia num app real em semanas. Desenvolvimento de aplicativos web modernos com design, backend e suporte incluídos."
+      />
 
       <main className="pt-20 pb-0 min-h-screen bg-background overflow-x-hidden">
 

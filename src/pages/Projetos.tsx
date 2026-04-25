@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import {
   ArrowRight, Rocket, Code2, Smartphone, Zap, CheckCircle2,
   MessageSquare, Clock, Shield, Star, ExternalLink,
@@ -95,10 +95,10 @@ const includes = [
 const Projetos = () => {
   return (
     <>
-      <Helmet>
-        <title>Projetos & Criar App | Quinzinho Oliveira</title>
-        <meta name="description" content="Apps criados por Quinzinho Oliveira e serviço de desenvolvimento. Transformo a sua ideia num app real em semanas." />
-      </Helmet>
+      <SEO
+        title="Projetos & Criar App"
+        description="Apps criados por Quinzinho Oliveira e serviço de desenvolvimento. Transformo a sua ideia num app real em semanas."
+      />
 
       <main className="pt-20 pb-0 min-h-screen bg-background overflow-x-hidden">
 

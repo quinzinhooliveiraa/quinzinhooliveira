@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import fs from "fs";
 import { createServer as createHttpServer } from "http";
-import { initServer, makeRouter, UPLOADS_DIR } from "./routes";
+import { initServer, makeRouter, UPLOADS_DIR, buildSitemapXml } from "./routes";
 
 const PORT = parseInt(process.env.PORT || "5000", 10);
 const isDev = process.env.NODE_ENV !== "production";
@@ -18,6 +18,18 @@ async function start() {
 
   app.use("/api", makeRouter());
   app.use("/uploads", express.static(UPLOADS_DIR, { maxAge: "1d" }));
+
+  app.get("/sitemap.xml", async (_req, res) => {
+    try {
+      const xml = await buildSitemapXml();
+      res.setHeader("Content-Type", "application/xml; charset=utf-8");
+      res.setHeader("Cache-Control", "public, max-age=3600");
+      res.send(xml);
+    } catch (err) {
+      console.error("[sitemap] failed:", err);
+      res.status(500).type("text").send("Failed to build sitemap");
+    }
+  });
 
   if (isDev) {
     const { createServer: createViteServer } = await import("vite");

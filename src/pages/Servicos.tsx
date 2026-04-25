@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Video, Globe, Smartphone, Users, Code, Palette } from "lucide-react";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 
 const services = [
@@ -51,10 +51,10 @@ const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 const Servicos = () => {
   return (
     <div className="pt-16 min-h-screen bg-background">
-      <Helmet>
-        <title>Serviços | Quinzinho Oliveira</title>
-        <meta name="description" content="Edição de vídeo, criação de sites, landing pages, aplicativos, social media e vibe coding. Conheça todos os serviços do Quinzinho Oliveira." />
-      </Helmet>
+      <SEO
+        title="Serviços"
+        description="Edição de vídeo, criação de sites, landing pages, aplicativos, social media e vibe coding. Conheça todos os serviços do Quinzinho Oliveira."
+      />
 
       {/* Hero */}
       <section className="relative py-20 sm:py-28 overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>

@@ -1,8 +1,13 @@
 import { ArrowRight, Globe, DollarSign, TrendingUp } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const OlivarGlobal = () => {
   return (
     <div className="pt-16 [--primary:142_76%_36%] [--primary-foreground:0_0%_100%]">
+      <SEO
+        title="Olivar Global — Agência de Comércio Exterior"
+        description="Agência de comércio exterior conectando o Brasil ao mercado internacional. Importação, exportação e consultoria com a Olivar Global."
+      />
       {/* Hero Section */}
       <section className="relative min-h-[85vh] flex items-center bg-gradient-to-br from-background via-secondary/20 to-background overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,hsl(142_76%_36%_/_0.15),transparent_50%)]" />

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Instagram, Youtube, Linkedin, Music } from "lucide-react";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import { AdminImage } from "@/components/admin/AdminImage";
 import sobrePhoto2 from "@/assets/quinzinho-sobre-2.jpeg";
 import sobreInfancia from "@/assets/sobre-infancia.jpeg";
@@ -63,10 +63,11 @@ const Sobre = () => {
   ].filter((s) => isVisible(s.link));
   return (
     <div className="pt-16 min-h-screen bg-background">
-      <Helmet>
-        <title>Sobre Mim | Quinzinho Oliveira</title>
-        <meta name="description" content="Conheça a história do Quinzinho Oliveira. De DJ e produtor musical a empreendedor, autor e criador de conteúdo." />
-      </Helmet>
+      <SEO
+        title="Sobre Mim"
+        description="Conheça a história do Quinzinho Oliveira. De DJ e produtor musical a empreendedor, autor do livro A Casa dos 20, consultor financeiro e criador de conteúdo."
+        type="profile"
+      />
 
       {/* Hero */}
       <section className="relative py-24 sm:py-32 overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>

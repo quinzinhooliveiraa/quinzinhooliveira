@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import {
   QrCode, Trophy, Camera, Banknote, MapPin, Eye, Wifi, Users, Smartphone,
   ChevronDown, ArrowRight, Shield, Zap, BarChart3, Dumbbell, Timer, Target
@@ -83,10 +83,10 @@ const VytalLP = () => {
 
   return (
     <>
-      <Helmet>
-        <title>VYTAL — Desafios Fitness com Premiação Real via Pix</title>
-        <meta name="description" content="Entre em desafios fitness, faça check-ins com câmera e GPS, e ganhe prêmios reais via Pix. Só quem cumpre ganha." />
-      </Helmet>
+      <SEO
+        title="VYTAL — Desafios Fitness com Premiação Real via Pix"
+        description="Entre em desafios fitness, faça check-ins com câmera e GPS, e ganhe prêmios reais via Pix. Só quem cumpre ganha."
+      />
 
       <div className="min-h-screen" style={{ backgroundColor: "#0a0a0a", color: "#fff" }}>
         {/* Navbar */}

@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Check, Star, ArrowRight, ShoppingCart, Smartphone, ExternalLink, Instagram } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
+import SEO from "@/components/SEO";
 import bookImg from "@/assets/book-cover-new.png";
 import bookPhysical from "@/assets/book-physical.png";
 import bookDigital from "@/assets/book-digital.png";
@@ -85,6 +86,26 @@ const BuyButton = ({ className = "" }: { className?: string }) => (
 
 const Livro = () => (
   <div className="pt-16">
+    <SEO
+      title="A Casa dos 20 — Livro de Quinzinho Oliveira"
+      description="O livro que já ajudou mais de 5.000 jovens a encontrar clareza nos seus 20 anos. 83 reflexões sobre propósito, identidade e os desafios da vida adulta."
+      type="book"
+      jsonLd={{
+        "@context": "https://schema.org",
+        "@type": "Book",
+        name: "A Casa dos 20",
+        author: { "@type": "Person", name: "Quinzinho Oliveira" },
+        description: "83 reflexões sobre propósito, identidade e os desafios reais dos seus 20 anos.",
+        inLanguage: "pt-BR",
+        bookFormat: "https://schema.org/Paperback",
+        numberOfPages: 176,
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: "4.6",
+          reviewCount: 231,
+        },
+      }}
+    />
     {/* Hero */}
     <section className="py-16 sm:py-20 md:py-28">
       <div className="section-container grid md:grid-cols-2 gap-8 sm:gap-12 items-center">

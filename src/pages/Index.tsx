@@ -24,6 +24,8 @@ import thumbConteudo from "@/assets/thumb-conteudo.jpg";
 import thumbTiktokPessoal from "@/assets/thumb-tiktok-pessoal.jpeg";
 import thumbLinkedin from "@/assets/thumb-linkedin.jpeg";
 import { useHiddenPages } from "@/hooks/use-page-visibility";
+import { useAdminStatus } from "@/hooks/use-admin-status";
+import SEO from "@/components/SEO";
 
 type ProjectItem = {
   label: string;
@@ -220,6 +222,11 @@ const Index = () => {
 
   return (
     <div className="pt-16">
+      <SEO
+        title="Quinzinho Oliveira — Empreendedor, autor e criador de conteúdo"
+        description="Site oficial do Quinzinho Oliveira. Autor do livro A Casa dos 20, consultor financeiro, criador de conteúdo e fundador da Olivar Global e do OLSPROJECT."
+        canonicalPath="/"
+      />
       {/* Hero */}
       <section className="relative min-h-[80vh] sm:min-h-[90vh] flex items-center overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>
         <div className="absolute inset-0">

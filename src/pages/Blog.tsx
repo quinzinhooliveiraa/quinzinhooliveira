@@ -5,7 +5,7 @@ import { api } from "@/lib/api";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import NewsletterSection from "@/components/NewsletterSection";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import { useAdminStatus } from "@/hooks/use-admin-status";
 
 interface Post {
@@ -54,11 +54,10 @@ const Blog = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Blog - Quinzinho Oliveira</title>
-        <meta name="description" content="Artigos, reflexões e estratégias sobre negócios, finanças e vida por Quinzinho Oliveira." />
-        <link rel="canonical" href={`${window.location.origin}/blog`} />
-      </Helmet>
+      <SEO
+        title="Blog"
+        description="Artigos, reflexões e estratégias sobre negócios, finanças, empreendedorismo e vida por Quinzinho Oliveira."
+      />
 
       <div className="pt-16">
         <section className="py-16">

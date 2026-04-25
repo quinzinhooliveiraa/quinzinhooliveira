@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Instagram, Youtube, Linkedin, Mail } from "lucide-react";
 import { useHiddenPages } from "@/hooks/use-page-visibility";
+import { useAdminStatus } from "@/hooks/use-admin-status";
 
 const socialLinks = [
   { icon: Instagram, href: "https://www.instagram.com/quinzinhooliveiraa_/", label: "Instagram" },
@@ -11,7 +12,8 @@ const socialLinks = [
 
 const Footer = () => {
   const { hidden } = useHiddenPages();
-  const isVisible = (path: string) => !hidden.includes(path);
+  const { isAdmin } = useAdminStatus();
+  const isVisible = (path: string) => isAdmin || !hidden.includes(path);
 
   const projectLinks = [
     { label: "Consultoria Financeira", path: "/consultoria" },

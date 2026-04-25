@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import {
   BookOpen, Brain, Smartphone, Heart, Compass, Users, Shield, Sparkles,
   ChevronDown, ArrowRight, Sun, Moon, Pen, Bell, BarChart3, Clock
@@ -54,10 +54,10 @@ const CasaDos20LP = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Casa dos 20 — Um refúgio para quem está nos 20</title>
-        <meta name="description" content="App de crescimento pessoal com jornadas de 30 dias, diário privado e perguntas reflexivas. Para jovens dos 17 aos 30 anos." />
-      </Helmet>
+      <SEO
+        title="Casa dos 20 — Um refúgio para quem está nos 20"
+        description="App de crescimento pessoal com jornadas de 30 dias, diário privado e perguntas reflexivas. Para jovens dos 17 aos 30 anos."
+      />
 
       <div className="min-h-screen" style={{ backgroundColor: "#faf8f5", color: "#1a1a1a" }}>
         {/* Navbar */}

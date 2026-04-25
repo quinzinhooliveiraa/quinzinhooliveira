@@ -3,6 +3,7 @@ import { Mail, Instagram, Youtube, Linkedin } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
+import SEO from "@/components/SEO";
 
 const FadeUp = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => {
   const ref = useRef(null);
@@ -53,6 +54,10 @@ const Contato = () => {
 
   return (
     <div className="pt-16">
+      <SEO
+        title="Contato"
+        description="Entre em contato com Quinzinho Oliveira. Envie sua mensagem para parcerias, projetos, consultoria ou qualquer outra dúvida."
+      />
       <section className="py-16 sm:py-20">
         <div className="section-container max-w-2xl">
           <FadeUp>

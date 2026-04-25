@@ -770,4 +770,72 @@ export async function initServer() {
     .onConflictDoNothing();
 }
 
+const SITE_URL = "https://quinzinhooliveira.com.br";
+
+const STATIC_PAGES: Array<{ path: string; priority: number; changefreq: string }> = [
+  { path: "/", priority: 1.0, changefreq: "weekly" },
+  { path: "/sobre", priority: 0.9, changefreq: "monthly" },
+  { path: "/livro", priority: 0.95, changefreq: "monthly" },
+  { path: "/consultoria", priority: 0.9, changefreq: "monthly" },
+  { path: "/curso", priority: 0.7, changefreq: "monthly" },
+  { path: "/olivar-global", priority: 0.8, changefreq: "monthly" },
+  { path: "/olsproject", priority: 0.8, changefreq: "monthly" },
+  { path: "/vytal", priority: 0.7, changefreq: "monthly" },
+  { path: "/casados20", priority: 0.85, changefreq: "monthly" },
+  { path: "/projetos", priority: 0.7, changefreq: "monthly" },
+  { path: "/criar-app", priority: 0.7, changefreq: "monthly" },
+  { path: "/servicos", priority: 0.8, changefreq: "monthly" },
+  { path: "/conteudo", priority: 0.7, changefreq: "monthly" },
+  { path: "/contato", priority: 0.7, changefreq: "monthly" },
+  { path: "/blog", priority: 0.9, changefreq: "weekly" },
+];
+
+function escapeXml(s: string) {
+  return s.replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&apos;", '"': "&quot;" }[c]!));
+}
+
+export async function buildSitemapXml(): Promise<string> {
+  // Hidden pages
+  let hiddenList: string[] = [];
+  try {
+    const row = await db.select().from(siteSettings).where(eq(siteSettings.key, "hidden_pages")).limit(1);
+    if (row[0]?.value) {
+      const parsed = JSON.parse(row[0].value);
+      if (Array.isArray(parsed)) hiddenList = parsed.filter((x) => typeof x === "string");
+    }
+  } catch {
+    /* ignore */
+  }
+
+  // Published blog posts
+  let posts: Array<{ slug: string; updatedAt: Date | null; publishedAt: Date | null }> = [];
+  try {
+    posts = await db
+      .select({ slug: blogPosts.slug, updatedAt: blogPosts.updatedAt, publishedAt: blogPosts.publishedAt })
+      .from(blogPosts)
+      .where(eq(blogPosts.published, true));
+  } catch {
+    /* ignore */
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  const urls: string[] = [];
+
+  for (const p of STATIC_PAGES) {
+    if (hiddenList.includes(p.path)) continue;
+    urls.push(
+      `  <url>\n    <loc>${escapeXml(SITE_URL + p.path)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority.toFixed(1)}</priority>\n  </url>`
+    );
+  }
+
+  for (const post of posts) {
+    const lastmod = (post.updatedAt || post.publishedAt || new Date()).toISOString().slice(0, 10);
+    urls.push(
+      `  <url>\n    <loc>${escapeXml(`${SITE_URL}/blog/${post.slug}`)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>`
+    );
+  }
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
+}
+
 export { UPLOADS_DIR, pool };

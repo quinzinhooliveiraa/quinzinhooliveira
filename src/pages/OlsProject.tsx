@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
-import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import {
   ArrowRight, Users, Target, Compass, Lightbulb, Heart, Brain,
   Briefcase, Dumbbell, MessageCircle, Shield, Sparkles, Star, CheckCircle2,
@@ -54,10 +54,10 @@ const pilares = [
 const OlsProject = () => {
   return (
     <div className="pt-16 min-h-screen bg-background">
-      <Helmet>
-        <title>OLSPROJECT | Comunidade de Desenvolvimento Pessoal e Profissional</title>
-        <meta name="description" content="OLSPROJECT é uma comunidade focada em conectar pessoas que querem crescer. Mentores, desafios e uma rede de apoio para desenvolvimento pessoal e profissional." />
-      </Helmet>
+      <SEO
+        title="OLSPROJECT — Comunidade de Desenvolvimento Pessoal e Profissional"
+        description="OLSPROJECT é uma comunidade focada em conectar pessoas que querem crescer. Mentores, desafios e uma rede de apoio para desenvolvimento pessoal e profissional."
+      />
 
       {/* Hero */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 3%)', color: 'hsl(0, 0%, 95%)' }}>
