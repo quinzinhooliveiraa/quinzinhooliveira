@@ -10,6 +10,8 @@ import sobreLivro from "@/assets/sobre-livro.jpeg";
 import sobreGaleria from "@/assets/sobre-galeria.jpeg";
 import sobreGaleria2 from "@/assets/sobre-galeria2.jpeg";
 import sobreCrianca from "@/assets/sobre-crianca.jpeg";
+import { useHiddenPages } from "@/hooks/use-page-visibility";
+import { useAdminStatus } from "@/hooks/use-admin-status";
 
 const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
   <motion.div
@@ -50,6 +52,15 @@ const timeline = [
 ];
 
 const Sobre = () => {
+  const { hidden } = useHiddenPages();
+  const { isAdmin } = useAdminStatus();
+  const isVisible = (link: string) => isAdmin || !hidden.includes(link);
+  const services = [
+    { title: "Consultoria Financeira", desc: "Ajudo pessoas a organizarem suas finanças e planejarem o futuro.", link: "/consultoria" },
+    { title: "Criação de Conteúdo", desc: "YouTube, Instagram, TikTok e Blog. Cada plataforma com um propósito.", link: "/conteudo" },
+    { title: "Olivar Global", desc: "Agência de comércio exterior conectando Brasil e mercado internacional.", link: "/olivar-global" },
+    { title: "OLSPROJECT", desc: "Comunidade focada em autodesenvolvimento pessoal e profissional.", link: "/olsproject" },
+  ].filter((s) => isVisible(s.link));
   return (
     <div className="pt-16 min-h-screen bg-background">
       <Helmet>
@@ -153,12 +164,7 @@ const Sobre = () => {
           <div className="section-container max-w-4xl">
             <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-10 text-center">O que faço hoje</h2>
             <div className="grid sm:grid-cols-2 gap-6">
-              {[
-                { title: "Consultoria Financeira", desc: "Ajudo pessoas a organizarem suas finanças e planejarem o futuro.", link: "/consultoria" },
-                { title: "Criação de Conteúdo", desc: "YouTube, Instagram, TikTok e Blog. Cada plataforma com um propósito.", link: "/conteudo" },
-                { title: "Olivar Global", desc: "Agência de comércio exterior conectando Brasil e mercado internacional.", link: "/olivar-global" },
-                { title: "OLSPROJECT", desc: "Comunidade focada em autodesenvolvimento pessoal e profissional.", link: "/olsproject" },
-              ].map((item) => (
+              {services.map((item) => (
                 <div key={item.title} className="p-6 bg-card border border-border rounded-xl hover:border-primary/30 transition-colors">
                   <h3 className="font-heading font-bold mb-2">{item.title}</h3>
                   <p className="text-muted-foreground text-sm mb-3">{item.desc}</p>

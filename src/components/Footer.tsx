@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { Instagram, Youtube, Linkedin, Mail } from "lucide-react";
+import { useHiddenPages } from "@/hooks/use-page-visibility";
+import { useAdminStatus } from "@/hooks/use-admin-status";
 
 const socialLinks = [
   { icon: Instagram, href: "https://www.instagram.com/quinzinhooliveiraa_/", label: "Instagram" },
@@ -8,7 +10,26 @@ const socialLinks = [
   { icon: Mail, href: "/contato", label: "Email" },
 ];
 
-const Footer = () => (
+const Footer = () => {
+  const { hidden } = useHiddenPages();
+  const { isAdmin } = useAdminStatus();
+  const isVisible = (path: string) => isAdmin || !hidden.includes(path);
+
+  const projectLinks = [
+    { label: "Consultoria Financeira", path: "/consultoria" },
+    { label: "Livro: A Casa dos 20", path: "/livro" },
+    { label: "Mentoria Redes Sociais", path: "/curso" },
+    { label: "Agência Global", path: "/olivar-global" },
+  ].filter((i) => isVisible(i.path));
+
+  const utilLinks = [
+    { label: "Sobre Mim", path: "/sobre" },
+    { label: "Blog", path: "/blog" },
+    { label: "Conteúdo", path: "/conteudo" },
+    { label: "Contato", path: "/contato" },
+  ].filter((i) => isVisible(i.path));
+
+  return (
   <footer className="bg-background border-t border-border pt-16 pb-8">
     <div className="section-container">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
@@ -36,37 +57,31 @@ const Footer = () => (
           </div>
         </div>
 
-        <div>
-          <h4 className="font-heading font-bold uppercase tracking-wider mb-4">Projetos</h4>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            {[
-              { label: "Consultoria Financeira", path: "/consultoria" },
-              { label: "Livro: A Casa dos 20", path: "/livro" },
-              { label: "Mentoria Redes Sociais", path: "/curso" },
-              { label: "Agência Global", path: "/olivar-global" },
-            ].map((item) => (
-              <li key={item.label}>
-                <Link to={item.path} className="transition-colors hover:text-foreground">{item.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {projectLinks.length > 0 && (
+          <div>
+            <h4 className="font-heading font-bold uppercase tracking-wider mb-4">Projetos</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {projectLinks.map((item) => (
+                <li key={item.label}>
+                  <Link to={item.path} className="transition-colors hover:text-foreground">{item.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-        <div>
-          <h4 className="font-heading font-bold uppercase tracking-wider mb-4">Links Úteis</h4>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            {[
-              { label: "Sobre Mim", path: "/sobre" },
-              { label: "Blog", path: "/blog" },
-              { label: "Conteúdo", path: "/conteudo" },
-              { label: "Contato", path: "/contato" },
-            ].map((item) => (
-              <li key={item.label}>
-                <Link to={item.path} className="transition-colors hover:text-foreground">{item.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {utilLinks.length > 0 && (
+          <div>
+            <h4 className="font-heading font-bold uppercase tracking-wider mb-4">Links Úteis</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {utilLinks.map((item) => (
+                <li key={item.label}>
+                  <Link to={item.path} className="transition-colors hover:text-foreground">{item.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-muted-foreground">
@@ -77,6 +92,7 @@ const Footer = () => (
       </div>
     </div>
   </footer>
-);
+  );
+};
 
 export default Footer;

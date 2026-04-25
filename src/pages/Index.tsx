@@ -23,6 +23,8 @@ import thumbCriarApp from "@/assets/thumb-criar-app.jpg";
 import thumbConteudo from "@/assets/thumb-conteudo.jpg";
 import thumbTiktokPessoal from "@/assets/thumb-tiktok-pessoal.jpeg";
 import thumbLinkedin from "@/assets/thumb-linkedin.jpeg";
+import { useHiddenPages } from "@/hooks/use-page-visibility";
+import { useAdminStatus } from "@/hooks/use-admin-status";
 
 type ProjectItem = {
   label: string;
@@ -211,6 +213,12 @@ function HomepageVideo() {
 }
 
 const Index = () => {
+  const { hidden } = useHiddenPages();
+  const { isAdmin } = useAdminStatus();
+  const isVisible = (link?: string) => !link || !link.startsWith("/") || isAdmin || !hidden.includes(link);
+  const visibleProjetos = projetos.filter((p) => isVisible(p.link));
+  const visibleConteudo = conteudo.filter((p) => isVisible(p.link));
+
   return (
     <div className="pt-16">
       {/* Hero */}
@@ -280,8 +288,8 @@ const Index = () => {
 
       {/* Netflix-style sections */}
       <section className="py-12 sm:py-16 max-w-6xl mx-auto">
-        <NetflixRow title="Projetos" items={projetos} />
-        <NetflixRow title="Conteúdo" items={conteudo} />
+        <NetflixRow title="Projetos" items={visibleProjetos} />
+        <NetflixRow title="Conteúdo" items={visibleConteudo} />
       </section>
 
       {/* YouTube Featured Video */}
