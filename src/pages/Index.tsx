@@ -24,7 +24,6 @@ import thumbConteudo from "@/assets/thumb-conteudo.jpg";
 import thumbTiktokPessoal from "@/assets/thumb-tiktok-pessoal.jpeg";
 import thumbLinkedin from "@/assets/thumb-linkedin.jpeg";
 import { useHiddenPages } from "@/hooks/use-page-visibility";
-import { useAdminStatus } from "@/hooks/use-admin-status";
 
 type ProjectItem = {
   label: string;
