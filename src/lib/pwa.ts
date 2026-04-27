@@ -66,8 +66,19 @@ export function onInstallAvailabilityChange(cb: (canInstall: boolean) => void): 
   return () => installListeners.delete(cb);
 }
 
-export const VAPID_PUBLIC_KEY =
-  "BK0OwdFsJyyHsvwNbkYQ6QDUJ24A2weyC0woM6efUacpgam6ObxP_EhNad0RTfEjOVHckDGipC1VSYVLmKYRm8c";
+let cachedVapidKey: string | null = null;
+async function fetchVapidPublicKey(): Promise<string> {
+  if (cachedVapidKey) return cachedVapidKey;
+  try {
+    const res = await fetch("/api/push/vapid-public-key", { credentials: "include" });
+    if (!res.ok) return "";
+    const data = await res.json();
+    cachedVapidKey = data?.key || "";
+    return cachedVapidKey || "";
+  } catch {
+    return "";
+  }
+}
 
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -96,10 +107,15 @@ export async function getPushSubscription(): Promise<{
   const reg = await navigator.serviceWorker.ready;
   let sub = await reg.pushManager.getSubscription();
   if (!sub) {
+    const vapidKey = await fetchVapidPublicKey();
+    if (!vapidKey) {
+      console.warn("[PWA] no VAPID key available from server");
+      return null;
+    }
     try {
       sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+        applicationServerKey: urlBase64ToUint8Array(vapidKey),
       });
     } catch (err) {
       console.warn("[PWA] push subscribe failed:", err);

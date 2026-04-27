@@ -30,7 +30,7 @@ import {
   signSession,
   verifyPassword,
 } from "./auth";
-import { addSseClient, notifyContact, notifyVisit } from "./events";
+import { addSseClient, notifyContact, notifyVisit, initWebPush, getVapidPublicKey } from "./events";
 
 const UPLOADS_DIR = path.resolve(process.cwd(), "uploads");
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
@@ -437,6 +437,10 @@ export function makeRouter(): Router {
     res.json({ count: (r.rows[0] as any)?.c || 0 });
   });
 
+  r.get("/push/vapid-public-key", (_req, res) => {
+    res.json({ key: getVapidPublicKey() });
+  });
+
   r.post("/post-likes", async (req, res) => {
     const { postId, sessionId } = req.body || {};
     if (!postId || !sessionId) return res.status(400).json({ error: "postId and sessionId required" });
@@ -792,6 +796,7 @@ Conteúdo: ${(content || "").substring(0, 2000)}`;
 
 export async function initServer() {
   await bootstrapMasterAdmin();
+  await initWebPush();
   // Seed default site settings
   await db
     .insert(siteSettings)

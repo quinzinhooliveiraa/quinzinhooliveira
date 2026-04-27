@@ -1,7 +1,7 @@
 import { Response } from "express";
 import webpush from "web-push";
 import { db } from "./db";
-import { pushSubscriptions } from "./schema";
+import { pushSubscriptions, siteSettings } from "./schema";
 import { eq } from "drizzle-orm";
 
 type SseClient = { id: number; res: Response };
@@ -36,13 +36,45 @@ export function broadcast(event: string, data: unknown) {
   }
 }
 
-const VAPID_PUBLIC = process.env.VAPID_PUBLIC_KEY || "";
-const VAPID_PRIVATE = process.env.VAPID_PRIVATE_KEY || "";
-const VAPID_SUBJECT = process.env.VAPID_SUBJECT || "mailto:admin@quinzinho.com";
+const VAPID_SUBJECT = process.env.VAPID_SUBJECT || "mailto:quinzinhooliveiraa@gmail.com";
 let pushReady = false;
-if (VAPID_PUBLIC && VAPID_PRIVATE) {
-  webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC, VAPID_PRIVATE);
-  pushReady = true;
+let vapidPublicKey = "";
+
+export function getVapidPublicKey(): string {
+  return vapidPublicKey;
+}
+
+export async function initWebPush(): Promise<void> {
+  // Prefer env vars (production secrets); fall back to bootstrapping into site_settings
+  let pub = process.env.VAPID_PUBLIC_KEY || "";
+  let priv = process.env.VAPID_PRIVATE_KEY || "";
+
+  if (!pub || !priv) {
+    const rows = await db.select().from(siteSettings);
+    const map = Object.fromEntries(rows.map((r) => [r.key, r.value]));
+    pub = map.vapid_public_key || "";
+    priv = map.vapid_private_key || "";
+    if (!pub || !priv) {
+      const generated = webpush.generateVAPIDKeys();
+      pub = generated.publicKey;
+      priv = generated.privateKey;
+      await db
+        .insert(siteSettings)
+        .values({ key: "vapid_public_key", value: pub })
+        .onConflictDoUpdate({ target: siteSettings.key, set: { value: pub, updatedAt: new Date() } });
+      await db
+        .insert(siteSettings)
+        .values({ key: "vapid_private_key", value: priv })
+        .onConflictDoUpdate({ target: siteSettings.key, set: { value: priv, updatedAt: new Date() } });
+      console.log("[push] generated VAPID keys and stored in site_settings");
+    }
+  }
+
+  if (pub && priv) {
+    webpush.setVapidDetails(VAPID_SUBJECT, pub, priv);
+    vapidPublicKey = pub;
+    pushReady = true;
+  }
 }
 
 export async function sendPushToAdmins(title: string, body: string, url = "/admin", tag?: string) {

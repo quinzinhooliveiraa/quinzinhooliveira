@@ -291,10 +291,10 @@ const PostEditor = () => {
 
   return (
     <div className="pt-16 min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" onClick={() => navigate("/admin")} className="gap-2">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8 pb-[calc(env(safe-area-inset-bottom)+5rem)] sm:pb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
+          <div className="flex items-center gap-3 flex-wrap">
+            <Button variant="ghost" size="sm" onClick={() => navigate("/admin")} className="gap-2">
               <ArrowLeft size={18} /> Voltar
             </Button>
             <span className="text-xs text-muted-foreground inline-flex items-center gap-1.5">
@@ -308,11 +308,12 @@ const PostEditor = () => {
                   Salvo às {autoSavedAt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                 </>
               ) : (
-                <span className="opacity-70">Salvamento automático ativo</span>
+                <span className="opacity-70">Auto-salvamento ativo</span>
               )}
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          {/* Desktop action bar */}
+          <div className="hidden sm:flex items-center gap-2">
             {id && (
               <Button variant="ghost" onClick={handleDelete} className="text-destructive gap-2">
                 <Trash2 size={16} /> Excluir
@@ -339,14 +340,29 @@ const PostEditor = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-[1fr_320px] gap-8">
-          <div className="space-y-6">
+        {/* Mobile sticky bottom action bar */}
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur border-t border-border px-3 py-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => handleSave("draft")} disabled={saving} className="gap-1 flex-1">
+            <Save size={14} /> Rascunho
+          </Button>
+          <Button size="sm" onClick={() => handleSave("published")} disabled={saving} className="gap-1 flex-1">
+            <Eye size={14} /> Publicar
+          </Button>
+          {id && (
+            <Button variant="ghost" size="sm" onClick={handleDelete} className="text-destructive p-2">
+              <Trash2 size={16} />
+            </Button>
+          )}
+        </div>
+
+        <div className="grid lg:grid-cols-[1fr_320px] gap-6 lg:gap-8">
+          <div className="space-y-6 min-w-0">
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Título do post"
-              className="w-full text-3xl font-heading font-bold bg-transparent border-none outline-none placeholder:text-muted-foreground/40"
+              className="w-full text-2xl sm:text-3xl font-heading font-bold bg-transparent border-none outline-none placeholder:text-muted-foreground/40"
             />
             <RichTextEditor content={content} onChange={setContent} />
           </div>

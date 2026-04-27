@@ -109,24 +109,24 @@ const AdminDashboard = () => {
   if (!isAdmin) return null;
 
   return (
-    <div className="pt-16 min-h-screen bg-background">
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+    <div className="pt-16 min-h-screen bg-background pb-[env(safe-area-inset-bottom)]">
+      <div className="max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
           <div>
-            <h1 className="font-heading text-3xl font-bold">Painel Admin</h1>
-            <p className="text-sm text-muted-foreground mt-1">Gerencie posts, mensagens e admins</p>
+            <h1 className="font-heading text-2xl sm:text-3xl font-bold">Painel Admin</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">Gerencie posts, mensagens e admins</p>
           </div>
-          <div className="flex items-center gap-3">
-            <Link to="/admin/live">
-              <Button variant="outline" className="gap-2">
-                <Activity size={16} className="text-green-500" /> Live Wall
+          <div className="flex items-center gap-2 flex-wrap">
+            <Link to="/admin/live" className="flex-1 sm:flex-none">
+              <Button variant="outline" size="sm" className="gap-2 w-full sm:w-auto">
+                <Activity size={16} className="text-green-500" /> <span className="sm:inline">Live</span>
               </Button>
             </Link>
-            <Link to="/">
-              <Button variant="outline" className="gap-2">Voltar ao Site</Button>
+            <Link to="/" className="flex-1 sm:flex-none">
+              <Button variant="outline" size="sm" className="gap-2 w-full sm:w-auto"><span className="hidden sm:inline">Voltar ao </span>Site</Button>
             </Link>
-            <Button variant="ghost" onClick={handleLogout} className="gap-2 text-muted-foreground">
-              <LogOut size={16} /> Sair
+            <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2 text-muted-foreground">
+              <LogOut size={16} /> <span className="hidden sm:inline">Sair</span>
             </Button>
           </div>
         </div>
@@ -134,33 +134,33 @@ const AdminDashboard = () => {
         <PwaNotificationsCard />
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-6">
-            <TabsTrigger value="posts" className="gap-2">
-              <FileText size={14} /> Posts
+          <TabsList className="mb-6 w-full overflow-x-auto flex justify-start sm:justify-center no-scrollbar">
+            <TabsTrigger value="posts" className="gap-1.5 sm:gap-2 flex-shrink-0">
+              <FileText size={14} /> <span className="hidden xs:inline sm:inline">Posts</span>
             </TabsTrigger>
-            <TabsTrigger value="messages" className="gap-2">
-              <Mail size={14} /> Mensagens
+            <TabsTrigger value="messages" className="gap-1.5 sm:gap-2 flex-shrink-0">
+              <Mail size={14} /> <span className="hidden xs:inline sm:inline">Mensagens</span>
               {unreadCount > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full">{unreadCount}</span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="gap-2">
-              <BarChart3 size={14} /> Analytics
+            <TabsTrigger value="analytics" className="gap-1.5 sm:gap-2 flex-shrink-0">
+              <BarChart3 size={14} /> <span className="hidden xs:inline sm:inline">Analytics</span>
             </TabsTrigger>
-            <TabsTrigger value="pixels" className="gap-2">
-              <Target size={16} /> Pixels
+            <TabsTrigger value="pixels" className="gap-1.5 sm:gap-2 flex-shrink-0">
+              <Target size={16} /> <span className="hidden xs:inline sm:inline">Pixels</span>
             </TabsTrigger>
-            <TabsTrigger value="pages" className="gap-2">
-              <Layout size={14} /> Páginas
+            <TabsTrigger value="pages" className="gap-1.5 sm:gap-2 flex-shrink-0">
+              <Layout size={14} /> <span className="hidden xs:inline sm:inline">Páginas</span>
             </TabsTrigger>
-            <TabsTrigger value="admin" className="gap-2">
-              <UserPlus size={14} /> Admins
+            <TabsTrigger value="admin" className="gap-1.5 sm:gap-2 flex-shrink-0">
+              <UserPlus size={14} /> <span className="hidden xs:inline sm:inline">Admins</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="posts">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+              <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-1 px-1">
                 {(["all", "published", "draft"] as const).map((f) => (
                   <button
                     key={f}
@@ -176,7 +176,7 @@ const AdminDashboard = () => {
                   </button>
                 ))}
               </div>
-              <Button onClick={() => navigate("/admin/post/new")} className="gap-2">
+              <Button onClick={() => navigate("/admin/post/new")} className="gap-2 w-full sm:w-auto">
                 <Plus size={16} /> Novo Post
               </Button>
             </div>
@@ -193,9 +193,9 @@ const AdminDashboard = () => {
             ) : (
               <div className="space-y-2">
                 {filteredPosts.map((post) => (
-                  <div key={post.id} className="flex items-center justify-between p-4 bg-card border border-border rounded-xl hover:border-primary/30 transition-colors">
+                  <div key={post.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 bg-card border border-border rounded-xl hover:border-primary/30 transition-colors">
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                           post.status === "published" ? "bg-green-500/10 text-green-500" : "bg-yellow-500/10 text-yellow-500"
                         }`}>
@@ -205,19 +205,19 @@ const AdminDashboard = () => {
                           <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">{post.categories.name}</span>
                         )}
                       </div>
-                      <h3 className="font-heading font-bold truncate">{post.title}</h3>
+                      <h3 className="font-heading font-bold truncate text-sm sm:text-base">{post.title}</h3>
                       <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
                         <Calendar size={12} />
                         {format(new Date(post.createdAt), "d 'de' MMM, yyyy", { locale: ptBR })}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2 ml-4">
+                    <div className="flex items-center gap-2 sm:ml-4">
                       {post.status === "published" && (
-                        <Link to={`/blog/${post.slug}`}>
-                          <Button variant="ghost" size="sm" className="gap-1"><Eye size={14} /> Ver</Button>
+                        <Link to={`/blog/${post.slug}`} className="flex-1 sm:flex-none">
+                          <Button variant="ghost" size="sm" className="gap-1 w-full"><Eye size={14} /> Ver</Button>
                         </Link>
                       )}
-                      <Button variant="outline" size="sm" onClick={() => navigate(`/admin/post/${post.id}`)} className="gap-1">
+                      <Button variant="outline" size="sm" onClick={() => navigate(`/admin/post/${post.id}`)} className="gap-1 flex-1 sm:flex-none">
                         <Pencil size={14} /> Editar
                       </Button>
                     </div>
