@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -41,6 +41,10 @@ const PostEditor = () => {
   const [focusKeyword, setFocusKeyword] = useState("");
   const [status, setStatus] = useState<"draft" | "published">("draft");
   const [reindexing, setReindexing] = useState(false);
+  const [autoSavedAt, setAutoSavedAt] = useState<Date | null>(null);
+  const [autoSaving, setAutoSaving] = useState(false);
+  const lastSavedSnapshot = useRef<string>("");
+  const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
@@ -177,6 +181,20 @@ const PostEditor = () => {
     setGeneratingSeo(false);
   };
 
+  const buildBody = (statusOverride?: "draft" | "published") => ({
+    title: title.trim(),
+    slug: slug.trim(),
+    excerpt: excerpt.trim() || null,
+    content,
+    coverImageUrl: coverUrl || null,
+    categoryId: categoryId || null,
+    metaTitle: metaTitle.trim() || title.trim(),
+    metaDescription: metaDescription.trim() || excerpt.trim() || null,
+    focusKeyword: focusKeyword.trim() || null,
+    status: statusOverride || status,
+    tagIds: selectedTags,
+  });
+
   const handleSave = async (publishStatus?: "draft" | "published") => {
     if (!title.trim() || !slug.trim()) {
       toast({ title: "Título e slug são obrigatórios", variant: "destructive" });
@@ -184,19 +202,7 @@ const PostEditor = () => {
     }
     setSaving(true);
     const finalStatus = publishStatus || status;
-    const body = {
-      title: title.trim(),
-      slug: slug.trim(),
-      excerpt: excerpt.trim() || null,
-      content,
-      coverImageUrl: coverUrl || null,
-      categoryId: categoryId || null,
-      metaTitle: metaTitle.trim() || title.trim(),
-      metaDescription: metaDescription.trim() || excerpt.trim() || null,
-      focusKeyword: focusKeyword.trim() || null,
-      status: finalStatus,
-      tagIds: selectedTags,
-    };
+    const body = buildBody(finalStatus);
 
     try {
       let postId = id;
@@ -208,12 +214,65 @@ const PostEditor = () => {
       }
       toast({ title: finalStatus === "published" ? "Post publicado! 🎉" : "Rascunho salvo!" });
       setStatus(finalStatus);
+      lastSavedSnapshot.current = JSON.stringify(body);
+      setAutoSavedAt(new Date());
       if (!id && postId) navigate(`/admin/post/${postId}`);
     } catch (err: any) {
       toast({ title: "Erro ao salvar", description: err.message, variant: "destructive" });
     }
     setSaving(false);
   };
+
+  // Autosave: every 30s of activity, silently save (keeps current status — never auto-publishes)
+  useEffect(() => {
+    if (adminLoading || !isAdmin) return;
+    if (!title.trim() || !slug.trim()) return;
+    const body = buildBody(status);
+    const snapshot = JSON.stringify(body);
+    if (snapshot === lastSavedSnapshot.current) return;
+
+    if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
+    autoSaveTimer.current = setTimeout(async () => {
+      // Re-check the snapshot still matches (debounce protection)
+      if (saving || autoSaving) return;
+      setAutoSaving(true);
+      try {
+        let postId = id;
+        if (id) {
+          await api.patch(`/admin/posts/${id}`, body);
+        } else {
+          const created: any = await api.post("/admin/posts", body);
+          postId = created.id;
+        }
+        lastSavedSnapshot.current = snapshot;
+        setAutoSavedAt(new Date());
+        if (!id && postId) navigate(`/admin/post/${postId}`, { replace: true });
+      } catch {
+        /* silent — user can still save manually */
+      }
+      setAutoSaving(false);
+    }, 30_000);
+
+    return () => {
+      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, slug, excerpt, content, coverUrl, categoryId, metaTitle, metaDescription, focusKeyword, status, selectedTags, id, isAdmin, adminLoading]);
+
+  // Save on tab close / browser exit if there are unsaved changes
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (!title.trim() || !slug.trim()) return;
+      const snapshot = JSON.stringify(buildBody(status));
+      if (snapshot !== lastSavedSnapshot.current) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, slug, excerpt, content, coverUrl, categoryId, metaTitle, metaDescription, focusKeyword, status, selectedTags]);
 
   const handleDelete = async () => {
     if (!id) return;
@@ -234,9 +293,25 @@ const PostEditor = () => {
     <div className="pt-16 min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
-          <Button variant="ghost" onClick={() => navigate("/admin")} className="gap-2">
-            <ArrowLeft size={18} /> Voltar
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" onClick={() => navigate("/admin")} className="gap-2">
+              <ArrowLeft size={18} /> Voltar
+            </Button>
+            <span className="text-xs text-muted-foreground inline-flex items-center gap-1.5">
+              {autoSaving ? (
+                <>
+                  <Loader2 size={12} className="animate-spin" /> Salvando…
+                </>
+              ) : autoSavedAt ? (
+                <>
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  Salvo às {autoSavedAt.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+                </>
+              ) : (
+                <span className="opacity-70">Salvamento automático ativo</span>
+              )}
+            </span>
+          </div>
           <div className="flex items-center gap-2">
             {id && (
               <Button variant="ghost" onClick={handleDelete} className="text-destructive gap-2">
