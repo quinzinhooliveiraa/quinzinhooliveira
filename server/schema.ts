@@ -51,6 +51,7 @@ export const blogPosts = pgTable(
     status: text("status").notNull().default("draft"),
     metaTitle: text("meta_title"),
     metaDescription: text("meta_description"),
+    focusKeyword: text("focus_keyword"),
     publishedAt: timestamp("published_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),

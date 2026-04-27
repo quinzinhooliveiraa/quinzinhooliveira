@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import fs from "fs";
 import { createServer as createHttpServer } from "http";
-import { initServer, makeRouter, UPLOADS_DIR, buildSitemapXml } from "./routes";
+import { initServer, makeRouter, UPLOADS_DIR, buildSitemapXml, serveIndexNowKey } from "./routes";
 
 const PORT = parseInt(process.env.PORT || "5000", 10);
 const isDev = process.env.NODE_ENV !== "production";
@@ -18,6 +18,12 @@ async function start() {
 
   app.use("/api", makeRouter());
   app.use("/uploads", express.static(UPLOADS_DIR, { maxAge: "1d" }));
+
+  // IndexNow ownership verification: serve /<key>.txt at the root with the key as content
+  app.get(/^\/[a-f0-9]{32}\.txt$/, async (req, res) => {
+    const handled = await serveIndexNowKey(req.path, res);
+    if (!handled) res.status(404).type("text").send("Not found");
+  });
 
   app.get("/sitemap.xml", async (_req, res) => {
     try {

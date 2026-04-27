@@ -3,8 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Save, Eye, Trash2, Sparkles, Loader2 } from "lucide-react";
+import { ArrowLeft, Save, Eye, Trash2, Sparkles, Loader2, Send } from "lucide-react";
 import RichTextEditor from "@/components/admin/RichTextEditor";
+import SeoChecklist from "@/components/admin/SeoChecklist";
+import TitleSuggestions from "@/components/admin/TitleSuggestions";
 import { useAdmin } from "@/hooks/use-admin";
 
 interface Category {
@@ -36,7 +38,9 @@ const PostEditor = () => {
   const [categoryId, setCategoryId] = useState<string>("");
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
+  const [focusKeyword, setFocusKeyword] = useState("");
   const [status, setStatus] = useState<"draft" | "published">("draft");
+  const [reindexing, setReindexing] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
@@ -76,9 +80,26 @@ const PostEditor = () => {
       setCategoryId(post.category_id || post.categoryId || "");
       setMetaTitle(post.meta_title || post.metaTitle || "");
       setMetaDescription(post.meta_description || post.metaDescription || "");
+      setFocusKeyword(post.focus_keyword || post.focusKeyword || "");
       setStatus((post.status as "draft" | "published") || "draft");
       setSelectedTags(post.tag_ids || []);
     }
+  };
+
+  const reindex = async () => {
+    if (!slug) {
+      toast({ title: "Salve o post primeiro", variant: "destructive" });
+      return;
+    }
+    setReindexing(true);
+    try {
+      const url = `https://quinzinhooliveira.com.br/blog/${slug}`;
+      await api.post("/admin/seo/reindex", { urls: [url] });
+      toast({ title: "Indexação solicitada! 🚀", description: "Bing, Yandex e outros buscadores foram avisados." });
+    } catch (err: any) {
+      toast({ title: "Erro", description: err.message, variant: "destructive" });
+    }
+    setReindexing(false);
   };
 
   const addCategory = async () => {
@@ -172,6 +193,7 @@ const PostEditor = () => {
       categoryId: categoryId || null,
       metaTitle: metaTitle.trim() || title.trim(),
       metaDescription: metaDescription.trim() || excerpt.trim() || null,
+      focusKeyword: focusKeyword.trim() || null,
       status: finalStatus,
       tagIds: selectedTags,
     };
@@ -227,6 +249,18 @@ const PostEditor = () => {
             <Button onClick={() => handleSave("published")} disabled={saving} className="gap-2">
               <Eye size={16} /> Publicar
             </Button>
+            {id && status === "published" && (
+              <Button
+                variant="outline"
+                onClick={reindex}
+                disabled={reindexing}
+                className="gap-2"
+                title="Solicita re-indexação imediata aos buscadores via IndexNow"
+              >
+                {reindexing ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+                Re-indexar
+              </Button>
+            )}
           </div>
         </div>
 
@@ -243,6 +277,35 @@ const PostEditor = () => {
           </div>
 
           <div className="space-y-6">
+            <div className="p-4 bg-card border border-border rounded-lg space-y-2">
+              <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Palavra-chave foco</label>
+              <input
+                type="text"
+                value={focusKeyword}
+                onChange={(e) => setFocusKeyword(e.target.value)}
+                placeholder="ex: investir 1000 reais"
+                className="w-full px-3 py-2 bg-background border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <p className="text-[11px] text-muted-foreground">
+                Termo principal pelo qual você quer ranquear no Google. As checagens de SEO usam esse termo.
+              </p>
+            </div>
+
+            <TitleSuggestions baseTitle={title} focusKeyword={focusKeyword} onApply={(t) => { setTitle(t); if (!metaTitle || metaTitle === title) setMetaTitle(t); }} />
+
+            <SeoChecklist
+              title={title}
+              slug={slug}
+              excerpt={excerpt}
+              content={content}
+              metaTitle={metaTitle}
+              metaDescription={metaDescription}
+              focusKeyword={focusKeyword}
+              coverUrl={coverUrl}
+              category={categories.find((c) => c.id === categoryId)?.name || ""}
+              tagsCount={selectedTags.length}
+            />
+
             <div className="p-4 bg-card border border-border rounded-lg space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Slug (URL)</label>
               <input

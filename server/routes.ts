@@ -234,11 +234,15 @@ export function makeRouter(): Router {
         status: b.status || "draft",
         metaTitle: b.metaTitle ?? null,
         metaDescription: b.metaDescription ?? null,
+        focusKeyword: b.focusKeyword ?? null,
         publishedAt: b.status === "published" ? new Date() : null,
       })
       .returning();
     if (Array.isArray(b.tagIds) && b.tagIds.length) {
       await db.insert(postTags).values(b.tagIds.map((tagId: string) => ({ postId: created.id, tagId })));
+    }
+    if (created.status === "published") {
+      pingIndexNow([`${SITE_URL}/blog/${created.slug}`, `${SITE_URL}/blog`, `${SITE_URL}/sitemap.xml`]).catch(() => {});
     }
     res.json(created);
   });
@@ -256,6 +260,7 @@ export function makeRouter(): Router {
       "status",
       "metaTitle",
       "metaDescription",
+      "focusKeyword",
     ]) {
       if (k in b) updates[k] = b[k];
     }
@@ -269,6 +274,9 @@ export function makeRouter(): Router {
       if (b.tagIds.length) {
         await db.insert(postTags).values(b.tagIds.map((tagId: string) => ({ postId: req.params.id, tagId })));
       }
+    }
+    if (updated && updated.status === "published") {
+      pingIndexNow([`${SITE_URL}/blog/${updated.slug}`, `${SITE_URL}/blog`, `${SITE_URL}/sitemap.xml`]).catch(() => {});
     }
     res.json(updated);
   });
@@ -758,6 +766,27 @@ Conteúdo: ${(content || "").substring(0, 2000)}`;
 
   r.get("/health", (_req, res) => res.json({ ok: true }));
 
+  // ────── IndexNow key verification file (served at /api/indexnow-key/:key.txt) ──────
+  // The site also exposes /:key.txt at the root via server/index.ts so search engines can verify ownership.
+  r.get("/admin/seo/indexnow", requireAdmin, async (_req, res) => {
+    const key = await getIndexNowKey();
+    res.json({ key, keyUrl: key ? `${SITE_URL}/${key}.txt` : null });
+  });
+
+  r.post("/admin/seo/reindex", requireAdmin, async (req, res) => {
+    const urls: string[] = Array.isArray(req.body?.urls) ? req.body.urls : [];
+    if (urls.length === 0) {
+      const published = await db
+        .select({ slug: blogPosts.slug })
+        .from(blogPosts)
+        .where(eq(blogPosts.status, "published"));
+      urls.push(SITE_URL + "/", `${SITE_URL}/blog`, `${SITE_URL}/sitemap.xml`);
+      for (const p of published) urls.push(`${SITE_URL}/blog/${p.slug}`);
+    }
+    pingIndexNow(urls).catch(() => {});
+    res.json({ ok: true, count: urls.length });
+  });
+
   return r;
 }
 
@@ -768,9 +797,59 @@ export async function initServer() {
     .insert(siteSettings)
     .values({ key: "homepage_video_url", value: "https://www.youtube.com/embed/LShHHIJ4urk?si=vU14gKywHmaSw2wr" })
     .onConflictDoNothing();
+  // Bootstrap IndexNow key (used to verify site ownership with search engines)
+  const existing = await db.select().from(siteSettings).where(eq(siteSettings.key, "indexnow_key")).limit(1);
+  if (!existing[0]) {
+    const key = crypto.randomBytes(16).toString("hex");
+    await db.insert(siteSettings).values({ key: "indexnow_key", value: key }).onConflictDoNothing();
+    console.log(`[seo] generated IndexNow key: ${key}`);
+  }
 }
 
 const SITE_URL = "https://quinzinhooliveira.com.br";
+
+// Cache the IndexNow key in memory after first lookup
+let _indexNowKey: string | null = null;
+async function getIndexNowKey(): Promise<string | null> {
+  if (_indexNowKey) return _indexNowKey;
+  const row = await db.select().from(siteSettings).where(eq(siteSettings.key, "indexnow_key")).limit(1);
+  _indexNowKey = row[0]?.value || null;
+  return _indexNowKey;
+}
+
+export async function serveIndexNowKey(reqPath: string, res: Response): Promise<boolean> {
+  const match = reqPath.match(/^\/([a-f0-9]{32})\.txt$/);
+  if (!match) return false;
+  const key = await getIndexNowKey();
+  if (!key || match[1] !== key) return false;
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.setHeader("Cache-Control", "public, max-age=86400");
+  res.send(key);
+  return true;
+}
+
+export async function pingIndexNow(urls: string[]): Promise<void> {
+  const key = await getIndexNowKey();
+  if (!key || urls.length === 0) return;
+  const host = new URL(SITE_URL).hostname;
+  const body = JSON.stringify({
+    host,
+    key,
+    keyLocation: `${SITE_URL}/${key}.txt`,
+    urlList: urls,
+  });
+  // Anycast endpoint distributes to Bing, Yandex, Seznam, Naver and others
+  try {
+    const r = await fetch("https://api.indexnow.org/IndexNow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body,
+    });
+    console.log(`[seo] IndexNow ping ${r.status} for ${urls.length} url(s)`);
+  } catch (err) {
+    console.warn("[seo] IndexNow ping failed:", err);
+  }
+}
 
 const STATIC_PAGES: Array<{ path: string; priority: number; changefreq: string }> = [
   { path: "/", priority: 1.0, changefreq: "weekly" },
@@ -813,7 +892,7 @@ export async function buildSitemapXml(): Promise<string> {
     posts = await db
       .select({ slug: blogPosts.slug, updatedAt: blogPosts.updatedAt, publishedAt: blogPosts.publishedAt })
       .from(blogPosts)
-      .where(eq(blogPosts.published, true));
+      .where(eq(blogPosts.status, "published"));
   } catch {
     /* ignore */
   }
