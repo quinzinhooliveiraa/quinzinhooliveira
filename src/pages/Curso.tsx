@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import SEO from "@/components/SEO";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 import {
   ArrowRight, CheckCircle2, Star, Play, Shield, Users, TrendingUp,
   Award, Target, DollarSign, PiggyBank, Sparkles, Clock, BookOpen, Video,
@@ -538,12 +539,12 @@ const Curso = () => {
         <div className="section-container text-center">
           <p className="text-muted-foreground text-sm mb-4">Acompanhe nas redes</p>
           <div className="flex justify-center gap-4 flex-wrap">
-            <a href="https://www.instagram.com/oliveirasocial_" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-full hover:border-[hsl(262_83%_58%)]/30 transition-colors text-sm font-medium">
+            <AdminEditableLink settingKey="curso_social_instagram" defaultHref="https://www.instagram.com/oliveirasocial_" external className="flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-full hover:border-[hsl(262_83%_58%)]/30 transition-colors text-sm font-medium">
               Instagram
-            </a>
-            <a href="https://www.tiktok.com/@quinzinhooliveira_" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-full hover:border-[hsl(262_83%_58%)]/30 transition-colors text-sm font-medium">
+            </AdminEditableLink>
+            <AdminEditableLink settingKey="curso_social_tiktok" defaultHref="https://www.tiktok.com/@quinzinhooliveira_" external className="flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-full hover:border-[hsl(262_83%_58%)]/30 transition-colors text-sm font-medium">
               TikTok
-            </a>
+            </AdminEditableLink>
           </div>
         </div>
       </section>

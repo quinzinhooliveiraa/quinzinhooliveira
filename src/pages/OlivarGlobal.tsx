@@ -1,5 +1,6 @@
 import { ArrowRight, Globe, DollarSign, TrendingUp } from "lucide-react";
 import SEO from "@/components/SEO";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 
 const OlivarGlobal = () => {
   return (
@@ -51,24 +52,24 @@ const OlivarGlobal = () => {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a
-                href="https://olivarglobal.com"
-                target="_blank"
-                rel="noopener noreferrer"
+              <AdminEditableLink
+                settingKey="olivar_cta_site"
+                defaultHref="https://olivarglobal.com"
+                external
                 className="inline-flex items-center gap-2 px-8 py-4 bg-[hsl(142_76%_36%)] text-white font-bold rounded-lg transition-opacity hover:opacity-90 uppercase tracking-wide text-sm"
               >
                 Acessar Site Oficial
                 <ArrowRight size={18} />
-              </a>
+              </AdminEditableLink>
               
-              <a
-                href="https://olivarglobal.com/#form"
-                target="_blank"
-                rel="noopener noreferrer"
+              <AdminEditableLink
+                settingKey="olivar_cta_agendar"
+                defaultHref="https://olivarglobal.com/#form"
+                external
                 className="inline-flex items-center gap-2 px-8 py-4 border-2 border-border text-foreground font-medium rounded-lg transition-colors hover:border-[hsl(142_76%_36%)] hover:text-[hsl(142_76%_36%)] text-sm"
               >
                 Agendar Conversa
-              </a>
+              </AdminEditableLink>
             </div>
 
             <p className="mt-8 text-sm text-muted-foreground">
@@ -89,15 +90,15 @@ const OlivarGlobal = () => {
             mas precisam de uma estrutura profissional para conversar, negociar e fechar com clientes no exterior.
           </p>
           
-          <a
-            href="https://olivarglobal.com"
-            target="_blank"
-            rel="noopener noreferrer"
+          <AdminEditableLink
+            settingKey="olivar_link_saibamais"
+            defaultHref="https://olivarglobal.com"
+            external
             className="inline-flex items-center gap-2 mt-8 text-[hsl(142_76%_36%)] font-medium transition-opacity hover:opacity-80"
           >
             Saiba mais no site oficial
             <ArrowRight size={18} />
-          </a>
+          </AdminEditableLink>
         </div>
       </section>
 
@@ -106,9 +107,9 @@ const OlivarGlobal = () => {
         <div className="section-container text-center">
           <p className="text-muted-foreground text-sm mb-4">Acompanhe a Olivar Global nas redes</p>
           <div className="flex justify-center gap-4">
-            <a href="https://www.instagram.com/olivarglobalsale" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-full hover:border-[hsl(142_76%_36%)]/30 transition-colors text-sm font-medium">
+            <AdminEditableLink settingKey="olivar_social_instagram" defaultHref="https://www.instagram.com/olivarglobalsale" external className="flex items-center gap-2 px-5 py-2.5 bg-card border border-border rounded-full hover:border-[hsl(142_76%_36%)]/30 transition-colors text-sm font-medium">
               Instagram
-            </a>
+            </AdminEditableLink>
           </div>
         </div>
       </section>

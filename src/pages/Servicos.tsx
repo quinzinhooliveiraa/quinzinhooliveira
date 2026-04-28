@@ -3,6 +3,10 @@ import { motion } from "framer-motion";
 import { ArrowRight, Video, Globe, Smartphone, Users, Code, Palette } from "lucide-react";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
+
+const slugifyName = (s: string) =>
+  s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
 
 const services = [
   {
@@ -92,9 +96,13 @@ const Servicos = () => {
                   </div>
                   <h3 className="font-heading text-lg sm:text-xl font-bold mb-3">{service.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed flex-1">{service.desc}</p>
-                  <Link to="/contato" className="inline-flex items-center gap-2 text-primary text-sm font-medium mt-4 hover:opacity-80 transition-opacity">
+                  <AdminEditableLink
+                    settingKey={`servicos_${slugifyName(service.title)}_cta`}
+                    defaultHref="/contato"
+                    className="inline-flex items-center gap-2 text-primary text-sm font-medium mt-4 hover:opacity-80 transition-opacity"
+                  >
                     Entre em contato <ArrowRight size={14} />
-                  </Link>
+                  </AdminEditableLink>
                 </div>
               </FadeUp>
             ))}

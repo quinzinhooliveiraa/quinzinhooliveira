@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import SEO from "@/components/SEO";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 import {
   BookOpen, Brain, Smartphone, Heart, Compass, Users, Shield, Sparkles,
   ChevronDown, ArrowRight, Sun, Moon, Pen, Bell, BarChart3, Clock
@@ -71,9 +72,9 @@ const CasaDos20LP = () => {
                 </a>
               ))}
             </div>
-            <a href="https://acasados20.replit.app" target="_blank" rel="noopener noreferrer" className="px-5 py-2 text-sm font-semibold rounded-full transition-all hover:scale-105" style={{ backgroundColor: "#7c3aed", color: "#fff" }}>
+            <AdminEditableLink settingKey="casados20_nav_cta" defaultHref="https://acasados20.replit.app" external className="px-5 py-2 text-sm font-semibold rounded-full transition-all hover:scale-105" style={{ backgroundColor: "#7c3aed", color: "#fff" }}>
               Começar Grátis
-            </a>
+            </AdminEditableLink>
           </div>
         </nav>
 
@@ -96,9 +97,9 @@ const CasaDos20LP = () => {
               </p>
             </FadeUp>
             <FadeUp delay={0.3}>
-              <a href="https://acasados20.replit.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 text-base font-bold rounded-full transition-all hover:scale-105 shadow-lg text-white" style={{ backgroundColor: "#7c3aed", boxShadow: "0 0 40px rgba(124,58,237,0.25)" }}>
+              <AdminEditableLink settingKey="casados20_hero_cta" defaultHref="https://acasados20.replit.app" external className="inline-flex items-center gap-2 px-8 py-4 text-base font-bold rounded-full transition-all hover:scale-105 shadow-lg text-white" style={{ backgroundColor: "#7c3aed", boxShadow: "0 0 40px rgba(124,58,237,0.25)" }}>
                 Começar grátis — 14 dias <ArrowRight size={18} />
-              </a>
+              </AdminEditableLink>
               <p className="text-xs mt-3" style={{ color: "#999" }}>Funciona no celular como app. Sem instalar pela loja.</p>
             </FadeUp>
           </div>
@@ -226,12 +227,12 @@ const CasaDos20LP = () => {
                 Autor do livro "A Casa dos 20", disponível na Apple Books e Clube de Autores. A app é a extensão digital do livro — um companheiro diário para quem quer trabalhar o que o livro ensina.
               </p>
               <div className="flex flex-wrap justify-center gap-3">
-                <a href="https://books.apple.com/us/book/a-casa-dos-20/id6760140786" target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 rounded-full text-sm font-medium" style={{ backgroundColor: "#1a1a1a", color: "#fff" }}>
+                <AdminEditableLink settingKey="casados20_apple_books" defaultHref="https://books.apple.com/us/book/a-casa-dos-20/id6760140786" external className="px-5 py-2.5 rounded-full text-sm font-medium" style={{ backgroundColor: "#1a1a1a", color: "#fff" }}>
                   Apple Books
-                </a>
-                <a href="https://clubedeautores.pt/livro/a-casa-dos-20" target="_blank" rel="noopener noreferrer" className="px-5 py-2.5 rounded-full text-sm font-medium border" style={{ borderColor: "#ccc", color: "#1a1a1a" }}>
+                </AdminEditableLink>
+                <AdminEditableLink settingKey="casados20_clube_autores" defaultHref="https://clubedeautores.pt/livro/a-casa-dos-20" external className="px-5 py-2.5 rounded-full text-sm font-medium border" style={{ borderColor: "#ccc", color: "#1a1a1a" }}>
                   Clube de Autores
-                </a>
+                </AdminEditableLink>
               </div>
             </FadeUp>
           </div>
@@ -271,9 +272,9 @@ const CasaDos20LP = () => {
             <FadeUp>
               <h2 className="text-3xl md:text-5xl font-heading font-extrabold mb-6 text-white">Começa hoje. Grátis. Sem cartão.</h2>
               <p className="text-lg mb-8" style={{ color: "rgba(255,255,255,0.8)" }}>14 dias de acesso completo. A vida que sempre quiseste começa com uma pergunta.</p>
-              <a href="https://acasados20.replit.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-10 py-4 text-lg font-bold rounded-full transition-all hover:scale-105 shadow-xl" style={{ backgroundColor: "#fff", color: "#7c3aed" }}>
+              <AdminEditableLink settingKey="casados20_final_cta" defaultHref="https://acasados20.replit.app" external className="inline-flex items-center gap-2 px-10 py-4 text-lg font-bold rounded-full transition-all hover:scale-105 shadow-xl" style={{ backgroundColor: "#fff", color: "#7c3aed" }}>
                 Começar Agora <ArrowRight size={20} />
-              </a>
+              </AdminEditableLink>
             </FadeUp>
           </div>
         </section>

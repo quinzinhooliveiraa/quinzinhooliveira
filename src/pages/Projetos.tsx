@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import SEO from "@/components/SEO";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 import {
   ArrowRight, Rocket, Code2, Smartphone, Zap, CheckCircle2,
   MessageSquare, Clock, Shield, Star, ExternalLink,
@@ -11,6 +12,9 @@ import appVytal from "@/assets/app-vytal.png";
 import appCasaDos20 from "@/assets/app-casados20.png";
 import appPingo from "@/assets/app-pingo.png";
 import app365Deus from "@/assets/app-365deus.jpg";
+
+const slugifyName = (s: string) =>
+  s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
 
 const FadeUp = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => {
   const ref = useRef(null);
@@ -203,13 +207,23 @@ const Projetos = () => {
                         <p className="text-primary font-medium text-lg">{app.tagline}</p>
                         <p className="text-muted-foreground text-base leading-relaxed">{app.description}</p>
                         <div className="flex flex-wrap gap-3 pt-2">
-                          <a href={app.appUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-sm text-white transition-all hover:scale-105" style={{ backgroundColor: app.color }}>
+                          <AdminEditableLink
+                            settingKey={`projetos_${slugifyName(app.name)}_app`}
+                            defaultHref={app.appUrl}
+                            external
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-sm text-white transition-all hover:scale-105"
+                            style={{ backgroundColor: app.color }}
+                          >
                             Abrir App <ExternalLink size={14} />
-                          </a>
+                          </AdminEditableLink>
                           {app.lpUrl && (
-                            <Link to={app.lpUrl} className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-sm border border-border text-foreground hover:bg-card transition-colors">
+                            <AdminEditableLink
+                              settingKey={`projetos_${slugifyName(app.name)}_lp`}
+                              defaultHref={app.lpUrl}
+                              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-sm border border-border text-foreground hover:bg-card transition-colors"
+                            >
                               Ver Landing Page <ArrowRight size={14} />
-                            </Link>
+                            </AdminEditableLink>
                           )}
                         </div>
                       </div>

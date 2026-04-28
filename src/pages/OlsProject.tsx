@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import SEO from "@/components/SEO";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 import {
   ArrowRight, Users, Target, Compass, Lightbulb, Heart, Brain,
   Briefcase, Dumbbell, MessageCircle, Shield, Sparkles, Star, CheckCircle2,
@@ -256,33 +257,33 @@ const OlsProject = () => {
             <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-4">Acompanhe o OLSPROJECT</h2>
             <p className="text-muted-foreground mb-8">O projeto já existe nas redes. Acompanha de perto.</p>
             <div className="flex justify-center gap-4 mb-8 flex-wrap">
-              <a
-                href="https://www.instagram.com/olsproject"
-                target="_blank"
-                rel="noopener noreferrer"
+              <AdminEditableLink
+                settingKey="olsproject_social_instagram"
+                defaultHref="https://www.instagram.com/olsproject"
+                external
                 className="flex items-center gap-3 px-6 py-3 bg-card border border-border rounded-full hover:border-primary transition-colors"
               >
                 <Instagram size={20} />
                 <span className="font-medium text-sm">Instagram</span>
-              </a>
-              <a
-                href="http://www.youtube.com/@OLSPROJECT_"
-                target="_blank"
-                rel="noopener noreferrer"
+              </AdminEditableLink>
+              <AdminEditableLink
+                settingKey="olsproject_social_youtube"
+                defaultHref="http://www.youtube.com/@OLSPROJECT_"
+                external
                 className="flex items-center gap-3 px-6 py-3 bg-card border border-border rounded-full hover:border-primary transition-colors"
               >
                 <Youtube size={20} />
                 <span className="font-medium text-sm">YouTube</span>
-              </a>
-              <a
-                href="https://www.tiktok.com/@olsproject"
-                target="_blank"
-                rel="noopener noreferrer"
+              </AdminEditableLink>
+              <AdminEditableLink
+                settingKey="olsproject_social_tiktok"
+                defaultHref="https://www.tiktok.com/@olsproject"
+                external
                 className="flex items-center gap-3 px-6 py-3 bg-card border border-border rounded-full hover:border-primary transition-colors"
               >
                 <Music size={20} />
                 <span className="font-medium text-sm">TikTok</span>
-              </a>
+              </AdminEditableLink>
             </div>
           </div>
         </section>

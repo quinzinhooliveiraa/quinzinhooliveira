@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import SEO from "@/components/SEO";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 import {
   QrCode, Trophy, Camera, Banknote, MapPin, Eye, Wifi, Users, Smartphone,
   ChevronDown, ArrowRight, Shield, Zap, BarChart3, Dumbbell, Timer, Target
@@ -100,9 +101,9 @@ const VytalLP = () => {
                 </a>
               ))}
             </div>
-            <a href="https://vytal.replit.app" target="_blank" rel="noopener noreferrer" className="px-5 py-2 text-sm font-semibold rounded-full transition-all hover:scale-105" style={{ backgroundColor: "#22c55e", color: "#0a0a0a" }}>
+            <AdminEditableLink settingKey="vytal_nav_cta" defaultHref="https://vytal.replit.app" external className="px-5 py-2 text-sm font-semibold rounded-full transition-all hover:scale-105" style={{ backgroundColor: "#22c55e", color: "#0a0a0a" }}>
               Começar Agora →
-            </a>
+            </AdminEditableLink>
           </div>
         </nav>
 
@@ -139,9 +140,9 @@ const VytalLP = () => {
                 </div>
               </FadeUp>
               <FadeUp delay={0.4}>
-                <a href="https://vytal.replit.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 text-base font-bold rounded-full transition-all hover:scale-105 shadow-lg" style={{ backgroundColor: "#22c55e", color: "#0a0a0a", boxShadow: "0 0 40px rgba(34,197,94,0.3)" }}>
+                <AdminEditableLink settingKey="vytal_hero_cta" defaultHref="https://vytal.replit.app" external className="inline-flex items-center gap-2 px-8 py-4 text-base font-bold rounded-full transition-all hover:scale-105 shadow-lg" style={{ backgroundColor: "#22c55e", color: "#0a0a0a", boxShadow: "0 0 40px rgba(34,197,94,0.3)" }}>
                   Instalar o App Gratuitamente <ArrowRight size={18} />
-                </a>
+                </AdminEditableLink>
                 <p className="text-xs mt-3" style={{ color: "#666" }}>Funciona direto no celular, sem instalar pela loja de apps.</p>
               </FadeUp>
             </div>
@@ -312,9 +313,9 @@ const VytalLP = () => {
               <p className="text-sm mb-6 leading-relaxed max-w-2xl mx-auto" style={{ color: "#666" }}>
                 Comunidades no VYTAL são grupos com desafios exclusivos. Donos de academia criam desafios só para seus alunos. Personal trainers monetizam seus grupos com uma taxa adicional de 5%.
               </p>
-              <a href="https://vytal.replit.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all hover:scale-105" style={{ backgroundColor: "#22c55e", color: "#0a0a0a" }}>
+              <AdminEditableLink settingKey="vytal_comunidade_cta" defaultHref="https://vytal.replit.app" external className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all hover:scale-105" style={{ backgroundColor: "#22c55e", color: "#0a0a0a" }}>
                 Criar minha comunidade <ArrowRight size={18} />
-              </a>
+              </AdminEditableLink>
             </FadeUp>
           </div>
         </section>
@@ -361,9 +362,9 @@ const VytalLP = () => {
             <FadeUp>
               <h2 className="text-3xl md:text-5xl font-heading font-extrabold mb-6">Seu próximo treino pode te pagar.</h2>
               <p className="text-lg mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>Instale o VYTAL, entre em um desafio e prove que você não vai desistir.</p>
-              <a href="https://vytal.replit.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-10 py-4 text-lg font-bold rounded-full transition-all hover:scale-105 shadow-xl" style={{ backgroundColor: "#22c55e", color: "#0a0a0a", boxShadow: "0 0 60px rgba(34,197,94,0.4)" }}>
+              <AdminEditableLink settingKey="vytal_final_cta" defaultHref="https://vytal.replit.app" external className="inline-flex items-center gap-2 px-10 py-4 text-lg font-bold rounded-full transition-all hover:scale-105 shadow-xl" style={{ backgroundColor: "#22c55e", color: "#0a0a0a", boxShadow: "0 0 60px rgba(34,197,94,0.4)" }}>
                 Instalar o VYTAL Agora — É Grátis <ArrowRight size={20} />
-              </a>
+              </AdminEditableLink>
               <p className="text-xs mt-4" style={{ color: "rgba(255,255,255,0.5)" }}>Funciona no Android e iPhone. Sem app store. Sem taxas para criar conta.</p>
             </FadeUp>
           </div>

@@ -1,9 +1,13 @@
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Youtube, Instagram, BookOpen, Music, Linkedin, ExternalLink } from "lucide-react";
 import SEO from "@/components/SEO";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 import thumbTiktokPessoal from "@/assets/thumb-tiktok-pessoal.jpeg";
 import thumbLinkedin from "@/assets/thumb-linkedin.jpeg";
+
+// Simple slug helper for stable settingKey derivation
+const slugifyName = (s: string) =>
+  s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
 
 const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
   <motion.div
@@ -160,18 +164,17 @@ type PlatformItem = {
 };
 
 function PlatformCard({ platform }: { platform: PlatformItem }) {
-  const isExternal = platform.external;
-  const LinkWrapper = isExternal
-    ? ({ children, className }: { children: React.ReactNode; className: string }) => (
-        <a href={platform.link} target="_blank" rel="noopener noreferrer" className={className}>
-          {children}
-        </a>
-      )
-    : ({ children, className }: { children: React.ReactNode; className: string }) => (
-        <Link to={platform.link} className={className}>
-          {children}
-        </Link>
-      );
+  const settingKey = `conteudo_platform_${slugifyName(platform.name)}`;
+  const LinkWrapper = ({ children, className }: { children: React.ReactNode; className: string }) => (
+    <AdminEditableLink
+      settingKey={settingKey}
+      defaultHref={platform.link}
+      external={!!platform.external}
+      className={className}
+    >
+      {children}
+    </AdminEditableLink>
+  );
 
   return (
     <div className="group flex flex-col sm:flex-row gap-5 p-6 sm:p-8 bg-card border border-border rounded-2xl hover:border-primary/30 transition-all duration-300">

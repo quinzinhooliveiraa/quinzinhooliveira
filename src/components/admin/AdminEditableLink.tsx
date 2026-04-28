@@ -13,6 +13,8 @@ interface AdminEditableLinkProps {
   children: React.ReactNode;
   /** Extra classes for the link */
   className?: string;
+  /** Inline styles (preserved on the rendered link) */
+  style?: React.CSSProperties;
   /** Whether the link is external (opens in new tab) */
   external?: boolean;
   /** onClick override (e.g. for scroll-to) */
@@ -24,6 +26,7 @@ export function AdminEditableLink({
   defaultHref,
   children,
   className = "",
+  style,
   external,
   onClick,
 }: AdminEditableLinkProps) {
@@ -40,12 +43,13 @@ export function AdminEditableLink({
       target="_blank"
       rel="noopener noreferrer"
       className={className}
+      style={style}
       onClick={onClick}
     >
       {children}
     </a>
   ) : (
-    <Link to={href} className={className} onClick={onClick}>
+    <Link to={href} className={className} style={style} onClick={onClick}>
       {children}
     </Link>
   );
