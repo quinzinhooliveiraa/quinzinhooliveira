@@ -1,12 +1,49 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { api } from "@/lib/api";
-import { ArrowLeft, Calendar, Tag, Eye, Heart } from "lucide-react";
+import { ArrowLeft, Calendar, Tag, Eye, Heart, Clock, BookOpen, Sparkles, List } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import NewsletterSection from "@/components/NewsletterSection";
 import SEO from "@/components/SEO";
 import { getSessionId } from "@/hooks/use-session-id";
+
+// Slugify heading text into stable ids for TOC anchoring
+function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .slice(0, 80);
+}
+
+// Strip HTML to plain text for word count
+function htmlToText(html: string): string {
+  if (typeof window === "undefined") return html.replace(/<[^>]+>/g, " ");
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  return div.textContent || div.innerText || "";
+}
+
+// Parse H2/H3 headings from HTML to build a table of contents
+function extractToc(html: string): { id: string; text: string; level: 2 | 3 }[] {
+  if (typeof window === "undefined") return [];
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  const headings = Array.from(div.querySelectorAll("h2, h3"));
+  const used = new Set<string>();
+  return headings.map((h) => {
+    const text = (h.textContent || "").trim();
+    let id = slugifyHeading(text) || `s-${Math.random().toString(36).slice(2, 8)}`;
+    let i = 1;
+    while (used.has(id)) id = `${slugifyHeading(text)}-${++i}`;
+    used.add(id);
+    return { id, text, level: h.tagName === "H2" ? 2 : 3 };
+  });
+}
 
 interface PostData {
   id: string;
@@ -93,6 +130,30 @@ const BlogPost = () => {
   const pageDescription = post.metaDescription || post.excerpt || "";
   const canonicalPath = `/blog/${post.slug}`;
   const canonicalUrl = `https://quinzinhooliveira.com.br${canonicalPath}`;
+  const categorySlug = post.category?.slug || "";
+  const isReflection = categorySlug === "reflexoes";
+  const isLearn = categorySlug === "aprenda";
+
+  // Reading time: ~220 words per minute (PT-BR average)
+  const readingMinutes = useMemo(() => {
+    const text = htmlToText(post.content);
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    return Math.max(1, Math.round(words / 220));
+  }, [post.content]);
+
+  // Build TOC from H2/H3 (only used for "Aprenda" tutorials)
+  const toc = useMemo(() => (isLearn ? extractToc(post.content) : []), [post.content, isLearn]);
+
+  // After render, inject IDs into the actual headings so TOC anchors work
+  const articleRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!isLearn || !articleRef.current || toc.length === 0) return;
+    const headings = articleRef.current.querySelectorAll("h2, h3");
+    headings.forEach((h, i) => {
+      const item = toc[i];
+      if (item && !h.id) h.id = item.id;
+    });
+  }, [post.content, isLearn, toc]);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -127,31 +188,90 @@ const BlogPost = () => {
           </div>
         )}
 
-        <article className="py-12 md:py-16">
-          <div className="section-container max-w-3xl">
+        <article className={isReflection ? "py-16 md:py-24" : "py-12 md:py-16"}>
+          <div className={`section-container ${isReflection ? "max-w-2xl" : "max-w-3xl"}`}>
             <Link to="/blog" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors mb-8">
               <ArrowLeft size={14} /> Voltar ao blog
             </Link>
 
             <div className="flex flex-wrap items-center gap-3 mb-4">
-              {post.category?.name && <span className="category-badge">{post.category.name}</span>}
+              {isReflection ? (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[11px] font-bold uppercase tracking-wider">
+                  <Sparkles size={11} /> Reflexão
+                </span>
+              ) : isLearn ? (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold uppercase tracking-wider">
+                  <BookOpen size={11} /> Aprenda
+                </span>
+              ) : (
+                post.category?.name && <span className="category-badge">{post.category.name}</span>
+              )}
               <span className="text-sm text-muted-foreground flex items-center gap-1">
                 <Calendar size={14} />
                 {format(new Date(post.publishedAt || post.createdAt), "d 'de' MMMM, yyyy", { locale: ptBR })}
               </span>
+              {isLearn && (
+                <span className="text-sm text-muted-foreground flex items-center gap-1">
+                  <Clock size={14} /> {readingMinutes} min de leitura
+                </span>
+              )}
               <span className="text-sm text-muted-foreground flex items-center gap-1">
                 <Eye size={14} /> {viewCount}
               </span>
             </div>
 
-            <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">{post.title}</h1>
+            <h1
+              className={
+                isReflection
+                  ? "font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-8 leading-[1.15]"
+                  : "font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight"
+              }
+            >
+              {post.title}
+            </h1>
 
             {post.excerpt && (
-              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">{post.excerpt}</p>
+              <p
+                className={
+                  isReflection
+                    ? "text-xl md:text-2xl text-muted-foreground mb-10 leading-relaxed italic font-light border-l-2 border-purple-500/40 pl-4"
+                    : "text-xl text-muted-foreground mb-8 leading-relaxed"
+                }
+              >
+                {post.excerpt}
+              </p>
+            )}
+
+            {/* Table of contents for tutorials */}
+            {isLearn && toc.length >= 2 && (
+              <nav className="mb-10 p-5 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
+                <div className="flex items-center gap-2 mb-3 text-emerald-400">
+                  <List size={16} />
+                  <span className="font-heading font-bold text-sm uppercase tracking-wider">Neste tutorial</span>
+                </div>
+                <ol className="space-y-1.5">
+                  {toc.map((item, i) => (
+                    <li key={item.id} className={item.level === 3 ? "ml-4" : ""}>
+                      <a
+                        href={`#${item.id}`}
+                        className="text-sm text-foreground/80 hover:text-emerald-400 transition-colors inline-flex gap-2"
+                      >
+                        {item.level === 2 && <span className="text-muted-foreground tabular-nums">{i + 1}.</span>}
+                        <span>{item.text}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
             )}
 
             <div
-              className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-heading prose-a:text-primary prose-img:rounded-xl"
+              ref={articleRef}
+              className={
+                isReflection
+                  ? "prose prose-xl dark:prose-invert max-w-none prose-headings:font-heading prose-p:leading-[1.95] prose-p:text-foreground/90 prose-p:my-7 prose-a:text-primary prose-img:rounded-xl prose-blockquote:border-l-purple-500/50 prose-blockquote:bg-purple-500/5 prose-blockquote:py-1 prose-blockquote:px-5 prose-blockquote:rounded-r-lg prose-first-letter:text-5xl prose-first-letter:font-bold prose-first-letter:font-heading prose-first-letter:float-left prose-first-letter:mr-2 prose-first-letter:leading-none prose-first-letter:mt-1"
+                  : "prose prose-lg dark:prose-invert max-w-none prose-headings:font-heading prose-headings:scroll-mt-24 prose-a:text-primary prose-img:rounded-xl prose-pre:bg-secondary prose-code:text-emerald-400"
+              }
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 
