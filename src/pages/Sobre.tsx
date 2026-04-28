@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Instagram, Youtube, Linkedin, Music } from "lucide-react";
 import SEO from "@/components/SEO";
 import { AdminImage } from "@/components/admin/AdminImage";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 import sobrePhoto2 from "@/assets/quinzinho-sobre-2.jpeg";
 import sobreInfancia from "@/assets/sobre-infancia.jpeg";
 import sobreDesenhos from "@/assets/sobre-desenhos.jpeg";
@@ -215,29 +216,29 @@ const Sobre = () => {
             </p>
             <div className="flex justify-center gap-4 mb-8">
               {[
-                { icon: Youtube, href: "https://www.youtube.com/@quinzinhooliveira", label: "YouTube" },
-                { icon: Instagram, href: "https://www.instagram.com/quinzinhooliveiraa_/", label: "Instagram" },
-                { icon: Linkedin, href: "https://www.linkedin.com/in/joaquim-emmanuel-oliveira/", label: "LinkedIn" },
-                { icon: Music, href: "https://www.tiktok.com/@quinzinhooliveiraa_", label: "TikTok" },
-              ].map(({ icon: Icon, href, label }) => (
-                <a
+                { icon: Youtube, key: "sobre_social_youtube", href: "https://www.youtube.com/@quinzinhooliveira", label: "YouTube" },
+                { icon: Instagram, key: "sobre_social_instagram", href: "https://www.instagram.com/quinzinhooliveiraa_/", label: "Instagram" },
+                { icon: Linkedin, key: "sobre_social_linkedin", href: "https://www.linkedin.com/in/joaquim-emmanuel-oliveira/", label: "LinkedIn" },
+                { icon: Music, key: "sobre_social_tiktok", href: "https://www.tiktok.com/@quinzinhooliveiraa_", label: "TikTok" },
+              ].map(({ icon: Icon, key, href, label }) => (
+                <AdminEditableLink
                   key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  settingKey={key}
+                  defaultHref={href}
+                  external
                   className="w-12 h-12 rounded-full border-2 border-border bg-card flex items-center justify-center text-foreground transition-colors hover:text-primary hover:border-primary hover:bg-primary/10"
-                  aria-label={label}
                 >
                   <Icon size={20} />
-                </a>
+                </AdminEditableLink>
               ))}
             </div>
-            <Link
-              to="/contato"
+            <AdminEditableLink
+              settingKey="sobre_cta_contato"
+              defaultHref="/contato"
               className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-primary-foreground font-bold rounded-full transition-all hover:opacity-90 hover:scale-[1.02] uppercase tracking-wide text-sm"
             >
               Entrar em Contato <ArrowRight size={16} />
-            </Link>
+            </AdminEditableLink>
           </div>
         </section>
       </FadeUp>

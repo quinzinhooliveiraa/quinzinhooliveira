@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import SEO from "@/components/SEO";
+import { AdminEditableLink } from "@/components/admin/AdminEditableLink";
 
 const FadeUp = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => {
   const ref = useRef(null);
@@ -92,21 +93,20 @@ const Contato = () => {
               <h2 className="font-heading text-lg sm:text-xl font-bold mb-4">Redes Sociais</h2>
               <div className="flex flex-wrap gap-3 sm:gap-4">
                 {[
-                  { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/quinzinhooliveiraa_/" },
-                  { icon: Youtube, label: "YouTube", href: "https://www.youtube.com/@quinzinhooliveira" },
-                  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/joaquim-emmanuel-oliveira/" },
-                  { icon: Mail, label: "Email", href: "mailto:quinzinhooliveiraa@gmail.com" },
-                ].map(({ icon: Icon, label, href }) => (
-                  <motion.a
+                  { icon: Instagram, label: "Instagram", key: "contato_social_instagram", href: "https://www.instagram.com/quinzinhooliveiraa_/" },
+                  { icon: Youtube, label: "YouTube", key: "contato_social_youtube", href: "https://www.youtube.com/@quinzinhooliveira" },
+                  { icon: Linkedin, label: "LinkedIn", key: "contato_social_linkedin", href: "https://www.linkedin.com/in/joaquim-emmanuel-oliveira/" },
+                  { icon: Mail, label: "Email", key: "contato_social_email", href: "mailto:quinzinhooliveiraa@gmail.com" },
+                ].map(({ icon: Icon, label, key, href }) => (
+                  <AdminEditableLink
                     key={label}
-                    href={href}
-                    target={href.startsWith("http") ? "_blank" : undefined}
-                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    whileHover={{ y: -2 }}
+                    settingKey={key}
+                    defaultHref={href}
+                    external={href.startsWith("http") || href.startsWith("mailto:")}
                     className="flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm text-muted-foreground transition-colors hover:text-primary hover:border-primary"
                   >
                     <Icon size={16} /> {label}
-                  </motion.a>
+                  </AdminEditableLink>
                 ))}
               </div>
             </div>
