@@ -92,14 +92,16 @@ const Contato = () => {
               <h2 className="font-heading text-lg sm:text-xl font-bold mb-4">Redes Sociais</h2>
               <div className="flex flex-wrap gap-3 sm:gap-4">
                 {[
-                  { icon: Instagram, label: "Instagram" },
-                  { icon: Youtube, label: "YouTube" },
-                  { icon: Linkedin, label: "LinkedIn" },
-                  { icon: Mail, label: "Email" },
-                ].map(({ icon: Icon, label }) => (
+                  { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/quinzinhooliveiraa_/" },
+                  { icon: Youtube, label: "YouTube", href: "https://www.youtube.com/@quinzinhooliveira" },
+                  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/joaquim-emmanuel-oliveira/" },
+                  { icon: Mail, label: "Email", href: "mailto:quinzinhooliveiraa@gmail.com" },
+                ].map(({ icon: Icon, label, href }) => (
                   <motion.a
                     key={label}
-                    href="#"
+                    href={href}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                     whileHover={{ y: -2 }}
                     className="flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm text-muted-foreground transition-colors hover:text-primary hover:border-primary"
                   >
