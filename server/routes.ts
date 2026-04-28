@@ -802,6 +802,14 @@ export async function initServer() {
     .insert(siteSettings)
     .values({ key: "homepage_video_url", value: "https://www.youtube.com/embed/LShHHIJ4urk?si=vU14gKywHmaSw2wr" })
     .onConflictDoNothing();
+  // Seed the two primary content categories (idempotent)
+  await db
+    .insert(categories)
+    .values([
+      { name: "Reflexões", slug: "reflexoes" },
+      { name: "Aprenda", slug: "aprenda" },
+    ])
+    .onConflictDoNothing();
   // Bootstrap IndexNow key (used to verify site ownership with search engines)
   const existing = await db.select().from(siteSettings).where(eq(siteSettings.key, "indexnow_key")).limit(1);
   if (!existing[0]) {
