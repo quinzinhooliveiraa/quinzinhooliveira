@@ -30,6 +30,11 @@ const CustomImage = Image.extend({
         parseHTML: (el) => el.getAttribute("data-size") || "large",
         renderHTML: (attrs) => ({ "data-size": attrs["data-size"] }),
       },
+      "data-caption": {
+        default: "",
+        parseHTML: (el) => el.getAttribute("data-caption") || "",
+        renderHTML: (attrs) => (attrs["data-caption"] ? { "data-caption": attrs["data-caption"] } : {}),
+      },
     };
   },
 });
@@ -100,6 +105,9 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
     editor.chain().focus().updateAttributes("image", { "data-size": value } as any).run();
   const currentImageAlign = (editor.getAttributes("image") as any)["data-align"];
   const currentImageSize = (editor.getAttributes("image") as any)["data-size"];
+  const currentImageCaption = (editor.getAttributes("image") as any)["data-caption"] || "";
+  const setImageCaption = (value: string) =>
+    editor.chain().focus().updateAttributes("image", { "data-caption": value } as any).run();
 
   return (
     <div className="border border-border rounded-lg overflow-hidden bg-card">
@@ -192,6 +200,14 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
           >
             G
           </button>
+          <div className="w-px bg-border mx-1" />
+          <input
+            type="text"
+            value={currentImageCaption}
+            onChange={(e) => setImageCaption(e.target.value)}
+            placeholder="Legenda (opcional)"
+            className="flex-1 min-w-[180px] px-2 py-1 text-xs rounded bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary"
+          />
         </div>
       )}
 

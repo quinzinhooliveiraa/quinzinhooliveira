@@ -155,6 +155,27 @@ const BlogPost = () => {
     });
   }, [post.content, isLearn, toc]);
 
+  // After render, inject visible captions for images that have data-caption
+  useEffect(() => {
+    if (!articleRef.current) return;
+    const imgs = articleRef.current.querySelectorAll<HTMLImageElement>("img[data-caption]");
+    imgs.forEach((img) => {
+      const caption = img.getAttribute("data-caption");
+      if (!caption) return;
+      const next = img.nextElementSibling as HTMLElement | null;
+      if (next && next.classList.contains("image-caption")) {
+        next.textContent = caption;
+        return;
+      }
+      const span = document.createElement("span");
+      span.className = "image-caption";
+      span.setAttribute("data-align", img.getAttribute("data-align") || "center");
+      span.setAttribute("data-size", img.getAttribute("data-size") || "large");
+      span.textContent = caption;
+      img.insertAdjacentElement("afterend", span);
+    });
+  }, [post.content]);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",

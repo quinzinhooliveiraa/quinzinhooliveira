@@ -314,3 +314,26 @@
   content: "\00a0";
   color: transparent;
 }
+
+/* Image captions (rendered as <span> sibling after each img[data-caption]) */
+.blog-content .image-caption {
+  display: block;
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.875rem;
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+  line-height: 1.4;
+  clear: both;
+}
+.blog-content .image-caption[data-align="left"]  { text-align: left; }
+.blog-content .image-caption[data-align="right"] { text-align: right; }
+.blog-content .image-caption[data-size="small"]  { max-width: 33%; }
+.blog-content .image-caption[data-size="medium"] { max-width: 66%; }
+.blog-content .image-caption[data-size="large"]  { max-width: 100%; }
+.blog-content .image-caption[data-align="center"][data-size="small"],
+.blog-content .image-caption[data-align="center"][data-size="medium"] {
+  margin-left: auto;
+  margin-right: auto;
+}
