@@ -5,7 +5,7 @@ import { db } from "./db";
 import { admins } from "./schema";
 import { eq } from "drizzle-orm";
 
-const SECRET = process.env.AUTH_SECRET || process.env.NEON_DATABASE || "dev-secret-please-change";
+const SECRET = process.env.AUTH_SECRET || process.env.SESSION_SECRET || process.env.DATABASE_URL || process.env.NEON_DATABASE || "dev-secret-please-change";
 const COOKIE_NAME = "qo_session";
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 30;
 
