@@ -4,15 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch --ignore '**/vite.config.ts.timestamp-*' --ignore 'dist/**' --ignore 'uploads/**' server/index.ts",
-    "build": "vite build && esbuild server/index.ts --bundle --platform=node --target=node20 --format=esm --packages=external --outfile=dist-server/index.mjs",
+    "dev": "vite",
+    "build": "vite build",
     "build:dev": "vite build --mode development",
-    "start": "NODE_ENV=production node dist-server/index.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "db:push": "drizzle-kit push --force"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
