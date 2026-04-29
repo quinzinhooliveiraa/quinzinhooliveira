@@ -58,28 +58,39 @@ export function requireAdmin(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
+// Fallback hash for "Quinzinho@2025" — used when MASTER_ADMIN_PASSWORD env var is unavailable
+const FALLBACK_HASH = "$2b$10$i4X94FwCR1OaLo6dc23F6.4bWycxhkDiaArLtKWhyvMunObXgy2.a";
+
 export async function bootstrapMasterAdmin() {
   const email = (process.env.MASTER_ADMIN_EMAIL || "quinzinhooliveiraa@gmail.com").toLowerCase();
   const password = process.env.MASTER_ADMIN_PASSWORD;
 
+  console.log(`[auth] Bootstrap: MASTER_ADMIN_PASSWORD=${password ? "set" : "not set"}`);
+
   const existing = await db.select().from(admins).where(eq(admins.email, email)).limit(1);
+
   if (existing.length === 0) {
-    const passwordHash = password ? await hashPassword(password) : null;
+    const passwordHash = password ? await hashPassword(password) : FALLBACK_HASH;
     await db.insert(admins).values({ email, passwordHash, isMaster: true });
-    console.log(`[auth] Master admin created: ${email}${password ? "" : " (no password — set MASTER_ADMIN_PASSWORD)"}`);
+    console.log(`[auth] Master admin created: ${email}`);
   } else {
     const updates: Record<string, any> = {};
     if (!existing[0].isMaster) updates.isMaster = true;
-    if (password && !existing[0].passwordHash) {
-      updates.passwordHash = await hashPassword(password);
-      console.log(`[auth] Master admin password set from env: ${email}`);
-    } else if (password && existing[0].passwordHash) {
+
+    if (!existing[0].passwordHash) {
+      // No password at all — set it now
+      updates.passwordHash = password ? await hashPassword(password) : FALLBACK_HASH;
+      console.log(`[auth] Master admin password applied: ${email}`);
+    } else if (password) {
       const same = await bcrypt.compare(password, existing[0].passwordHash);
       if (!same) {
         updates.passwordHash = await hashPassword(password);
         console.log(`[auth] Master admin password updated from env: ${email}`);
+      } else {
+        console.log(`[auth] Master admin password OK: ${email}`);
       }
     }
+
     if (Object.keys(updates).length > 0) {
       await db.update(admins).set(updates).where(eq(admins.id, existing[0].id));
     }
