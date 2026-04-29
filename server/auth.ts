@@ -66,8 +66,22 @@ export async function bootstrapMasterAdmin() {
   if (existing.length === 0) {
     const passwordHash = password ? await hashPassword(password) : null;
     await db.insert(admins).values({ email, passwordHash, isMaster: true });
-    console.log(`[auth] Master admin bootstrap: ${email}${password ? "" : " (no password yet — use forgot password)"}`);
-  } else if (!existing[0].isMaster) {
-    await db.update(admins).set({ isMaster: true }).where(eq(admins.id, existing[0].id));
+    console.log(`[auth] Master admin created: ${email}${password ? "" : " (no password — set MASTER_ADMIN_PASSWORD)"}`);
+  } else {
+    const updates: Record<string, any> = {};
+    if (!existing[0].isMaster) updates.isMaster = true;
+    if (password && !existing[0].passwordHash) {
+      updates.passwordHash = await hashPassword(password);
+      console.log(`[auth] Master admin password set from env: ${email}`);
+    } else if (password && existing[0].passwordHash) {
+      const same = await bcrypt.compare(password, existing[0].passwordHash);
+      if (!same) {
+        updates.passwordHash = await hashPassword(password);
+        console.log(`[auth] Master admin password updated from env: ${email}`);
+      }
+    }
+    if (Object.keys(updates).length > 0) {
+      await db.update(admins).set(updates).where(eq(admins.id, existing[0].id));
+    }
   }
 }
