@@ -48,7 +48,7 @@ async function start() {
   } else {
     const distDir = path.resolve(process.cwd(), "dist");
     app.use(express.static(distDir, { index: false, maxAge: "1d" }));
-    app.get("*", (_req, res) => {
+    app.use((_req, res) => {
       res.sendFile(path.join(distDir, "index.html"));
     });
   }

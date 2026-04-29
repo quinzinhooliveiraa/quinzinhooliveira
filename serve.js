@@ -1,17 +1,20 @@
-import express from "express";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const app = express();
-const port = process.env.PORT || 5000;
 
-app.use(express.static(join(__dirname, "dist")));
+const tsx = join(__dirname, "node_modules", ".bin", "tsx");
+const entry = join(__dirname, "server", "index.ts");
 
-app.use((_req, res) => {
-  res.sendFile(join(__dirname, "dist", "index.html"));
+const child = spawn(tsx, [entry], {
+  stdio: "inherit",
+  env: { ...process.env, NODE_ENV: "production" },
 });
 
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Server running on port ${port}`);
+child.on("error", (err) => {
+  console.error("[serve] failed to start server:", err);
+  process.exit(1);
 });
+
+child.on("exit", (code) => process.exit(code ?? 0));
