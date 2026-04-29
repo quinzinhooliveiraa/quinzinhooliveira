@@ -16,9 +16,6 @@ publicDir = "dist"
 [userenv]
 
 [userenv.shared]
-VITE_SUPABASE_PROJECT_ID = "stenwonxizmhopfmcggr"
-VITE_SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZW53b254aXptaG9wZm1jZ2dyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0Mjg4NDMsImV4cCI6MjA4OTAwNDg0M30.9xsJBeeRPdUplUo_FGHdhH8AIXhHix1PJ18GPpvzkc0"
-VITE_SUPABASE_URL = "https://stenwonxizmhopfmcggr.supabase.co"
 
 [workflows]
 runButton = "Project"
