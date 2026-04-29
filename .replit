@@ -8,8 +8,8 @@ stack = "GAMESTACK_JS"
 channel = "stable-25_05"
 
 [deployment]
-deploymentTarget = "static"
-run = ["node", "./dist/index.cjs"]
+deploymentTarget = "autoscale"
+run = ["node", "serve.js"]
 build = ["npm", "run", "build"]
 publicDir = "dist"
 
