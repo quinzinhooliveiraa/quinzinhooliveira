@@ -5,7 +5,8 @@ import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import {
   Bold, Italic, Strikethrough, List, ListOrdered, Heading1, Heading2, Heading3,
-  Quote, Code, Link as LinkIcon, Image as ImageIcon, Undo, Redo, Minus
+  Quote, Code, Link as LinkIcon, Image as ImageIcon, Undo, Redo, Minus,
+  AlignLeft, AlignCenter, AlignRight,
 } from "lucide-react";
 import { api } from "@/lib/api";
 import { useCallback } from "react";
@@ -15,12 +16,31 @@ interface RichTextEditorProps {
   onChange: (html: string) => void;
 }
 
-const MenuButton = ({ onClick, active, children, title }: { onClick: () => void; active?: boolean; children: React.ReactNode; title: string }) => (
+const CustomImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      "data-align": {
+        default: "center",
+        parseHTML: (el) => el.getAttribute("data-align") || "center",
+        renderHTML: (attrs) => ({ "data-align": attrs["data-align"] }),
+      },
+      "data-size": {
+        default: "large",
+        parseHTML: (el) => el.getAttribute("data-size") || "large",
+        renderHTML: (attrs) => ({ "data-size": attrs["data-size"] }),
+      },
+    };
+  },
+});
+
+const MenuButton = ({ onClick, active, disabled, children, title }: { onClick: () => void; active?: boolean; disabled?: boolean; children: React.ReactNode; title: string }) => (
   <button
     type="button"
     onClick={onClick}
     title={title}
-    className={`p-1.5 rounded transition-colors ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
+    disabled={disabled}
+    className={`p-1.5 rounded transition-colors ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"} disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground`}
   >
     {children}
   </button>
@@ -30,7 +50,7 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Image,
+      CustomImage,
       Link.configure({ openOnClick: false }),
       Placeholder.configure({ placeholder: "Comece a escrever..." }),
     ],
@@ -50,7 +70,12 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
 
       try {
         const res = await api.upload<{ url: string }>("/admin/upload", file);
-        editor.chain().focus().setImage({ src: res.url }).run();
+        editor
+          .chain()
+          .focus()
+          .setImage({ src: res.url })
+          .updateAttributes("image", { "data-align": "center", "data-size": "large" } as any)
+          .run();
       } catch (err) {
         console.warn("[RichTextEditor] image upload failed:", err);
       }
@@ -67,6 +92,14 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
   }, [editor]);
 
   if (!editor) return null;
+
+  const imageSelected = editor.isActive("image");
+  const setImageAlign = (value: "left" | "center" | "right") =>
+    editor.chain().focus().updateAttributes("image", { "data-align": value } as any).run();
+  const setImageSize = (value: "small" | "medium" | "large") =>
+    editor.chain().focus().updateAttributes("image", { "data-size": value } as any).run();
+  const currentImageAlign = (editor.getAttributes("image") as any)["data-align"];
+  const currentImageSize = (editor.getAttributes("image") as any)["data-size"];
 
   return (
     <div className="border border-border rounded-lg overflow-hidden bg-card">
@@ -122,9 +155,49 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
         </MenuButton>
       </div>
 
+      {imageSelected && (
+        <div className="flex flex-wrap items-center gap-0.5 p-2 border-b border-border bg-primary/5">
+          <span className="text-xs font-medium text-muted-foreground px-2">Imagem:</span>
+          <MenuButton onClick={() => setImageAlign("left")} active={currentImageAlign === "left"} title="Alinhar à esquerda">
+            <AlignLeft size={16} />
+          </MenuButton>
+          <MenuButton onClick={() => setImageAlign("center")} active={currentImageAlign === "center"} title="Centralizar">
+            <AlignCenter size={16} />
+          </MenuButton>
+          <MenuButton onClick={() => setImageAlign("right")} active={currentImageAlign === "right"} title="Alinhar à direita">
+            <AlignRight size={16} />
+          </MenuButton>
+          <div className="w-px bg-border mx-1" />
+          <button
+            type="button"
+            onClick={() => setImageSize("small")}
+            className={`px-2 py-1 text-xs rounded transition-colors ${currentImageSize === "small" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
+            title="Pequena (33%)"
+          >
+            P
+          </button>
+          <button
+            type="button"
+            onClick={() => setImageSize("medium")}
+            className={`px-2 py-1 text-xs rounded transition-colors ${currentImageSize === "medium" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
+            title="Média (66%)"
+          >
+            M
+          </button>
+          <button
+            type="button"
+            onClick={() => setImageSize("large")}
+            className={`px-2 py-1 text-xs rounded transition-colors ${currentImageSize === "large" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
+            title="Grande (100%)"
+          >
+            G
+          </button>
+        </div>
+      )}
+
       <EditorContent
         editor={editor}
-        className="prose prose-sm dark:prose-invert max-w-none p-4 min-h-[400px] focus:outline-none [&_.ProseMirror]:outline-none [&_.ProseMirror]:min-h-[400px] [&_.ProseMirror_p.is-editor-empty:first-child::before]:text-muted-foreground [&_.ProseMirror_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)] [&_.ProseMirror_p.is-editor-empty:first-child::before]:float-left [&_.ProseMirror_p.is-editor-empty:first-child::before]:h-0 [&_.ProseMirror_p.is-editor-empty:first-child::before]:pointer-events-none"
+        className="rich-editor-content prose prose-sm dark:prose-invert max-w-none p-4 min-h-[400px] focus:outline-none [&_.ProseMirror]:outline-none [&_.ProseMirror]:min-h-[400px] [&_.ProseMirror_p.is-editor-empty:first-child::before]:text-muted-foreground [&_.ProseMirror_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)] [&_.ProseMirror_p.is-editor-empty:first-child::before]:float-left [&_.ProseMirror_p.is-editor-empty:first-child::before]:h-0 [&_.ProseMirror_p.is-editor-empty:first-child::before]:pointer-events-none"
       />
     </div>
   );

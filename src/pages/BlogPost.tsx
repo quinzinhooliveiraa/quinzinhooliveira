@@ -267,11 +267,11 @@ const BlogPost = () => {
 
             <div
               ref={articleRef}
-              className={
+              className={`blog-content ${
                 isReflection
                   ? "prose prose-xl dark:prose-invert max-w-none prose-headings:font-heading prose-p:leading-[1.95] prose-p:text-foreground/90 prose-p:my-7 prose-a:text-primary prose-img:rounded-xl prose-blockquote:border-l-purple-500/50 prose-blockquote:bg-purple-500/5 prose-blockquote:py-1 prose-blockquote:px-5 prose-blockquote:rounded-r-lg prose-first-letter:text-5xl prose-first-letter:font-bold prose-first-letter:font-heading prose-first-letter:float-left prose-first-letter:mr-2 prose-first-letter:leading-none prose-first-letter:mt-1"
                   : "prose prose-lg dark:prose-invert max-w-none prose-headings:font-heading prose-headings:scroll-mt-24 prose-a:text-primary prose-img:rounded-xl prose-pre:bg-secondary prose-code:text-emerald-400"
-              }
+              }`}
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 

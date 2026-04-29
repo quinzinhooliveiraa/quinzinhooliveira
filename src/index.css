@@ -235,3 +235,82 @@
     scrollbar-width: none;
   }
 }
+
+/* ── Blog content: image alignment, sizes & empty paragraph spacing ── */
+.blog-content img {
+  display: block;
+  height: auto;
+}
+.blog-content img[data-align="center"] {
+  margin-left: auto;
+  margin-right: auto;
+  clear: both;
+  float: none;
+}
+.blog-content img[data-align="left"] {
+  float: left;
+  margin-right: 1.5rem;
+  margin-bottom: 1rem;
+}
+.blog-content img[data-align="right"] {
+  float: right;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.blog-content img[data-size="small"]  { max-width: 33%;  width: 33%; }
+.blog-content img[data-size="medium"] { max-width: 66%;  width: 66%; }
+.blog-content img[data-size="large"]  { max-width: 100%; width: 100%; }
+
+/* Clear floats around images so following blocks don't overlap */
+.blog-content p:has(> img[data-align="left"]),
+.blog-content p:has(> img[data-align="right"]) {
+  overflow: visible;
+}
+.blog-content > *::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Preserve empty paragraphs as visible vertical spacing */
+.blog-content p:empty {
+  min-height: 1.2em;
+}
+.blog-content p:empty::before {
+  content: "\00a0";
+}
+
+/* Same rules inside the editor preview so authoring matches reading */
+.rich-editor-content .ProseMirror img {
+  display: block;
+  height: auto;
+}
+.rich-editor-content .ProseMirror img[data-align="center"] {
+  margin-left: auto;
+  margin-right: auto;
+  float: none;
+}
+.rich-editor-content .ProseMirror img[data-align="left"] {
+  float: left;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+}
+.rich-editor-content .ProseMirror img[data-align="right"] {
+  float: right;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+.rich-editor-content .ProseMirror img[data-size="small"]  { max-width: 33%;  width: 33%; }
+.rich-editor-content .ProseMirror img[data-size="medium"] { max-width: 66%;  width: 66%; }
+.rich-editor-content .ProseMirror img[data-size="large"]  { max-width: 100%; width: 100%; }
+.rich-editor-content .ProseMirror img.ProseMirror-selectednode {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+.rich-editor-content .ProseMirror p:empty {
+  min-height: 1.2em;
+}
+.rich-editor-content .ProseMirror p:empty::before {
+  content: "\00a0";
+  color: transparent;
+}
