@@ -9,7 +9,7 @@ import {
   AlignLeft, AlignCenter, AlignRight,
 } from "lucide-react";
 import { api } from "@/lib/api";
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface RichTextEditorProps {
   content: string;
@@ -51,7 +51,26 @@ const MenuButton = ({ onClick, active, disabled, children, title }: { onClick: (
   </button>
 );
 
+async function uploadAndInsertImage(file: File, editor: any, pos?: number) {
+  try {
+    const res = await api.upload<{ url: string }>("/admin/upload", file);
+    const chain = editor.chain().focus();
+    if (typeof pos === "number") chain.setTextSelection(pos);
+    chain
+      .setImage({ src: res.url })
+      .updateAttributes("image", {
+        "data-align": "center",
+        "data-size": "large",
+      } as any)
+      .run();
+  } catch (err) {
+    console.warn("[RichTextEditor] image upload failed:", err);
+  }
+}
+
 const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
+  const editorRef = useRef<any>(null);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -63,26 +82,54 @@ const RichTextEditor = ({ content, onChange }: RichTextEditorProps) => {
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
+    editorProps: {
+      handlePaste: (_view, event) => {
+        const items = event.clipboardData?.items;
+        if (!items) return false;
+        const imageFiles: File[] = [];
+        for (let i = 0; i < items.length; i++) {
+          const it = items[i];
+          if (it.kind === "file" && it.type.startsWith("image/")) {
+            const f = it.getAsFile();
+            if (f) imageFiles.push(f);
+          }
+        }
+        if (imageFiles.length === 0) return false;
+        event.preventDefault();
+        const ed = editorRef.current;
+        if (ed) imageFiles.forEach((f) => uploadAndInsertImage(f, ed));
+        return true;
+      },
+      handleDrop: (view, event, _slice, moved) => {
+        if (moved) return false;
+        const dt = (event as DragEvent).dataTransfer;
+        if (!dt || !dt.files || dt.files.length === 0) return false;
+        const imageFiles = Array.from(dt.files).filter((f) => f.type.startsWith("image/"));
+        if (imageFiles.length === 0) return false;
+        event.preventDefault();
+        const coords = { left: (event as DragEvent).clientX, top: (event as DragEvent).clientY };
+        const dropPos = view.posAtCoords(coords)?.pos;
+        const ed = editorRef.current;
+        if (ed) imageFiles.forEach((f) => uploadAndInsertImage(f, ed, dropPos));
+        return true;
+      },
+    },
   });
+
+  useEffect(() => {
+    editorRef.current = editor;
+  }, [editor]);
 
   const addImage = useCallback(async () => {
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
+    input.multiple = true;
     input.onchange = async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file || !editor) return;
-
-      try {
-        const res = await api.upload<{ url: string }>("/admin/upload", file);
-        editor
-          .chain()
-          .focus()
-          .setImage({ src: res.url })
-          .updateAttributes("image", { "data-align": "center", "data-size": "large" } as any)
-          .run();
-      } catch (err) {
-        console.warn("[RichTextEditor] image upload failed:", err);
+      const files = Array.from((e.target as HTMLInputElement).files || []);
+      if (!files.length || !editor) return;
+      for (const f of files) {
+        await uploadAndInsertImage(f, editor);
       }
     };
     input.click();
