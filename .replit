@@ -16,6 +16,7 @@ publicDir = "dist"
 [userenv]
 
 [userenv.shared]
+MASTER_ADMIN_PASSWORD = "Quinzinho@2025"
 
 [workflows]
 runButton = "Project"
