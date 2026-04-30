@@ -29,6 +29,7 @@ import Conteudo from "./pages/Conteudo";
 import Sobre from "./pages/Sobre";
 import OlsProject from "./pages/OlsProject";
 import Projetos from "./pages/Projetos";
+import CriarApp from "./pages/CriarApp";
 import VytalLP from "./pages/VytalLP";
 import CasaDos20LP from "./pages/CasaDos20LP";
 
@@ -67,7 +68,7 @@ const AppLayout = () => {
         <Route path="/projetos" element={<PageGuard><Projetos /></PageGuard>} />
         <Route path="/vytal" element={<PageGuard><VytalLP /></PageGuard>} />
         <Route path="/casados20" element={<PageGuard><CasaDos20LP /></PageGuard>} />
-        <Route path="/criar-app" element={<PageGuard><Projetos /></PageGuard>} />
+        <Route path="/criar-app" element={<PageGuard><CriarApp /></PageGuard>} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />

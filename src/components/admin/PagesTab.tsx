@@ -15,6 +15,7 @@ const PAGES: { path: string; label: string; description: string }[] = [
   { path: "/servicos", label: "Serviços", description: "Página de serviços" },
   { path: "/olivar-global", label: "Olivar Global", description: "Landing page Olivar Global" },
   { path: "/olsproject", label: "OLS Project", description: "Landing page OLS Project" },
+  { path: "/criar-app", label: "Criar App", description: "Página de criação de aplicativos" },
   { path: "/vytal", label: "Vytal", description: "Landing page Vytal" },
   { path: "/casados20", label: "Casa dos 20", description: "Landing page Casa dos 20" },
 ];
