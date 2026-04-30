@@ -27,7 +27,7 @@ const Navbar = () => {
   const contactHidden = !isAdmin && hidden.includes("/contato");
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b" style={{ backgroundColor: 'hsla(0, 0%, 7%, 0.9)', borderColor: 'hsl(0, 0%, 18%)', color: 'hsl(0, 0%, 95%)' }}>
+    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b" style={{ backgroundColor: 'hsla(0, 0%, 7%, 0.9)', borderColor: 'hsl(0, 0%, 18%)', color: 'hsl(0, 0%, 95%)', paddingTop: 'env(safe-area-inset-top, 0px)' }}>
       <div className="section-container flex items-center justify-between h-14 sm:h-16">
         <Link to="/" className="font-heading text-lg sm:text-xl font-bold tracking-tight text-[hsl(0,0%,95%)]">
           QUINZINHO<span className="text-primary">.</span>

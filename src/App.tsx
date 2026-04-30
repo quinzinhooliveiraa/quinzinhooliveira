@@ -49,6 +49,7 @@ const AppLayout = () => {
       <ScrollToTop />
       <PagePixels />
       {!isAdmin && !isStandaloneLp && <Navbar />}
+      <div style={!isAdmin && !isStandaloneLp ? { paddingTop: 'env(safe-area-inset-top, 0px)' } : undefined}>
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/livro" element={<PageGuard><Livro /></PageGuard>} />
@@ -77,6 +78,7 @@ const AppLayout = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
       {!isAdmin && !isStandaloneLp && <Footer />}
+      </div>
     </>
   );
 };
