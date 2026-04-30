@@ -89,14 +89,6 @@ const Blog = () => {
               <p className="text-muted-foreground text-sm sm:text-base">Artigos, reflexões e estratégias sobre negócios e vida.</p>
             </div>
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-              {isAdmin && (
-                <button
-                  onClick={() => navigate("/admin/post/new")}
-                  className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
-                >
-                  <Plus size={16} /> Novo Post
-                </button>
-              )}
               <div className="relative w-full md:w-72">
                 <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                 <input
@@ -258,6 +250,15 @@ const Blog = () => {
 
         <NewsletterSection />
       </div>
+
+      {isAdmin && (
+        <button
+          onClick={() => navigate("/admin/post/new")}
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-5 py-3 bg-primary text-primary-foreground text-sm font-bold rounded-full shadow-xl hover:opacity-90 transition-opacity"
+        >
+          <Plus size={18} /> Novo Post
+        </button>
+      )}
     </>
   );
 };

@@ -57,7 +57,7 @@ export function AdminEditableLink({
   if (!isAdmin) return linkEl;
 
   return (
-    <div className="relative group/admin-link inline-block">
+    <div className="relative group/admin-link inline-block w-fit">
       {linkEl}
 
       {!editing && (
