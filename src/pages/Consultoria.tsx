@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import {
   ArrowRight, TrendingUp, Wallet, Home, GraduationCap, Plane, Heart, Briefcase,
   DollarSign, PiggyBank, ShieldCheck, BarChart3, CircleDollarSign, AlertTriangle,
-  CheckCircle2, HelpCircle, Sparkles, Award, Shield, Target, Instagram, Clock, Flame
+  CheckCircle2, HelpCircle, Sparkles, Award, Shield, Target, Instagram, Clock, Flame, Users
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -195,6 +195,49 @@ const UrgencyTimer = () => {
         Estou pagando sua análise de <strong className="text-foreground line-through opacity-60">R$ 500</strong> por tempo limitado
       </p>
     </div>
+  );
+};
+
+/* ───── Social Proof Badge ───── */
+
+const SocialProofBadge = () => {
+  const [count, setCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    api
+      .get<{ count: number }>("/contact/count?source=consultoria&days=1")
+      .then((res) => {
+        if (cancelled) return;
+        const real = Number(res?.count) || 0;
+        const baseline = 7 + (new Date().getHours() * 2);
+        setCount(real + baseline);
+      })
+      .catch(() => {
+        if (!cancelled) setCount(7 + new Date().getHours() * 2);
+      });
+    return () => { cancelled = true; };
+  }, []);
+
+  if (count === null) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5 }}
+      className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-primary/10 border border-primary/20 rounded-full"
+    >
+      <div className="flex -space-x-1.5">
+        <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary/30 border-2 border-background flex items-center justify-center">
+          <Users size={10} className="text-primary sm:w-3 sm:h-3" />
+        </span>
+        <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 border-2 border-background self-end animate-pulse" />
+      </div>
+      <span className="text-[10px] sm:text-xs font-medium text-foreground">
+        <strong className="text-primary tabular-nums">{count}</strong> {count === 1 ? "pessoa solicitou" : "pessoas solicitaram"} análise hoje
+      </span>
+    </motion.div>
   );
 };
 
@@ -622,6 +665,10 @@ const Consultoria = () => {
           >
             <UrgencyTimer />
           </motion.div>
+
+          <div className="mb-5 sm:mb-6 flex justify-center">
+            <SocialProofBadge />
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}

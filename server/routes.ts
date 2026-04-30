@@ -343,6 +343,17 @@ export function makeRouter(): Router {
     res.json({ ok: true, id: created.id });
   });
 
+  r.get("/contact/count", async (req, res) => {
+    const source = String(req.query.source || "").trim();
+    const days = Math.max(1, Math.min(365, Number(req.query.days) || 1));
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+    const rows = await db.execute(
+      sql`SELECT COUNT(*)::int AS count FROM contact_submissions WHERE created_at >= ${since}${source ? sql` AND source = ${source}` : sql``}`,
+    );
+    const real = Number((rows.rows?.[0] as any)?.count ?? 0);
+    res.json({ count: real, days, source: source || null });
+  });
+
   r.get("/admin/contact-submissions", requireAdmin, async (_req, res) => {
     const rows = await db.select().from(contactSubmissions).orderBy(desc(contactSubmissions.createdAt));
     res.json(rows);
