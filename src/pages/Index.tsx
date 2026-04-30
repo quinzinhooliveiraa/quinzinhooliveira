@@ -34,6 +34,7 @@ type ProjectItem = {
   link?: string;
   badge?: string;
   external?: string;
+  hideKey?: string;
 };
 
 const projetos: ProjectItem[] = [
@@ -43,7 +44,7 @@ const projetos: ProjectItem[] = [
   { label: "Olivar Global", desc: "Comércio exterior", image: thumbOlivarContent, link: "/olivar-global" },
   { label: "Criar App", desc: "Transformo a tua ideia em app", image: thumbCriarApp, badge: "NOVO", link: "/criar-app" },
   { label: "OLSPROJECT", desc: "Comunidade de desenvolvimento pessoal e profissional", image: thumbOlsProject, badge: "NOVO", link: "/olsproject" },
-  { label: "Rborn", desc: "Marca de roupas", image: thumbRoupa, badge: "EM DEV" },
+  { label: "Rborn", desc: "Marca de roupas", image: thumbRoupa, badge: "EM DEV", hideKey: "/rborn" },
   { label: "Serviços", desc: "Todos num só lugar", image: thumbServicos, link: "/servicos" },
 ];
 
@@ -216,9 +217,13 @@ function HomepageVideo() {
 const Index = () => {
   const { hidden } = useHiddenPages();
   const { isAdmin } = useAdminStatus();
-  const isVisible = (link?: string) => !link || !link.startsWith("/") || isAdmin || !hidden.includes(link);
-  const visibleProjetos = projetos.filter((p) => isVisible(p.link));
-  const visibleConteudo = conteudo.filter((p) => isVisible(p.link));
+  const isVisible = (link?: string, hideKey?: string) => {
+    const key = link?.startsWith("/") ? link : hideKey;
+    if (!key) return true;
+    return isAdmin || !hidden.includes(key);
+  };
+  const visibleProjetos = projetos.filter((p) => isVisible(p.link, p.hideKey));
+  const visibleConteudo = conteudo.filter((p) => isVisible(p.link, p.hideKey));
 
   return (
     <div className="pt-16">
