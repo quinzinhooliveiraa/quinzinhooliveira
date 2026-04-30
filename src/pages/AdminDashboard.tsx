@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/ui/password-input";
 import { useAdmin } from "@/hooks/use-admin";
 import { Plus, FileText, Eye, Pencil, LogOut, Calendar, Mail, Trash2, CheckCircle, UserPlus, Send, BarChart3, Layout, Target, Activity } from "lucide-react";
 import { format } from "date-fns";
@@ -324,12 +325,10 @@ const AdminDashboard = () => {
                   placeholder="Email do novo admin"
                   className="w-full px-4 py-3 bg-card border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
-                <input
-                  type="password"
+                <PasswordInput
                   value={invitePassword}
                   onChange={(e) => setInvitePassword(e.target.value)}
                   placeholder="Senha temporária"
-                  className="w-full px-4 py-3 bg-card border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <Button onClick={handleInvite} disabled={inviting} className="gap-2 w-full">
                   <Send size={16} /> {inviting ? "Criando..." : "Criar Admin"}
