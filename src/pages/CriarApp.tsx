@@ -90,42 +90,42 @@ const CriarApp = () => {
         description="Transformo a sua ideia num app real em semanas. Desenvolvimento de aplicativos web modernos com design, backend e suporte incluídos."
       />
 
-      <main className="pt-20 pb-0 min-h-screen bg-background overflow-x-hidden">
+      <main className="pt-14 sm:pt-16 pb-0 min-h-screen bg-background overflow-x-hidden">
 
         {/* ═══════════════════ HERO ═══════════════════ */}
-        <section className="section-container py-20 md:py-32 text-center relative">
+        <section className="section-container py-12 sm:py-20 md:py-32 text-center relative">
           {/* Subtle gradient blob */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
           <FadeUp>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-xs font-semibold text-primary mb-8 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border border-primary/30 bg-primary/10 text-[10px] sm:text-xs font-semibold text-primary mb-6 sm:mb-8 uppercase tracking-wider">
               <Sparkles size={14} />
               Desenvolvimento de Apps
             </div>
           </FadeUp>
           <FadeUp delay={0.1}>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-foreground leading-[1.08] max-w-4xl mx-auto">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-foreground leading-[1.08] max-w-4xl mx-auto">
               A sua ideia merece{" "}
               <span className="text-primary">sair do papel</span>
             </h1>
           </FadeUp>
           <FadeUp delay={0.2}>
-            <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mt-6 leading-relaxed">
+            <p className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto mt-4 sm:mt-6 leading-relaxed">
               Eu construo apps web modernos, bonitos e funcionais — em semanas, não meses.
               Você foca na ideia. Eu cuido de todo o resto.
             </p>
           </FadeUp>
           <FadeUp delay={0.3}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mt-8 sm:mt-10">
               <Link
                 to="/contato"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-base hover:bg-primary/90 transition-all hover:scale-105 shadow-lg shadow-primary/20"
+                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-primary text-primary-foreground font-semibold text-sm sm:text-base hover:bg-primary/90 transition-all hover:scale-105 shadow-lg shadow-primary/20"
               >
                 Quero Criar o Meu App <ArrowRight size={16} />
               </Link>
               <a
                 href="#portfolio"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-border text-foreground font-medium text-base hover:bg-card transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full border border-border text-foreground font-medium text-sm sm:text-base hover:bg-card transition-colors"
               >
                 Ver Apps que já Criei
               </a>
@@ -134,15 +134,15 @@ const CriarApp = () => {
 
           {/* Stats */}
           <FadeUp delay={0.4}>
-            <div className="flex flex-wrap justify-center gap-10 md:gap-20 mt-20 pt-8 border-t border-border">
+            <div className="flex flex-wrap justify-center gap-8 sm:gap-10 md:gap-20 mt-12 sm:mt-20 pt-6 sm:pt-8 border-t border-border">
               {[
                 { value: "4+", label: "Apps no Ar" },
                 { value: "<4 sem", label: "Tempo Médio" },
                 { value: "100%", label: "Satisfação" },
               ].map((s) => (
                 <div key={s.label} className="text-center">
-                  <p className="text-3xl md:text-4xl font-heading font-bold text-foreground">{s.value}</p>
-                  <p className="text-sm text-muted-foreground mt-1">{s.label}</p>
+                  <p className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-foreground">{s.value}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-1">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -151,35 +151,35 @@ const CriarApp = () => {
 
         {/* ═══════════════════ PAIN / AGITATION ═══════════════════ */}
         <section className="bg-card border-y border-border">
-          <div className="section-container py-20 md:py-28">
+          <div className="section-container py-12 sm:py-20 md:py-28">
             <FadeUp>
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-5xl font-heading font-bold text-foreground max-w-3xl mx-auto leading-tight">
+              <div className="text-center mb-8 sm:mb-12">
+                <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-foreground max-w-3xl mx-auto leading-tight">
                   Você já tentou tirar a sua ideia do papel?
                 </h2>
-                <p className="text-muted-foreground text-lg max-w-2xl mx-auto mt-5 leading-relaxed">
+                <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto mt-4 sm:mt-5 leading-relaxed">
                   Se é como a maioria das pessoas, provavelmente já pensou nestas opções:
                 </p>
               </div>
             </FadeUp>
 
-            <div className="max-w-2xl mx-auto space-y-4">
+            <div className="max-w-2xl mx-auto space-y-3 sm:space-y-4">
               {painPoints.map((p, i) => (
                 <FadeUp key={i} delay={i * 0.08}>
-                  <div className="flex items-start gap-3 p-5 rounded-xl bg-background border border-border">
-                    <p.icon size={20} className="text-destructive shrink-0 mt-0.5" />
-                    <span className="text-foreground">{p.text}</span>
+                  <div className="flex items-start gap-3 p-4 sm:p-5 rounded-xl bg-background border border-border">
+                    <p.icon size={18} className="text-destructive shrink-0 mt-0.5" />
+                    <span className="text-foreground text-sm sm:text-base">{p.text}</span>
                   </div>
                 </FadeUp>
               ))}
             </div>
 
             <FadeUp delay={0.4}>
-              <div className="text-center mt-12">
-                <p className="text-xl md:text-2xl font-heading font-bold text-foreground">
+              <div className="text-center mt-8 sm:mt-12">
+                <p className="text-lg sm:text-xl md:text-2xl font-heading font-bold text-foreground">
                   E se houvesse uma forma <span className="text-primary">mais simples</span>?
                 </p>
-                <p className="text-muted-foreground mt-3 max-w-lg mx-auto">
+                <p className="text-muted-foreground text-sm sm:text-base mt-3 max-w-lg mx-auto">
                   Um developer que trabalha direto contigo, entrega rápido, e constrói exatamente o que você precisa — sem surpresas.
                 </p>
               </div>
@@ -188,11 +188,11 @@ const CriarApp = () => {
         </section>
 
         {/* ═══════════════════ HOW IT WORKS ═══════════════════ */}
-        <section className="section-container py-20 md:py-28">
+        <section className="section-container py-12 sm:py-20 md:py-28">
           <FadeUp>
-            <div className="text-center mb-16">
-              <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Processo</p>
-              <h2 className="text-3xl md:text-5xl font-heading font-bold text-foreground">
+            <div className="text-center mb-10 sm:mb-16">
+              <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider mb-2 sm:mb-3">Processo</p>
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-foreground">
                 Da ideia ao app em 3 passos
               </h2>
             </div>
@@ -201,18 +201,18 @@ const CriarApp = () => {
           <div className="max-w-4xl mx-auto space-y-0">
             {steps.map((step, i) => (
               <FadeUp key={step.num} delay={i * 0.12}>
-                <div className="flex gap-6 md:gap-10 items-start py-10 border-b border-border last:border-0">
-                  <div className="text-5xl md:text-7xl font-heading font-bold text-primary/15 leading-none shrink-0 select-none">
+                <div className="flex gap-4 sm:gap-6 md:gap-10 items-start py-6 sm:py-10 border-b border-border last:border-0">
+                  <div className="text-4xl sm:text-5xl md:text-7xl font-heading font-bold text-primary/15 leading-none shrink-0 select-none">
                     {step.num}
                   </div>
                   <div>
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                        <step.icon size={20} />
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                        <step.icon size={18} />
                       </div>
-                      <h3 className="text-xl md:text-2xl font-heading font-bold text-foreground">{step.title}</h3>
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-heading font-bold text-foreground">{step.title}</h3>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed max-w-lg">{step.desc}</p>
+                    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-lg">{step.desc}</p>
                   </div>
                 </div>
               </FadeUp>
@@ -222,20 +222,20 @@ const CriarApp = () => {
 
         {/* ═══════════════════ PORTFOLIO ═══════════════════ */}
         <section id="portfolio" className="bg-card border-y border-border">
-          <div className="section-container py-20 md:py-28">
+          <div className="section-container py-12 sm:py-20 md:py-28">
             <FadeUp>
-              <div className="text-center mb-16">
-                <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Prova Real</p>
-                <h2 className="text-3xl md:text-5xl font-heading font-bold text-foreground">
+              <div className="text-center mb-10 sm:mb-16">
+                <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider mb-2 sm:mb-3">Prova Real</p>
+                <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-foreground">
                   Apps que já estão no ar
                 </h2>
-                <p className="text-muted-foreground text-lg mt-4 max-w-xl mx-auto">
+                <p className="text-muted-foreground text-base sm:text-lg mt-3 sm:mt-4 max-w-xl mx-auto">
                   Não são mockups. São produtos reais, com utilizadores reais, que eu construí do zero.
                 </p>
               </div>
             </FadeUp>
 
-            <div className="grid sm:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 max-w-5xl mx-auto">
               {portfolio.map((app, i) => (
                 <FadeUp key={app.name} delay={i * 0.08}>
                   <a
@@ -251,13 +251,13 @@ const CriarApp = () => {
                         <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: app.color }}>
                           {app.icon}
                         </div>
-                        <span className="text-white font-heading font-bold">{app.name}</span>
+                        <span className="text-white font-heading font-bold text-sm sm:text-base">{app.name}</span>
                       </div>
                       <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
                         <ExternalLink size={14} />
                       </div>
                     </div>
-                    <div className="p-5">
+                    <div className="p-4 sm:p-5">
                       <p className="text-muted-foreground text-sm leading-relaxed">{app.desc}</p>
                     </div>
                   </a>
@@ -268,14 +268,14 @@ const CriarApp = () => {
         </section>
 
         {/* ═══════════════════ WHAT'S INCLUDED ═══════════════════ */}
-        <section className="section-container py-20 md:py-28">
+        <section className="section-container py-12 sm:py-20 md:py-28">
           <FadeUp>
-            <div className="text-center mb-12">
-              <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Entrega</p>
-              <h2 className="text-3xl md:text-5xl font-heading font-bold text-foreground">
+            <div className="text-center mb-8 sm:mb-12">
+              <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider mb-2 sm:mb-3">Entrega</p>
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-foreground">
                 Tudo o que está incluído
               </h2>
-              <p className="text-muted-foreground text-lg mt-4 max-w-lg mx-auto">
+              <p className="text-muted-foreground text-base sm:text-lg mt-3 sm:mt-4 max-w-lg mx-auto">
                 Sem custos escondidos. Sem surpresas. Um pacote completo.
               </p>
             </div>
@@ -286,7 +286,7 @@ const CriarApp = () => {
               {includes.map((item, i) => (
                 <div key={i} className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border">
                   <CheckCircle2 size={20} className="text-primary shrink-0" />
-                  <span className="text-foreground font-medium">{item}</span>
+                  <span className="text-foreground font-medium text-sm sm:text-base">{item}</span>
                 </div>
               ))}
             </div>
@@ -295,17 +295,17 @@ const CriarApp = () => {
 
         {/* ═══════════════════ WHY ME ═══════════════════ */}
         <section className="bg-card border-y border-border">
-          <div className="section-container py-20 md:py-28">
+          <div className="section-container py-12 sm:py-20 md:py-28">
             <FadeUp>
-              <div className="text-center mb-14">
-                <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Diferencial</p>
-                <h2 className="text-3xl md:text-5xl font-heading font-bold text-foreground">
+              <div className="text-center mb-10 sm:mb-14">
+                <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider mb-2 sm:mb-3">Diferencial</p>
+                <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-foreground">
                   Por que trabalhar comigo?
                 </h2>
               </div>
             </FadeUp>
 
-            <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
               {[
                 { icon: Zap, title: "Velocidade", desc: "Apps prontos em semanas. Uso as melhores tecnologias modernas para entregar rápido sem sacrificar qualidade." },
                 { icon: Smartphone, title: "Experiência Real", desc: "Não entrego só código. Entrego um produto que as pessoas querem usar. Design limpo, UX pensada, performance." },
@@ -313,12 +313,12 @@ const CriarApp = () => {
                 { icon: Clock, title: "Parceria, não projeto", desc: "Continuo depois do lançamento. Correções, novas features, suporte. Seu app continua a evoluir." },
               ].map((b, i) => (
                 <FadeUp key={b.title} delay={i * 0.08}>
-                  <div className="flex gap-4 p-6 rounded-xl border border-border bg-background">
+                  <div className="flex gap-3 sm:gap-4 p-5 sm:p-6 rounded-xl border border-border bg-background">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0 mt-0.5">
                       <b.icon size={20} />
                     </div>
                     <div>
-                      <h3 className="font-heading font-bold text-foreground mb-1.5">{b.title}</h3>
+                      <h3 className="font-heading font-bold text-foreground mb-1.5 text-sm sm:text-base">{b.title}</h3>
                       <p className="text-muted-foreground text-sm leading-relaxed">{b.desc}</p>
                     </div>
                   </div>
@@ -329,35 +329,35 @@ const CriarApp = () => {
         </section>
 
         {/* ═══════════════════ TESTIMONIAL ═══════════════════ */}
-        <section className="section-container py-20 md:py-28 text-center">
+        <section className="section-container py-12 sm:py-20 md:py-28 text-center">
           <FadeUp>
             <div className="max-w-3xl mx-auto">
-              <div className="flex justify-center gap-1 mb-6">
+              <div className="flex justify-center gap-1 mb-4 sm:mb-6">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={24} className="text-primary fill-primary" />
+                  <Star key={i} size={20} className="text-primary fill-primary" />
                 ))}
               </div>
-              <blockquote className="text-xl md:text-2xl font-heading text-foreground leading-relaxed">
+              <blockquote className="text-lg sm:text-xl md:text-2xl font-heading text-foreground leading-relaxed">
                 "Eu tinha a ideia há meses mas não sabia por onde começar. O Quinzinho transformou tudo num app funcional em tempo recorde. Superou todas as expectativas."
               </blockquote>
-              <p className="text-muted-foreground mt-6 font-medium">— Cliente satisfeito</p>
+              <p className="text-muted-foreground text-sm sm:text-base mt-4 sm:mt-6 font-medium">— Cliente satisfeito</p>
             </div>
           </FadeUp>
         </section>
 
         {/* ═══════════════════ FAQ ═══════════════════ */}
         <section className="bg-card border-y border-border">
-          <div className="section-container py-20 md:py-28">
+          <div className="section-container py-12 sm:py-20 md:py-28">
             <FadeUp>
-              <div className="text-center mb-14">
-                <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">FAQ</p>
-                <h2 className="text-3xl md:text-5xl font-heading font-bold text-foreground">
+              <div className="text-center mb-10 sm:mb-14">
+                <p className="text-xs sm:text-sm font-semibold text-primary uppercase tracking-wider mb-2 sm:mb-3">FAQ</p>
+                <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-foreground">
                   Perguntas frequentes
                 </h2>
               </div>
             </FadeUp>
 
-            <div className="max-w-2xl mx-auto space-y-4">
+            <div className="max-w-2xl mx-auto space-y-3 sm:space-y-4">
               {[
                 { q: "Quanto custa criar um app?", a: "Depende da complexidade. Fazemos uma conversa inicial gratuita onde eu analiso a sua ideia e te dou um orçamento justo e transparente. Sem surpresas." },
                 { q: "Quanto tempo demora?", a: "A maioria dos apps fica pronta entre 2 a 4 semanas. Projetos mais complexos podem levar até 6 semanas." },
@@ -367,10 +367,10 @@ const CriarApp = () => {
                 { q: "Posso ver apps que você já criou?", a: "Claro! Basta rolar até a seção de portfólio nesta página. Todos os apps estão no ar e funcionando." },
               ].map((faq, i) => (
                 <FadeUp key={i} delay={i * 0.05}>
-                  <details className="group p-5 rounded-xl border border-border bg-background cursor-pointer">
-                    <summary className="flex items-center justify-between font-heading font-bold text-foreground list-none">
+                  <details className="group p-4 sm:p-5 rounded-xl border border-border bg-background cursor-pointer">
+                    <summary className="flex items-center justify-between gap-3 font-heading font-bold text-foreground list-none text-sm sm:text-base">
                       {faq.q}
-                      <span className="text-primary text-xl group-open:rotate-45 transition-transform">+</span>
+                      <span className="text-primary text-xl group-open:rotate-45 transition-transform shrink-0">+</span>
                     </summary>
                     <p className="text-muted-foreground text-sm leading-relaxed mt-3 pr-8">{faq.a}</p>
                   </details>
@@ -386,23 +386,23 @@ const CriarApp = () => {
           <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
           <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
 
-          <div className="section-container py-20 md:py-28 text-center relative z-10">
+          <div className="section-container py-12 sm:py-20 md:py-28 text-center relative z-10">
             <FadeUp>
-              <h2 className="text-3xl md:text-5xl font-heading font-bold text-primary-foreground leading-tight max-w-3xl mx-auto">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-primary-foreground leading-tight max-w-3xl mx-auto">
                 A sua ideia merece existir.
                 <br />
                 <span className="opacity-80">Vamos construir juntos?</span>
               </h2>
             </FadeUp>
             <FadeUp delay={0.1}>
-              <p className="text-primary-foreground/70 text-lg max-w-xl mx-auto mt-6">
+              <p className="text-primary-foreground/70 text-base sm:text-lg max-w-xl mx-auto mt-4 sm:mt-6">
                 A conversa inicial é gratuita e sem compromisso. Me conta a tua ideia e eu te mostro o caminho.
               </p>
             </FadeUp>
             <FadeUp delay={0.2}>
               <Link
                 to="/contato"
-                className="inline-flex items-center gap-2 px-10 py-4 mt-10 rounded-full bg-background text-foreground font-semibold text-base hover:bg-background/90 transition-all hover:scale-105 shadow-xl"
+                className="inline-flex items-center gap-2 px-8 sm:px-10 py-3 sm:py-4 mt-8 sm:mt-10 rounded-full bg-background text-foreground font-semibold text-sm sm:text-base hover:bg-background/90 transition-all hover:scale-105 shadow-xl"
               >
                 Falar com Quinzinho <ArrowRight size={16} />
               </Link>

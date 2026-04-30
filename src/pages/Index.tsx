@@ -309,7 +309,7 @@ const Index = () => {
       </FadeUp>
 
       {/* About */}
-      <section className="py-16 sm:py-20">
+      <section className="py-12 sm:py-16 md:py-20">
         <div className="section-container">
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             <FadeUp>

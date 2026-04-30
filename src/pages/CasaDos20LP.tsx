@@ -79,26 +79,26 @@ const CasaDos20LP = () => {
         </nav>
 
         {/* Hero */}
-        <section className="pt-28 pb-20 md:pt-36 md:pb-28">
+        <section className="pt-20 sm:pt-28 pb-12 sm:pb-20 md:pt-36 md:pb-28">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
             <FadeUp>
-              <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider mb-6" style={{ backgroundColor: "rgba(124,58,237,0.1)", color: "#7c3aed", border: "1px solid rgba(124,58,237,0.2)" }}>
+              <span className="inline-block px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-4 sm:mb-6" style={{ backgroundColor: "rgba(124,58,237,0.1)", color: "#7c3aed", border: "1px solid rgba(124,58,237,0.2)" }}>
                 ✨ 14 dias grátis — sem cartão
               </span>
             </FadeUp>
             <FadeUp delay={0.1}>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-extrabold leading-[1.1] mb-6" style={{ color: "#1a1a1a" }}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold leading-[1.1] mb-4 sm:mb-6" style={{ color: "#1a1a1a" }}>
                 O refúgio digital para quem tem <span style={{ color: "#7c3aed" }}>20 anos</span> e sente tudo.
               </h1>
             </FadeUp>
             <FadeUp delay={0.2}>
-              <p className="text-lg md:text-xl mb-8 leading-relaxed max-w-2xl mx-auto" style={{ color: "#666" }}>
+              <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto" style={{ color: "#666" }}>
                 Um espaço de calma, reflexão e autoconhecimento. Jornadas de 30 dias, diário privado e perguntas que te fazem pensar de verdade.
               </p>
             </FadeUp>
             <FadeUp delay={0.3}>
-              <AdminEditableLink settingKey="casados20_hero_cta" defaultHref="https://acasados20.replit.app" external className="inline-flex items-center gap-2 px-8 py-4 text-base font-bold rounded-full transition-all hover:scale-105 shadow-lg text-white" style={{ backgroundColor: "#7c3aed", boxShadow: "0 0 40px rgba(124,58,237,0.25)" }}>
-                Começar grátis — 14 dias <ArrowRight size={18} />
+              <AdminEditableLink settingKey="casados20_hero_cta" defaultHref="https://acasados20.replit.app" external className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-bold rounded-full transition-all hover:scale-105 shadow-lg text-white" style={{ backgroundColor: "#7c3aed", boxShadow: "0 0 40px rgba(124,58,237,0.25)" }}>
+                Começar grátis — 14 dias <ArrowRight size={16} />
               </AdminEditableLink>
               <p className="text-xs mt-3" style={{ color: "#999" }}>Funciona no celular como app. Sem instalar pela loja.</p>
             </FadeUp>
@@ -106,22 +106,22 @@ const CasaDos20LP = () => {
         </section>
 
         {/* Dores */}
-        <section className="py-16 md:py-24" style={{ backgroundColor: "#f3f0ec" }}>
+        <section className="py-10 sm:py-16 md:py-24" style={{ backgroundColor: "#f3f0ec" }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
             <FadeUp>
-              <h2 className="text-2xl md:text-4xl font-heading font-bold mb-10" style={{ color: "#1a1a1a" }}>Identificas-te com alguma destas frases?</h2>
+              <h2 className="text-xl sm:text-2xl md:text-4xl font-heading font-bold mb-6 sm:mb-10" style={{ color: "#1a1a1a" }}>Identificas-te com alguma destas frases?</h2>
             </FadeUp>
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
               {dores.map((d, i) => (
                 <FadeUp key={i} delay={i * 0.1}>
-                  <div className="p-5 rounded-xl text-left" style={{ backgroundColor: "#fff", border: "1px solid #e8e4df" }}>
+                  <div className="p-4 sm:p-5 rounded-xl text-left" style={{ backgroundColor: "#fff", border: "1px solid #e8e4df" }}>
                     <p className="text-sm italic leading-relaxed" style={{ color: "#555" }}>"{d}"</p>
                   </div>
                 </FadeUp>
               ))}
             </div>
             <FadeUp delay={0.4}>
-              <p className="mt-8 text-base font-medium" style={{ color: "#7c3aed" }}>
+              <p className="mt-6 sm:mt-8 text-sm sm:text-base font-medium" style={{ color: "#7c3aed" }}>
                 Então a Casa dos 20 foi feita para ti.
               </p>
             </FadeUp>
@@ -129,12 +129,12 @@ const CasaDos20LP = () => {
         </section>
 
         {/* Funcionalidades */}
-        <section id="funcionalidades" className="py-20 md:py-28">
+        <section id="funcionalidades" className="py-12 sm:py-20 md:py-28">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold" style={{ color: "#1a1a1a" }}>Tudo o que precisas para <span style={{ color: "#7c3aed" }}>te conheceres</span></h2>
+            <FadeUp className="text-center mb-10 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold" style={{ color: "#1a1a1a" }}>Tudo o que precisas para <span style={{ color: "#7c3aed" }}>te conheceres</span></h2>
             </FadeUp>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {funcionalidades.map((f, i) => (
                 <FadeUp key={f.title} delay={i * 0.08}>
                   <div className="p-6 rounded-2xl h-full" style={{ backgroundColor: "#fff", border: "1px solid #e8e4df" }}>
@@ -151,13 +151,13 @@ const CasaDos20LP = () => {
         </section>
 
         {/* Jornadas */}
-        <section id="jornadas" className="py-20 md:py-28" style={{ backgroundColor: "#f3f0ec" }}>
+        <section id="jornadas" className="py-12 sm:py-20 md:py-28" style={{ backgroundColor: "#f3f0ec" }}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4" style={{ color: "#1a1a1a" }}>6 Jornadas de 30 dias</h2>
-              <p style={{ color: "#888" }} className="text-lg">Cada uma com um desafio por dia. Escolhe a que faz mais sentido para ti.</p>
+            <FadeUp className="text-center mb-10 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold mb-3 sm:mb-4" style={{ color: "#1a1a1a" }}>6 Jornadas de 30 dias</h2>
+              <p style={{ color: "#888" }} className="text-base sm:text-lg">Cada uma com um desafio por dia. Escolhe a que faz mais sentido para ti.</p>
             </FadeUp>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {jornadas.map((j, i) => (
                 <FadeUp key={j.name} delay={i * 0.08}>
                   <div className="p-6 rounded-2xl h-full" style={{ backgroundColor: "#fff", border: "1px solid #e8e4df" }}>
@@ -175,12 +175,12 @@ const CasaDos20LP = () => {
         </section>
 
         {/* Preços */}
-        <section id="preços" className="py-20 md:py-28">
+        <section id="preços" className="py-12 sm:py-20 md:py-28">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold" style={{ color: "#1a1a1a" }}>Experimenta tudo, <span style={{ color: "#7c3aed" }}>grátis</span></h2>
+            <FadeUp className="text-center mb-10 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold" style={{ color: "#1a1a1a" }}>Experimenta tudo, <span style={{ color: "#7c3aed" }}>grátis</span></h2>
             </FadeUp>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
               <FadeUp>
                 <div className="p-8 rounded-2xl h-full" style={{ backgroundColor: "#fff", border: "1px solid #e8e4df" }}>
                   <div className="flex items-center gap-2 mb-4">
@@ -219,11 +219,11 @@ const CasaDos20LP = () => {
         </section>
 
         {/* O Criador */}
-        <section className="py-20 md:py-28" style={{ backgroundColor: "#f3f0ec" }}>
+        <section className="py-12 sm:py-20 md:py-28" style={{ backgroundColor: "#f3f0ec" }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
             <FadeUp>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6" style={{ color: "#1a1a1a" }}>Criado por Quinzinho Oliveira</h2>
-              <p className="text-base leading-relaxed mb-6" style={{ color: "#666" }}>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 sm:mb-6" style={{ color: "#1a1a1a" }}>Criado por Quinzinho Oliveira</h2>
+              <p className="text-sm sm:text-base leading-relaxed mb-6" style={{ color: "#666" }}>
                 Autor do livro "A Casa dos 20", disponível na Apple Books e Clube de Autores. A app é a extensão digital do livro — um companheiro diário para quem quer trabalhar o que o livro ensina.
               </p>
               <div className="flex flex-wrap justify-center gap-3">
@@ -239,10 +239,10 @@ const CasaDos20LP = () => {
         </section>
 
         {/* FAQ */}
-        <section id="faq" className="py-20 md:py-28">
+        <section id="faq" className="py-12 sm:py-20 md:py-28">
           <div className="max-w-3xl mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-12">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold" style={{ color: "#1a1a1a" }}>Perguntas frequentes</h2>
+            <FadeUp className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold" style={{ color: "#1a1a1a" }}>Perguntas frequentes</h2>
             </FadeUp>
             <div className="space-y-3">
               {faq.map((f, i) => (
@@ -267,13 +267,13 @@ const CasaDos20LP = () => {
         </section>
 
         {/* CTA Final */}
-        <section className="py-20 md:py-28" style={{ background: "linear-gradient(135deg, #7c3aed, #a78bfa)" }}>
+        <section className="py-12 sm:py-20 md:py-28" style={{ background: "linear-gradient(135deg, #7c3aed, #a78bfa)" }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
             <FadeUp>
-              <h2 className="text-3xl md:text-5xl font-heading font-extrabold mb-6 text-white">Começa hoje. Grátis. Sem cartão.</h2>
-              <p className="text-lg mb-8" style={{ color: "rgba(255,255,255,0.8)" }}>14 dias de acesso completo. A vida que sempre quiseste começa com uma pergunta.</p>
-              <AdminEditableLink settingKey="casados20_final_cta" defaultHref="https://acasados20.replit.app" external className="inline-flex items-center gap-2 px-10 py-4 text-lg font-bold rounded-full transition-all hover:scale-105 shadow-xl" style={{ backgroundColor: "#fff", color: "#7c3aed" }}>
-                Começar Agora <ArrowRight size={20} />
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-extrabold mb-4 sm:mb-6 text-white">Começa hoje. Grátis. Sem cartão.</h2>
+              <p className="text-base sm:text-lg mb-6 sm:mb-8" style={{ color: "rgba(255,255,255,0.8)" }}>14 dias de acesso completo. A vida que sempre quiseste começa com uma pergunta.</p>
+              <AdminEditableLink settingKey="casados20_final_cta" defaultHref="https://acasados20.replit.app" external className="inline-flex items-center gap-2 px-8 sm:px-10 py-3 sm:py-4 text-base sm:text-lg font-bold rounded-full transition-all hover:scale-105 shadow-xl" style={{ backgroundColor: "#fff", color: "#7c3aed" }}>
+                Começar Agora <ArrowRight size={18} />
               </AdminEditableLink>
             </FadeUp>
           </div>

@@ -79,16 +79,16 @@ const Blog = () => {
         description="Artigos, reflexões e estratégias sobre negócios, finanças, empreendedorismo e vida por Quinzinho Oliveira."
       />
 
-      <div className="pt-16">
-        <section className="py-16">
-          <div className="section-container flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div className="pt-14 sm:pt-16">
+        <section className="py-10 sm:py-16">
+          <div className="section-container flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
             <div>
-              <h1 className="font-heading text-4xl md:text-5xl font-bold mb-2">
+              <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mb-2">
                 Blog<span className="text-primary">.</span>
               </h1>
-              <p className="text-muted-foreground">Artigos, reflexões e estratégias sobre negócios e vida.</p>
+              <p className="text-muted-foreground text-sm sm:text-base">Artigos, reflexões e estratégias sobre negócios e vida.</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               {isAdmin && (
                 <button
                   onClick={() => navigate("/admin/post/new")}
@@ -189,22 +189,22 @@ const Blog = () => {
               <section className="pb-12">
                 <div className="section-container">
                   <Link to={`/blog/${featured.slug}`} className="block group">
-                    <div className="relative rounded-2xl overflow-hidden h-80 md:h-96">
+                    <div className="relative rounded-xl sm:rounded-2xl overflow-hidden h-64 sm:h-80 md:h-96">
                       {featured.coverImageUrl ? (
                         <img src={featured.coverImageUrl} alt={featured.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                       ) : (
                         <div className="w-full h-full bg-secondary" />
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent" />
-                      <div className="absolute bottom-0 left-0 p-6 md:p-10">
-                        <div className="flex items-center gap-3 mb-3">
+                      <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-10">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 flex-wrap">
                           {featured.category?.name && <span className="category-badge">{featured.category.name}</span>}
                           <span className="text-xs text-muted-foreground">
                             {format(new Date(featured.publishedAt || featured.createdAt), "d 'de' MMM, yyyy", { locale: ptBR })}
                           </span>
                         </div>
-                        <h2 className="font-heading text-2xl md:text-3xl font-bold mb-2">{featured.title}</h2>
-                        {featured.excerpt && <p className="text-sm text-muted-foreground max-w-lg">{featured.excerpt}</p>}
+                        <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold mb-2 leading-tight">{featured.title}</h2>
+                        {featured.excerpt && <p className="text-xs sm:text-sm text-muted-foreground max-w-lg line-clamp-2">{featured.excerpt}</p>}
                       </div>
                     </div>
                   </Link>

@@ -81,7 +81,7 @@ const OlsProject = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="font-heading text-5xl sm:text-6xl md:text-8xl font-black leading-[0.9] mb-6 tracking-tight text-white"
+              className="font-heading text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-[0.9] mb-4 sm:mb-6 tracking-tight text-white"
             >
               OLSPROJECT
             </motion.h1>
@@ -90,7 +90,7 @@ const OlsProject = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="text-xl sm:text-2xl text-[hsl(0,0%,60%)] mb-4 max-w-xl leading-relaxed"
+              className="text-lg sm:text-xl md:text-2xl text-[hsl(0,0%,60%)] mb-3 sm:mb-4 max-w-xl leading-relaxed"
             >
               O lugar onde você vai pra crescer.
             </motion.p>
@@ -99,7 +99,7 @@ const OlsProject = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="text-[hsl(0,0%,45%)] text-base sm:text-lg mb-10 max-w-lg"
+              className="text-[hsl(0,0%,45%)] text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-lg"
             >
               Uma comunidade que conecta pessoas comprometidas com o desenvolvimento pessoal e profissional a mentores especializados em cada área da vida.
             </motion.p>
@@ -108,11 +108,11 @@ const OlsProject = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="flex flex-wrap gap-4"
+              className="flex flex-wrap gap-3 sm:gap-4"
             >
               <Link
                 to="/contato"
-                className="px-8 py-3.5 bg-white text-black font-bold rounded-full transition-all hover:opacity-90 hover:scale-[1.02] uppercase tracking-wide text-sm"
+                className="px-6 sm:px-8 py-3 sm:py-3.5 bg-white text-black font-bold rounded-full transition-all hover:opacity-90 hover:scale-[1.02] uppercase tracking-wide text-xs sm:text-sm"
               >
                 Quero saber quando lançar
               </Link>
@@ -123,12 +123,12 @@ const OlsProject = () => {
 
       {/* Manifesto */}
       <FadeUp>
-        <section className="py-20 sm:py-28" style={{ backgroundColor: 'hsl(0, 0%, 2%)' }}>
+        <section className="py-12 sm:py-20 md:py-28" style={{ backgroundColor: 'hsl(0, 0%, 2%)' }}>
           <div className="section-container max-w-3xl text-center">
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-[hsl(0,0%,92%)]">
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-[hsl(0,0%,92%)]">
               Nasceu de uma vontade simples
             </h2>
-            <div className="space-y-6 text-[hsl(0,0%,55%)] text-lg leading-relaxed">
+            <div className="space-y-4 sm:space-y-6 text-[hsl(0,0%,55%)] text-base sm:text-lg leading-relaxed">
               <p>
                 Eu sempre quis criar um lugar onde as pessoas pudessem ir pra crescer de verdade. Não um curso. Não um perfil de dicas. Um lugar.
               </p>
@@ -144,24 +144,24 @@ const OlsProject = () => {
       </FadeUp>
 
       {/* 3 Pilares */}
-      <section className="py-20 sm:py-28">
+      <section className="py-12 sm:py-20 md:py-28">
         <div className="section-container max-w-5xl">
           <FadeUp>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4 text-center">Como funciona</h2>
-            <p className="text-muted-foreground text-center mb-16 max-w-lg mx-auto">
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-center">Como funciona</h2>
+            <p className="text-muted-foreground text-sm sm:text-base text-center mb-10 sm:mb-16 max-w-lg mx-auto">
               Três pilares que sustentam tudo.
             </p>
           </FadeUp>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-5 sm:gap-8">
             {pilares.map((pilar, i) => (
               <FadeUp key={pilar.title} delay={i * 0.12}>
-                <div className="relative p-8 bg-card border border-border rounded-2xl hover:border-[hsl(0,0%,40%)] transition-colors group h-full">
-                  <div className="w-14 h-14 rounded-xl bg-[hsl(0_0%_100%_/_0.05)] flex items-center justify-center mb-6 group-hover:bg-[hsl(0_0%_100%_/_0.08)] transition-colors">
+                <div className="relative p-6 sm:p-8 bg-card border border-border rounded-2xl hover:border-[hsl(0,0%,40%)] transition-colors group h-full">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[hsl(0_0%_100%_/_0.05)] flex items-center justify-center mb-5 sm:mb-6 group-hover:bg-[hsl(0_0%_100%_/_0.08)] transition-colors">
                     <pilar.icon size={28} className="text-foreground" />
                   </div>
-                  <h3 className="font-heading text-xl font-bold mb-3">{pilar.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{pilar.desc}</p>
+                  <h3 className="font-heading text-lg sm:text-xl font-bold mb-2 sm:mb-3">{pilar.title}</h3>
+                  <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">{pilar.desc}</p>
                 </div>
               </FadeUp>
             ))}
@@ -171,14 +171,14 @@ const OlsProject = () => {
 
       {/* Areas */}
       <FadeUp>
-        <section className="py-20 sm:py-28 bg-secondary/30">
+        <section className="py-12 sm:py-20 md:py-28 bg-secondary/30">
           <div className="section-container max-w-5xl">
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4 text-center">Áreas de desenvolvimento</h2>
-            <p className="text-muted-foreground text-center mb-14 max-w-lg mx-auto">
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-center">Áreas de desenvolvimento</h2>
+            <p className="text-muted-foreground text-sm sm:text-base text-center mb-10 sm:mb-14 max-w-lg mx-auto">
               Dentro do OLSPROJECT, você encontra apoio pra qualquer área da vida que queira desenvolver.
             </p>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
               {areas.map((area, i) => (
                 <motion.div
                   key={area.label}
@@ -186,14 +186,14 @@ const OlsProject = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.06, duration: 0.5 }}
-                  className="flex items-start gap-4 p-5 bg-card border border-border rounded-xl"
+                  className="flex items-start gap-3 sm:gap-4 p-4 sm:p-5 bg-card border border-border rounded-xl"
                 >
                   <div className="w-10 h-10 rounded-lg bg-[hsl(0_0%_100%_/_0.05)] flex items-center justify-center flex-shrink-0">
                     <area.icon size={20} className="text-foreground" />
                   </div>
                   <div>
-                    <h3 className="font-heading font-bold mb-1">{area.label}</h3>
-                    <p className="text-muted-foreground text-sm">{area.desc}</p>
+                    <h3 className="font-heading font-bold mb-1 text-sm sm:text-base">{area.label}</h3>
+                    <p className="text-muted-foreground text-xs sm:text-sm">{area.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -203,24 +203,24 @@ const OlsProject = () => {
       </FadeUp>
 
       {/* Mentors vision */}
-      <section className="py-20 sm:py-28">
+      <section className="py-12 sm:py-20 md:py-28">
         <div className="section-container max-w-4xl">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center">
             <FadeUp>
               <div>
-                <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-6">
+                <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
                   Um mentor pra<br />cada área da vida
                 </h2>
-                <p className="text-muted-foreground leading-relaxed mb-6">
+                <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-4 sm:mb-6">
                   A ideia é simples: juntar profissionais de todas as áreas numa só plataforma. Se você quer melhorar sua dicção, tem alguém pra isso. Se quer organizar suas finanças, também. Currículo, alimentação, treino, mentalidade.
                 </p>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
                   Não é sobre seguir um guru. É sobre ter acesso à pessoa certa, no momento certo, pro que você precisa desenvolver.
                 </p>
               </div>
             </FadeUp>
             <FadeUp delay={0.15}>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {[
                   "Mentores verificados em cada especialidade",
                   "Sessões individuais ou em grupo",
@@ -240,23 +240,23 @@ const OlsProject = () => {
 
       {/* Quote */}
       <FadeUp>
-        <section className="py-16 sm:py-20" style={{ backgroundColor: 'hsl(0, 0%, 3%)' }}>
+        <section className="py-12 sm:py-16 md:py-20" style={{ backgroundColor: 'hsl(0, 0%, 3%)' }}>
           <div className="section-container max-w-3xl text-center">
-            <blockquote className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold leading-snug text-white">
+            <blockquote className="font-heading text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-snug text-white">
               "O objetivo é ser o lugar onde<br />a pessoa vai pra crescer."
             </blockquote>
-            <p className="text-[hsl(0,0%,45%)] mt-4">Quinzinho Oliveira</p>
+            <p className="text-[hsl(0,0%,45%)] text-sm sm:text-base mt-3 sm:mt-4">Quinzinho Oliveira</p>
           </div>
         </section>
       </FadeUp>
 
       {/* Social */}
       <FadeUp>
-        <section className="py-16 sm:py-20 bg-secondary/30">
+        <section className="py-12 sm:py-16 md:py-20 bg-secondary/30">
           <div className="section-container max-w-3xl text-center">
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-4">Acompanhe o OLSPROJECT</h2>
-            <p className="text-muted-foreground mb-8">O projeto já existe nas redes. Acompanha de perto.</p>
-            <div className="flex justify-center gap-4 mb-8 flex-wrap">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Acompanhe o OLSPROJECT</h2>
+            <p className="text-muted-foreground text-sm sm:text-base mb-6 sm:mb-8">O projeto já existe nas redes. Acompanha de perto.</p>
+            <div className="flex justify-center gap-3 sm:gap-4 mb-8 flex-wrap">
               <AdminEditableLink
                 settingKey="olsproject_social_instagram"
                 defaultHref="https://www.instagram.com/olsproject"
@@ -291,17 +291,17 @@ const OlsProject = () => {
 
       {/* CTA */}
       <FadeUp>
-        <section className="py-20 sm:py-28">
+        <section className="py-12 sm:py-20 md:py-28">
           <div className="section-container text-center">
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
               Quer ser o primeiro a entrar?
             </h2>
-            <p className="text-muted-foreground mb-10 max-w-lg mx-auto text-lg">
+            <p className="text-muted-foreground text-base sm:text-lg mb-8 sm:mb-10 max-w-lg mx-auto">
               O OLSPROJECT ainda está em construção, mas você pode garantir seu lugar desde já.
             </p>
             <Link
               to="/contato"
-              className="inline-flex items-center gap-2 px-10 py-4 bg-white text-black font-bold rounded-full transition-all hover:opacity-90 hover:scale-[1.02] uppercase tracking-wide text-sm"
+              className="inline-flex items-center gap-2 px-8 sm:px-10 py-3 sm:py-4 bg-white text-black font-bold rounded-full transition-all hover:opacity-90 hover:scale-[1.02] uppercase tracking-wide text-xs sm:text-sm"
             >
               Entrar em contato <ArrowRight size={16} />
             </Link>

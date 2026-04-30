@@ -101,49 +101,49 @@ const VytalLP = () => {
                 </a>
               ))}
             </div>
-            <AdminEditableLink settingKey="vytal_nav_cta" defaultHref="https://vytal.replit.app" external className="px-5 py-2 text-sm font-semibold rounded-full transition-all hover:scale-105" style={{ backgroundColor: "#22c55e", color: "#0a0a0a" }}>
-              Começar Agora →
+            <AdminEditableLink settingKey="vytal_nav_cta" defaultHref="https://vytal.replit.app" external className="px-3 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-full transition-all hover:scale-105 whitespace-nowrap" style={{ backgroundColor: "#22c55e", color: "#0a0a0a" }}>
+              Começar →
             </AdminEditableLink>
           </div>
         </nav>
 
         {/* Hero */}
-        <section className="pt-28 pb-20 md:pt-36 md:pb-28">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-12 items-center">
+        <section className="pt-20 pb-12 sm:pt-28 sm:pb-20 md:pt-36 md:pb-28">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             <div>
               <FadeUp>
-                <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider mb-6" style={{ backgroundColor: "rgba(34,197,94,0.15)", color: "#22c55e", border: "1px solid rgba(34,197,94,0.3)" }}>
+                <span className="inline-block px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-4 sm:mb-6" style={{ backgroundColor: "rgba(34,197,94,0.15)", color: "#22c55e", border: "1px solid rgba(34,197,94,0.3)" }}>
                   🏆 Desafios com dinheiro real
                 </span>
               </FadeUp>
               <FadeUp delay={0.1}>
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-extrabold leading-[1.1] mb-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold leading-[1.1] mb-4 sm:mb-6">
                   Transforme seu treino em{" "}
                   <span style={{ color: "#22c55e" }}>premiação real.</span>
                 </h1>
               </FadeUp>
               <FadeUp delay={0.2}>
-                <p className="text-lg md:text-xl mb-8 leading-relaxed" style={{ color: "#a3a3a3" }}>
+                <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 leading-relaxed" style={{ color: "#a3a3a3" }}>
                   Entre em desafios fitness com entrada via Pix, faça check-ins diários com câmera e GPS, e quem cumprir fica com o prêmio. Sem enrolação, sem desculpa.
                 </p>
               </FadeUp>
               <FadeUp delay={0.3}>
-                <div className="space-y-3 mb-8">
+                <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                   {[
                     "✅ Depósito e saque via Pix — instantâneo",
                     "📸 Check-in com foto + GPS em tempo real",
                     "🏆 Prêmio vai só para quem completar",
                     "🔒 Moderação humana para fair play",
                   ].map((b) => (
-                    <p key={b} className="text-sm" style={{ color: "#d4d4d4" }}>{b}</p>
+                    <p key={b} className="text-xs sm:text-sm" style={{ color: "#d4d4d4" }}>{b}</p>
                   ))}
                 </div>
               </FadeUp>
               <FadeUp delay={0.4}>
-                <AdminEditableLink settingKey="vytal_hero_cta" defaultHref="https://vytal.replit.app" external className="inline-flex items-center gap-2 px-8 py-4 text-base font-bold rounded-full transition-all hover:scale-105 shadow-lg" style={{ backgroundColor: "#22c55e", color: "#0a0a0a", boxShadow: "0 0 40px rgba(34,197,94,0.3)" }}>
+                <AdminEditableLink settingKey="vytal_hero_cta" defaultHref="https://vytal.replit.app" external className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-bold rounded-full transition-all hover:scale-105 shadow-lg" style={{ backgroundColor: "#22c55e", color: "#0a0a0a", boxShadow: "0 0 40px rgba(34,197,94,0.3)" }}>
                   Instalar o App Gratuitamente <ArrowRight size={18} />
                 </AdminEditableLink>
-                <p className="text-xs mt-3" style={{ color: "#666" }}>Funciona direto no celular, sem instalar pela loja de apps.</p>
+                <p className="text-[11px] sm:text-xs mt-3" style={{ color: "#666" }}>Funciona direto no celular, sem instalar pela loja de apps.</p>
               </FadeUp>
             </div>
             <FadeUp delay={0.3} className="hidden lg:block">
@@ -167,21 +167,21 @@ const VytalLP = () => {
         </section>
 
         {/* Como Funciona */}
-        <section id="como-funciona" className="py-20 md:py-28" style={{ backgroundColor: "#111" }}>
+        <section id="como-funciona" className="py-12 sm:py-20 md:py-28" style={{ backgroundColor: "#111" }}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">Como o VYTAL funciona</h2>
-              <p style={{ color: "#666" }} className="text-lg">Em 4 passos, do depósito ao prêmio</p>
+            <FadeUp className="text-center mb-10 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold mb-3 sm:mb-4">Como o VYTAL funciona</h2>
+              <p style={{ color: "#666" }} className="text-base sm:text-lg">Em 4 passos, do depósito ao prêmio</p>
             </FadeUp>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {steps.map((s, i) => (
                 <FadeUp key={s.title} delay={i * 0.1}>
-                  <div className="relative p-6 rounded-2xl border h-full" style={{ backgroundColor: "#171717", borderColor: "#262626" }}>
-                    <div className="text-xs font-bold mb-4" style={{ color: "#22c55e" }}>0{i + 1}</div>
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: "rgba(34,197,94,0.15)", color: "#22c55e" }}>
+                  <div className="relative p-5 sm:p-6 rounded-2xl border h-full" style={{ backgroundColor: "#171717", borderColor: "#262626" }}>
+                    <div className="text-xs font-bold mb-3 sm:mb-4" style={{ color: "#22c55e" }}>0{i + 1}</div>
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-3 sm:mb-4" style={{ backgroundColor: "rgba(34,197,94,0.15)", color: "#22c55e" }}>
                       {s.icon}
                     </div>
-                    <h3 className="font-heading font-bold text-lg mb-2">{s.title}</h3>
+                    <h3 className="font-heading font-bold text-base sm:text-lg mb-2">{s.title}</h3>
                     <p className="text-sm leading-relaxed" style={{ color: "#999" }}>{s.text}</p>
                   </div>
                 </FadeUp>
@@ -191,19 +191,19 @@ const VytalLP = () => {
         </section>
 
         {/* Diferenciais */}
-        <section className="py-20 md:py-28">
+        <section className="py-12 sm:py-20 md:py-28">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold">O que torna o VYTAL <span style={{ color: "#22c55e" }}>único</span></h2>
+            <FadeUp className="text-center mb-10 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold">O que torna o VYTAL <span style={{ color: "#22c55e" }}>único</span></h2>
             </FadeUp>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {diferenciais.map((d, i) => (
                 <FadeUp key={d.title} delay={i * 0.08}>
-                  <div className="p-6 rounded-2xl border transition-colors hover:border-[#22c55e]/30" style={{ backgroundColor: "#171717", borderColor: "#262626" }}>
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: "rgba(34,197,94,0.1)", color: "#22c55e" }}>
+                  <div className="p-5 sm:p-6 rounded-2xl border transition-colors hover:border-[#22c55e]/30" style={{ backgroundColor: "#171717", borderColor: "#262626" }}>
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 sm:mb-4" style={{ backgroundColor: "rgba(34,197,94,0.1)", color: "#22c55e" }}>
                       {d.icon}
                     </div>
-                    <h3 className="font-heading font-bold mb-2">{d.title}</h3>
+                    <h3 className="font-heading font-bold mb-2 text-sm sm:text-base">{d.title}</h3>
                     <p className="text-sm" style={{ color: "#999" }}>{d.text}</p>
                   </div>
                 </FadeUp>
@@ -213,19 +213,19 @@ const VytalLP = () => {
         </section>
 
         {/* Tipos de Desafio */}
-        <section id="desafios" className="py-20 md:py-28" style={{ backgroundColor: "#111" }}>
+        <section id="desafios" className="py-12 sm:py-20 md:py-28" style={{ backgroundColor: "#111" }}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">Para todo tipo de atleta</h2>
-              <p style={{ color: "#666" }} className="text-lg">Escolha o formato que combina com você</p>
+            <FadeUp className="text-center mb-10 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold mb-3 sm:mb-4">Para todo tipo de atleta</h2>
+              <p style={{ color: "#666" }} className="text-base sm:text-lg">Escolha o formato que combina com você</p>
             </FadeUp>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
               {desafios.map((d, i) => (
                 <FadeUp key={d.title} delay={i * 0.1}>
-                  <div className="p-6 rounded-2xl border" style={{ backgroundColor: "#171717", borderColor: "#262626" }}>
+                  <div className="p-5 sm:p-6 rounded-2xl border" style={{ backgroundColor: "#171717", borderColor: "#262626" }}>
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(34,197,94,0.15)", color: "#22c55e" }}>{d.icon}</div>
-                      <h3 className="font-heading font-bold text-lg">{d.title}</h3>
+                      <h3 className="font-heading font-bold text-base sm:text-lg">{d.title}</h3>
                     </div>
                     <p className="text-sm mb-2" style={{ color: "#999" }}>{d.rule}</p>
                     <p className="text-xs px-3 py-1.5 rounded-lg inline-block" style={{ backgroundColor: "rgba(34,197,94,0.1)", color: "#22c55e" }}>
@@ -239,11 +239,11 @@ const VytalLP = () => {
         </section>
 
         {/* Prova Social */}
-        <section className="py-20 md:py-28">
+        <section className="py-12 sm:py-20 md:py-28">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold mb-8">Quem já está treinando <span style={{ color: "#22c55e" }}>(e ganhando)</span></h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+            <FadeUp className="text-center mb-10 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold mb-6 sm:mb-8">Quem já está treinando <span style={{ color: "#22c55e" }}>(e ganhando)</span></h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-3xl mx-auto">
                 {[
                   { value: 48000, prefix: "R$ ", suffix: "+", label: "em prêmios" },
                   { value: 1200, suffix: "+", label: "check-ins" },
@@ -251,7 +251,7 @@ const VytalLP = () => {
                   { value: 48, suffix: "/5", label: "avaliação", divBy: 10 },
                 ].map((m) => (
                   <div key={m.label}>
-                    <p className="text-2xl md:text-3xl font-heading font-bold" style={{ color: "#22c55e" }}>
+                    <p className="text-xl sm:text-2xl md:text-3xl font-heading font-bold" style={{ color: "#22c55e" }}>
                       {m.prefix || ""}<CountUp target={m.divBy ? m.value / m.divBy : m.value} suffix={m.suffix} />
                     </p>
                     <p className="text-xs mt-1" style={{ color: "#666" }}>{m.label}</p>
@@ -259,10 +259,10 @@ const VytalLP = () => {
                 ))}
               </div>
             </FadeUp>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
               {depoimentos.map((d, i) => (
                 <FadeUp key={i} delay={i * 0.1}>
-                  <div className="p-6 rounded-2xl border h-full flex flex-col" style={{ backgroundColor: "#171717", borderColor: "#262626" }}>
+                  <div className="p-5 sm:p-6 rounded-2xl border h-full flex flex-col" style={{ backgroundColor: "#171717", borderColor: "#262626" }}>
                     <p className="text-sm italic leading-relaxed flex-1 mb-4" style={{ color: "#d4d4d4" }}>"{d.text}"</p>
                     <div>
                       <p className="font-semibold text-sm">{d.author}</p>
@@ -276,21 +276,21 @@ const VytalLP = () => {
         </section>
 
         {/* Segurança */}
-        <section className="py-20 md:py-28" style={{ backgroundColor: "#111" }}>
+        <section className="py-12 sm:py-20 md:py-28" style={{ backgroundColor: "#111" }}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold">Seu dinheiro, <span style={{ color: "#22c55e" }}>protegido</span></h2>
+            <FadeUp className="text-center mb-10 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold">Seu dinheiro, <span style={{ color: "#22c55e" }}>protegido</span></h2>
             </FadeUp>
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <div className="grid md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
               {[
                 { icon: <Shield size={28} />, title: "Saldo bloqueado", text: "O valor da inscrição fica bloqueado enquanto o desafio está ativo." },
                 { icon: <BarChart3 size={28} />, title: "Taxa única de 10%", text: "Sem taxas escondidas. O restante é dividido entre os vencedores." },
                 { icon: <Zap size={28} />, title: "Saque via Pix", text: "Prêmio na conta? Saque quando quiser, na hora, pelo Pix." },
               ].map((s, i) => (
                 <FadeUp key={s.title} delay={i * 0.1}>
-                  <div className="p-6 rounded-2xl border text-center" style={{ backgroundColor: "#171717", borderColor: "#262626" }}>
-                    <div className="w-14 h-14 rounded-xl mx-auto flex items-center justify-center mb-4" style={{ backgroundColor: "rgba(34,197,94,0.15)", color: "#22c55e" }}>{s.icon}</div>
-                    <h3 className="font-heading font-bold text-lg mb-2">{s.title}</h3>
+                  <div className="p-5 sm:p-6 rounded-2xl border text-center" style={{ backgroundColor: "#171717", borderColor: "#262626" }}>
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl mx-auto flex items-center justify-center mb-3 sm:mb-4" style={{ backgroundColor: "rgba(34,197,94,0.15)", color: "#22c55e" }}>{s.icon}</div>
+                    <h3 className="font-heading font-bold text-base sm:text-lg mb-2">{s.title}</h3>
                     <p className="text-sm" style={{ color: "#999" }}>{s.text}</p>
                   </div>
                 </FadeUp>
@@ -305,15 +305,15 @@ const VytalLP = () => {
         </section>
 
         {/* Comunidades */}
-        <section id="comunidades" className="py-20 md:py-28">
+        <section id="comunidades" className="py-12 sm:py-20 md:py-28">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
             <FadeUp>
-              <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">Crie ou entre em uma <span style={{ color: "#22c55e" }}>comunidade</span></h2>
-              <p className="text-lg mb-4" style={{ color: "#999" }}>Para academias, grupos de corrida, times e personal trainers</p>
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold mb-4 sm:mb-6">Crie ou entre em uma <span style={{ color: "#22c55e" }}>comunidade</span></h2>
+              <p className="text-base sm:text-lg mb-4" style={{ color: "#999" }}>Para academias, grupos de corrida, times e personal trainers</p>
               <p className="text-sm mb-6 leading-relaxed max-w-2xl mx-auto" style={{ color: "#666" }}>
                 Comunidades no VYTAL são grupos com desafios exclusivos. Donos de academia criam desafios só para seus alunos. Personal trainers monetizam seus grupos com uma taxa adicional de 5%.
               </p>
-              <AdminEditableLink settingKey="vytal_comunidade_cta" defaultHref="https://vytal.replit.app" external className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all hover:scale-105" style={{ backgroundColor: "#22c55e", color: "#0a0a0a" }}>
+              <AdminEditableLink settingKey="vytal_comunidade_cta" defaultHref="https://vytal.replit.app" external className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-sm sm:text-base transition-all hover:scale-105" style={{ backgroundColor: "#22c55e", color: "#0a0a0a" }}>
                 Criar minha comunidade <ArrowRight size={18} />
               </AdminEditableLink>
             </FadeUp>
@@ -321,10 +321,10 @@ const VytalLP = () => {
         </section>
 
         {/* FAQ */}
-        <section id="faq" className="py-20 md:py-28" style={{ backgroundColor: "#111" }}>
+        <section id="faq" className="py-12 sm:py-20 md:py-28" style={{ backgroundColor: "#111" }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-12">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold">Dúvidas frequentes</h2>
+            <FadeUp className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold">Dúvidas frequentes</h2>
             </FadeUp>
             <div className="space-y-3">
               {faq.map((f, i) => (
@@ -332,9 +332,9 @@ const VytalLP = () => {
                   <div className="rounded-xl border overflow-hidden" style={{ backgroundColor: "#171717", borderColor: "#262626" }}>
                     <button
                       onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                      className="w-full flex items-center justify-between p-5 text-left"
+                      className="w-full flex items-center justify-between gap-3 p-4 sm:p-5 text-left"
                     >
-                      <span className="font-medium text-sm pr-4">{f.q}</span>
+                      <span className="font-medium text-sm">{f.q}</span>
                       <ChevronDown size={18} className={`shrink-0 transition-transform ${openFaq === i ? "rotate-180" : ""}`} style={{ color: "#22c55e" }} />
                     </button>
                     <AnimatePresence>
@@ -345,7 +345,7 @@ const VytalLP = () => {
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.3 }}
                         >
-                          <p className="px-5 pb-5 text-sm leading-relaxed" style={{ color: "#999" }}>{f.a}</p>
+                          <p className="px-4 sm:px-5 pb-4 sm:pb-5 text-sm leading-relaxed" style={{ color: "#999" }}>{f.a}</p>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -357,13 +357,13 @@ const VytalLP = () => {
         </section>
 
         {/* CTA Final */}
-        <section className="py-20 md:py-28" style={{ backgroundColor: "#14532d" }}>
+        <section className="py-12 sm:py-20 md:py-28" style={{ backgroundColor: "#14532d" }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
             <FadeUp>
-              <h2 className="text-3xl md:text-5xl font-heading font-extrabold mb-6">Seu próximo treino pode te pagar.</h2>
-              <p className="text-lg mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>Instale o VYTAL, entre em um desafio e prove que você não vai desistir.</p>
-              <AdminEditableLink settingKey="vytal_final_cta" defaultHref="https://vytal.replit.app" external className="inline-flex items-center gap-2 px-10 py-4 text-lg font-bold rounded-full transition-all hover:scale-105 shadow-xl" style={{ backgroundColor: "#22c55e", color: "#0a0a0a", boxShadow: "0 0 60px rgba(34,197,94,0.4)" }}>
-                Instalar o VYTAL Agora — É Grátis <ArrowRight size={20} />
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-heading font-extrabold mb-4 sm:mb-6">Seu próximo treino pode te pagar.</h2>
+              <p className="text-base sm:text-lg mb-6 sm:mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>Instale o VYTAL, entre em um desafio e prove que você não vai desistir.</p>
+              <AdminEditableLink settingKey="vytal_final_cta" defaultHref="https://vytal.replit.app" external className="inline-flex items-center gap-2 px-8 sm:px-10 py-3 sm:py-4 text-base sm:text-lg font-bold rounded-full transition-all hover:scale-105 shadow-xl" style={{ backgroundColor: "#22c55e", color: "#0a0a0a", boxShadow: "0 0 60px rgba(34,197,94,0.4)" }}>
+                Instalar Agora — É Grátis <ArrowRight size={18} />
               </AdminEditableLink>
               <p className="text-xs mt-4" style={{ color: "rgba(255,255,255,0.5)" }}>Funciona no Android e iPhone. Sem app store. Sem taxas para criar conta.</p>
             </FadeUp>
@@ -371,9 +371,9 @@ const VytalLP = () => {
         </section>
 
         {/* Footer */}
-        <footer className="py-12 border-t" style={{ backgroundColor: "#0a0a0a", borderColor: "#1a1a1a" }}>
+        <footer className="py-10 sm:py-12 border-t" style={{ backgroundColor: "#0a0a0a", borderColor: "#1a1a1a" }}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
               {[
                 { title: "App", links: ["Como Funciona", "Tipos de Desafio", "Comunidades", "Instalar (PWA)"] },
                 { title: "Empresa", links: ["Sobre o VYTAL", "Blog", "Carreiras", "Imprensa"] },

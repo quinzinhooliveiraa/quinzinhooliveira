@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Youtube, Instagram, BookOpen, Music, Linkedin, ExternalLink } from "lucide-react";
 import SEO from "@/components/SEO";
@@ -204,7 +205,7 @@ function PlatformCard({ platform }: { platform: PlatformItem }) {
         <p className="text-muted-foreground text-sm leading-relaxed">{platform.description}</p>
         {platform.link !== "#" && (
           <LinkWrapper className="inline-flex items-center gap-2 text-primary text-sm font-medium mt-3 hover:opacity-80 transition-opacity">
-            Acessar {isExternal ? <ExternalLink size={14} /> : <ArrowRight size={14} />}
+            Acessar {platform.external ? <ExternalLink size={14} /> : <ArrowRight size={14} />}
           </LinkWrapper>
         )}
       </div>
@@ -221,14 +222,14 @@ const Conteudo = () => {
       />
 
       {/* Hero */}
-      <section className="relative py-20 sm:py-28 overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>
+      <section className="relative py-12 sm:py-20 md:py-28 overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_70%)]" />
         <div className="relative z-10 section-container text-center">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold mb-4"
+            className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4"
           >
             Conteúdo
           </motion.h1>
@@ -236,7 +237,7 @@ const Conteudo = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-[hsl(0,0%,55%)] text-lg max-w-2xl mx-auto"
+            className="text-[hsl(0,0%,55%)] text-base sm:text-lg max-w-2xl mx-auto"
           >
             Cada plataforma tem um propósito. Aqui explico por que criei cada uma
             e o que você vai encontrar em cada lugar.
@@ -245,12 +246,12 @@ const Conteudo = () => {
       </section>
 
       {/* Pessoais */}
-      <section className="py-16 sm:py-24">
+      <section className="py-12 sm:py-16 md:py-24">
         <div className="section-container max-w-4xl">
           <FadeUp>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-8">Plataformas pessoais</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Plataformas pessoais</h2>
           </FadeUp>
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {pessoais.map((platform, i) => (
               <FadeUp key={platform.name} delay={i * 0.08}>
                 <PlatformCard platform={platform} />
@@ -261,13 +262,13 @@ const Conteudo = () => {
       </section>
 
       {/* Projetos */}
-      <section className="py-16 sm:py-24 bg-secondary/30">
+      <section className="py-12 sm:py-16 md:py-24 bg-secondary/30">
         <div className="section-container max-w-4xl">
           <FadeUp>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-4">Redes dos projetos</h2>
-            <p className="text-muted-foreground mb-8">Cada projeto tem sua própria rede social.</p>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Redes dos projetos</h2>
+            <p className="text-muted-foreground text-sm sm:text-base mb-6 sm:mb-8">Cada projeto tem sua própria rede social.</p>
           </FadeUp>
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
             {projetos.map((platform, i) => (
               <FadeUp key={platform.name} delay={i * 0.05}>
                 <a
@@ -296,7 +297,7 @@ const Conteudo = () => {
 
       {/* CTA */}
       <FadeUp>
-        <section className="py-16 sm:py-20">
+        <section className="py-12 sm:py-16 md:py-20">
           <div className="section-container text-center">
             <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-4">Quer acompanhar?</h2>
             <p className="text-muted-foreground mb-8 max-w-lg mx-auto">

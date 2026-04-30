@@ -54,21 +54,21 @@ const FadeUp = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 
 const Servicos = () => {
   return (
-    <div className="pt-16 min-h-screen bg-background">
+    <div className="pt-14 sm:pt-16 min-h-screen bg-background">
       <SEO
         title="Serviços"
         description="Edição de vídeo, criação de sites, landing pages, aplicativos, social media e vibe coding. Conheça todos os serviços do Quinzinho Oliveira."
       />
 
       {/* Hero */}
-      <section className="relative py-20 sm:py-28 overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>
+      <section className="relative py-12 sm:py-20 md:py-28 overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_70%)]" />
         <div className="relative z-10 section-container text-center">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold mb-4"
+            className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4"
           >
             Serviços
           </motion.h1>
@@ -76,7 +76,7 @@ const Servicos = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-[hsl(0,0%,55%)] text-lg max-w-2xl mx-auto"
+            className="text-[hsl(0,0%,55%)] text-base sm:text-lg max-w-2xl mx-auto"
           >
             Tudo o que aprendi criando ao longo da vida, agora como serviço.
             Do vídeo ao código, da estratégia à execução.
@@ -85,9 +85,9 @@ const Servicos = () => {
       </section>
 
       {/* Services Grid */}
-      <section className="py-16 sm:py-24">
+      <section className="py-12 sm:py-16 md:py-24">
         <div className="section-container">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {services.map((service, i) => (
               <FadeUp key={service.title} delay={i * 0.08}>
                 <div className="group p-6 sm:p-8 bg-card border border-border rounded-2xl hover:border-primary/40 transition-all duration-300 h-full flex flex-col">
@@ -112,7 +112,7 @@ const Servicos = () => {
 
       {/* CTA */}
       <FadeUp>
-        <section className="py-16 sm:py-20 bg-secondary/30">
+        <section className="py-12 sm:py-16 md:py-20 bg-secondary/30">
           <div className="section-container text-center">
             <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-4">Tem um projeto em mente?</h2>
             <p className="text-muted-foreground mb-8 max-w-lg mx-auto">

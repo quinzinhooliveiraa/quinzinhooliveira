@@ -63,7 +63,7 @@ const Sobre = () => {
     { title: "OLSPROJECT", desc: "Comunidade focada em autodesenvolvimento pessoal e profissional.", link: "/olsproject" },
   ].filter((s) => isVisible(s.link));
   return (
-    <div className="pt-16 min-h-screen bg-background">
+    <div className="pt-14 sm:pt-16 min-h-screen bg-background">
       <SEO
         title="Sobre Mim"
         description="Conheça a história do Quinzinho Oliveira. De DJ e produtor musical a empreendedor, autor do livro A Casa dos 20, consultor financeiro e criador de conteúdo."
@@ -71,16 +71,16 @@ const Sobre = () => {
       />
 
       {/* Hero */}
-      <section className="relative py-24 sm:py-32 overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>
+      <section className="relative py-14 sm:py-20 md:py-28 overflow-hidden" style={{ backgroundColor: 'hsl(0, 0%, 7%)', color: 'hsl(0, 0%, 95%)' }}>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(var(--primary)/0.08),transparent_70%)]" />
         <div className="relative z-10 section-container">
-          <div className="grid md:grid-cols-5 gap-10 items-center">
+          <div className="grid md:grid-cols-5 gap-8 md:gap-10 items-center">
             <div className="md:col-span-3">
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="text-primary font-medium uppercase tracking-widest text-sm mb-4"
+                className="text-primary font-medium uppercase tracking-widest text-xs sm:text-sm mb-3 sm:mb-4"
               >
                 Sobre mim
               </motion.p>
@@ -88,7 +88,7 @@ const Sobre = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
-                className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight"
+                className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight"
               >
                 Eu sou o Quinzinho.
               </motion.h1>
@@ -96,7 +96,7 @@ const Sobre = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="text-[hsl(0,0%,55%)] text-lg leading-relaxed max-w-xl"
+                className="text-[hsl(0,0%,55%)] text-base sm:text-lg leading-relaxed max-w-xl"
               >
                 Tenho 24 anos e desde sempre fui movido por criar coisas. Não importa o formato. O que me motiva é tirar algo da cabeça e colocar no mundo.
               </motion.p>
@@ -107,38 +107,38 @@ const Sobre = () => {
               transition={{ delay: 0.2, duration: 0.7 }}
               className="md:col-span-2 flex justify-center"
             >
-              <AdminImage settingKey="sobre_hero_photo" fallbackSrc={sobrePhoto2} alt="Quinzinho Oliveira" className="w-64 sm:w-80 rounded-2xl shadow-2xl object-cover aspect-[3/4]" />
+              <AdminImage settingKey="sobre_hero_photo" fallbackSrc={sobrePhoto2} alt="Quinzinho Oliveira" className="w-48 sm:w-64 md:w-80 rounded-2xl shadow-2xl object-cover aspect-[3/4]" />
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* Timeline / Storytelling */}
-      <section className="py-20 sm:py-28">
+      <section className="py-12 sm:py-20 md:py-28">
         <div className="section-container max-w-5xl">
           <FadeUp>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-16 text-center">A trajetória</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-10 sm:mb-16 text-center">A trajetória</h2>
           </FadeUp>
 
-          <div className="space-y-20 sm:space-y-28">
+          <div className="space-y-12 sm:space-y-20 md:space-y-28">
             {timeline.map((item, i) => {
               const isEven = i % 2 === 0;
               return (
                 <FadeUp key={item.year} delay={0.1}>
-                  <div className={`grid md:grid-cols-2 gap-8 sm:gap-12 items-center ${!isEven ? "md:direction-rtl" : ""}`}>
+                  <div className={`grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center ${!isEven ? "md:direction-rtl" : ""}`}>
                     <div className={`${!isEven ? "md:order-2" : ""}`}>
-                      <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest rounded-full mb-4">
+                      <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest rounded-full mb-3 sm:mb-4">
                         {item.year}
                       </span>
-                      <h3 className="font-heading text-2xl sm:text-3xl font-bold mb-4">{item.title}</h3>
-                      <p className="text-muted-foreground leading-relaxed">{item.text}</p>
+                      <h3 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4">{item.title}</h3>
+                      <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">{item.text}</p>
                     </div>
                     <div className={`${!isEven ? "md:order-1" : ""} flex justify-center`}>
                       <AdminImage
                         settingKey={`sobre_timeline_${i}`}
                         fallbackSrc={item.image}
                         alt={item.title}
-                        className="w-full max-w-sm rounded-2xl shadow-xl object-cover aspect-[4/5]"
+                        className="w-full max-w-[260px] sm:max-w-sm rounded-2xl shadow-xl object-cover aspect-[4/5]"
                       />
                     </div>
                   </div>
@@ -151,9 +151,9 @@ const Sobre = () => {
 
       {/* Quote */}
       <FadeUp>
-        <section className="py-16 sm:py-20" style={{ backgroundColor: 'hsl(0, 0%, 5%)' }}>
+        <section className="py-12 sm:py-16 md:py-20" style={{ backgroundColor: 'hsl(0, 0%, 5%)' }}>
           <div className="section-container max-w-3xl text-center">
-            <blockquote className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold leading-snug text-[hsl(0,0%,90%)]">
+            <blockquote className="font-heading text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-snug text-[hsl(0,0%,90%)]">
               "O que me guia não é um plano perfeito.<br />É a vontade de construir."
             </blockquote>
           </div>
@@ -162,12 +162,12 @@ const Sobre = () => {
 
       {/* What I do */}
       <FadeUp>
-        <section className="py-16 sm:py-24 bg-secondary/30">
+        <section className="py-12 sm:py-16 md:py-24 bg-secondary/30">
           <div className="section-container max-w-4xl">
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-10 text-center">O que faço hoje</h2>
-            <div className="grid sm:grid-cols-2 gap-6">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-8 sm:mb-10 text-center">O que faço hoje</h2>
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
               {services.map((item) => (
-                <div key={item.title} className="p-6 bg-card border border-border rounded-xl hover:border-primary/30 transition-colors">
+                <div key={item.title} className="p-5 sm:p-6 bg-card border border-border rounded-xl hover:border-primary/30 transition-colors">
                   <h3 className="font-heading font-bold mb-2">{item.title}</h3>
                   <p className="text-muted-foreground text-sm mb-3">{item.desc}</p>
                   {item.link && (
@@ -208,7 +208,7 @@ const Sobre = () => {
 
       {/* Social + CTA */}
       <FadeUp>
-        <section className="py-16 sm:py-20">
+        <section className="py-12 sm:py-16 md:py-20">
           <div className="section-container text-center">
             <h2 className="font-heading text-2xl sm:text-3xl font-bold mb-4">Vamos nos conectar</h2>
             <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
