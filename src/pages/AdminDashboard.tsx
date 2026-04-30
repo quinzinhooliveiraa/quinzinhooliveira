@@ -4,6 +4,7 @@ import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useAdmin } from "@/hooks/use-admin";
+import { invalidateAdminCache } from "@/hooks/use-admin-status";
 import { Plus, FileText, Eye, Pencil, LogOut, Calendar, Mail, Trash2, CheckCircle, UserPlus, Send, BarChart3, Layout, Target, Activity } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -77,6 +78,7 @@ const AdminDashboard = () => {
 
   const handleLogout = async () => {
     await api.post("/auth/logout");
+    invalidateAdminCache();
     navigate("/");
   };
 

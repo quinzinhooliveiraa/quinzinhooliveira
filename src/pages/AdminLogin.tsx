@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useToast } from "@/hooks/use-toast";
 import { LogIn } from "lucide-react";
+import { setAdminCache } from "@/hooks/use-admin-status";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -23,6 +24,7 @@ const AdminLogin = () => {
         setLoading(false);
         return;
       }
+      setAdminCache(true);
       navigate("/admin");
     } catch (err: any) {
       toast({ title: "Erro ao entrar", description: err.message, variant: "destructive" });

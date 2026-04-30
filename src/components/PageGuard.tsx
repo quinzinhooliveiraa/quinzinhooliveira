@@ -8,7 +8,7 @@ export default function PageGuard({ children }: { children: React.ReactNode }) {
   const { hidden, loading } = useHiddenPages();
   const { isAdmin, loading: adminLoading } = useAdminStatus();
 
-  if (loading || adminLoading) return null;
+  if (loading || adminLoading) return <div className="min-h-screen bg-background" />;
 
   const isHidden = hidden.includes(location.pathname);
 

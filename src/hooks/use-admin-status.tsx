@@ -1,25 +1,50 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
-export function useAdminStatus() {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
+let cache: boolean | null = null;
+let pending: Promise<boolean> | null = null;
+const subs = new Set<(v: boolean) => void>();
 
-  useEffect(() => {
-    let cancelled = false;
-    api
+async function load(): Promise<boolean> {
+  if (cache !== null) return cache;
+  if (!pending) {
+    pending = api
       .get("/auth/me")
       .then((data) => {
-        if (!cancelled) setIsAdmin(!!data?.admin);
+        cache = !!data?.admin;
+        return cache;
       })
       .catch(() => {
-        if (!cancelled) setIsAdmin(false);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
+        cache = false;
+        return false;
       });
+  }
+  return pending;
+}
+
+export function invalidateAdminCache() {
+  cache = null;
+  pending = null;
+}
+
+export function setAdminCache(value: boolean) {
+  cache = value;
+  subs.forEach((fn) => fn(value));
+}
+
+export function useAdminStatus() {
+  const [isAdmin, setIsAdmin] = useState(cache ?? false);
+  const [loading, setLoading] = useState(cache === null);
+
+  useEffect(() => {
+    const fn = (v: boolean) => setIsAdmin(v);
+    subs.add(fn);
+    load().then((v) => {
+      setIsAdmin(v);
+      setLoading(false);
+    });
     return () => {
-      cancelled = true;
+      subs.delete(fn);
     };
   }, []);
 
