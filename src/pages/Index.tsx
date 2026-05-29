@@ -239,7 +239,8 @@ const Index = () => {
             settingKey="homepage_hero_image"
             fallbackSrc={quinzinhoHero}
             alt="Quinzinho Oliveira"
-            className="w-full h-full object-cover object-bottom grayscale"
+            className="w-full h-full object-cover grayscale"
+            style={{ objectPosition: '65% 85%' }}
             containerClassName="h-full w-full"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[hsl(0,0%,7%)] via-[hsl(0,0%,7%)]/80 to-transparent" />
