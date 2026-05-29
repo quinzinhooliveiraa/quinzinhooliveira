@@ -12,6 +12,7 @@ import logoAppleBooks from "@/assets/logo-applebooks.png";
 import logoMagalu from "@/assets/logo-magalu.png";
 import logoAmericanas from "@/assets/logo-americanas.png";
 import logoClubeAutores from "@/assets/logo-clubeautores.png";
+import logoAppCasados20 from "@/assets/app-casados20-logo.png";
 import appScreenHome from "@/assets/app-screen-home.jpeg";
 import appScreenCards from "@/assets/app-screen-cards.jpeg";
 import appScreenJornada from "@/assets/app-screen-jornada.jpeg";
@@ -54,6 +55,7 @@ const defaultStores = [
   { name: "Magazine Luiza", settingKey: "livro_store_magalu", url: "https://www.magazineluiza.com.br/a-casa-dos-20-refletindo-sobre-os-desafios-da-transicao-para-a-vida-adulta-clube-de-autores/p/hb991841h6/li/best/", logo: logoMagalu },
   { name: "Americanas", settingKey: "livro_store_americanas", url: "https://www.americanas.com.br", logo: logoAmericanas },
   { name: "Clube de Autores", settingKey: "livro_store_clubeautores", url: "https://clubedeautores.pt/livro/a-casa-dos", logo: logoClubeAutores },
+  { name: "App Casa dos 20", settingKey: "livro_store_app", url: "https://acasados20.com.br/", logo: logoAppCasados20 },
 ];
 
 const realReviews = [
