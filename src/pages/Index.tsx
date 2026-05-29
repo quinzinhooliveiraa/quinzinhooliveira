@@ -38,7 +38,7 @@ type ProjectItem = {
 };
 
 const projetos: ProjectItem[] = [
-  { label: "A Casa dos 20", desc: "5.000+ vendidos", image: thumbLivro, link: "/livro" },
+  { label: "A Casa dos 20", desc: "5.000+ vendidos", image: thumbLivro, external: "https://acasados20.com.br/" },
   { label: "Consultoria Financeira", desc: "Planejamento pessoal", image: thumbConsultoria, link: "/consultoria" },
   { label: "Curso Redes Sociais", desc: "Em breve", image: thumbCurso, badge: "EM BREVE", link: "/curso" },
   { label: "Olivar Global", desc: "Comércio exterior", image: thumbOlivarContent, link: "/olivar-global" },
