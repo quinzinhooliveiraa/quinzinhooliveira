@@ -240,7 +240,7 @@ const Index = () => {
             fallbackSrc={quinzinhoHero}
             alt="Quinzinho Oliveira"
             className="w-full h-full object-cover grayscale"
-            style={{ objectPosition: '65% 85%' }}
+            style={{ objectPosition: '50% 85%', transform: 'translateX(20%)', width: '80%', marginLeft: '20%' }}
             containerClassName="h-full w-full"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[hsl(0,0%,7%)] via-[hsl(0,0%,7%)]/80 to-transparent" />
