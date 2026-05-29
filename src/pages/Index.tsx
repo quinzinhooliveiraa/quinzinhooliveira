@@ -245,6 +245,7 @@ const Index = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[hsl(0,0%,7%)] via-[hsl(0,0%,7%)]/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-[hsl(0,0%,7%)] via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-l from-[hsl(0,0%,7%)]/80 via-[hsl(0,0%,7%)]/20 to-transparent" />
         </div>
 
         <div className="relative z-10 section-container w-full">
