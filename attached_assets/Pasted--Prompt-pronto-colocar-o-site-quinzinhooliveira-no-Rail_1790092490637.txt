@@ -1,0 +1,152 @@
+# Prompt pronto — colocar o site `quinzinhooliveira` no Railway
+
+> Cola isso no agente (Replit) que edita o repo `quinzinhooliveiraa/quinzinhooliveira`.
+> Objetivo: deixar o repo pronto pra rodar no Railway como **um único serviço**
+> (o Express serve o front do `dist/` e a API `/api` juntos), sem quebrar o
+> Replit. Depois do commit, o Railway republica sozinho.
+
+---
+
+## Como esse projeto sobe (contexto)
+
+- É um pacote só (npm). `server/index.ts` é o servidor Express.
+- Em produção (`npm start` → `node serve.js` → roda `server/index.ts` via `tsx`
+  com `NODE_ENV=production`), o servidor serve os arquivos do `dist/` (build do
+  Vite) + as rotas `/api` + `/uploads`.
+- O build é `npm run build` (`vite build` → gera a pasta `dist/`).
+- O servidor já lê `process.env.PORT` (cai em 5000 se não vier) — o Railway
+  injeta a porta sozinho. ✅ Isso não precisa mexer.
+
+---
+
+## Tarefa 1 — Apagar o `bun.lock` (isto pode quebrar o build no Railway)
+
+O repo tem **`bun.lock` e `package-lock.json` ao mesmo tempo**. O Railway
+(Nixpacks) decide qual gerenciador usar pelo arquivo de lock que encontra, e com
+os dois presentes ele pode escolher o **bun** e instalar diferente do que você
+testa com npm. Como todos os scripts e o `start` usam npm, o certo é ficar só
+com npm.
+
+- **Apagar o arquivo `bun.lock`** da raiz do repo.
+- Manter o `package-lock.json`.
+- Se depois o build do Railway reclamar de lockfile fora de sincronia
+  (`npm ci` falhando), rodar `npm install` uma vez localmente pra atualizar o
+  `package-lock.json` e commitar.
+
+---
+
+## Tarefa 2 — Garantir o `tsx` em produção
+
+Em produção o servidor roda TypeScript direto: `serve.js` chama
+`node_modules/.bin/tsx`. Só que hoje o `tsx` está em `devDependencies`. Se o
+Railway podar as dev-dependencies na hora de rodar, o `tsx` some e o servidor
+**não sobe** (`serve.js` falha ao achar o binário).
+
+**Correção:** no `package.json`, mover `"tsx"` de `devDependencies` para
+`dependencies` (é a única dev-dep que roda em produção). Deixar `vite`,
+`typescript`, eslint etc. onde estão — esses são só de build/dev.
+
+Ficaria assim (mover a linha do tsx pra cima):
+
+```json
+  "dependencies": {
+    ...
+    "tsx": "^4.21.0",
+    ...
+  },
+  "devDependencies": {
+    ... (remover o tsx daqui) ...
+  }
+```
+
+---
+
+## Tarefa 3 — Config as code do Railway (arquivo novo)
+
+Criar `railway.json` na raiz do repo, pra deixar build e start gravados no
+código (o Nixpacks até detecta os scripts sozinho, mas explícito é mais seguro):
+
+```json
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "npm run build"
+  },
+  "deploy": {
+    "startCommand": "npm start",
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 3
+  }
+}
+```
+
+> Não usar o comando que está no `.replit` (`node ./dist/index.cjs`) — aquilo é
+> do Replit e aponta pra um arquivo que este projeto não gera. O comando certo
+> pro Railway é `npm start`.
+
+---
+
+## Tarefa 4 — Tirar o `.env` do controle de versão
+
+O arquivo `.env` está **commitado** no repo (não está no `.gitignore`). Hoje ele
+só tem as chaves públicas do Supabase (`VITE_...`), mas isso é má prática e um
+dia vaza um segredo de verdade.
+
+- Adicionar `.env` ao `.gitignore`.
+- Remover o `.env` do controle de versão: `git rm --cached .env` (o arquivo
+  continua na sua máquina, só sai do repo).
+- As variáveis passam a viver no painel do Railway (lista abaixo).
+
+---
+
+## Checklist de variáveis no painel do Railway (não é código)
+
+Setar no serviço. As `VITE_*` precisam existir **no momento do build** (elas
+entram no bundle do front); as outras são usadas em runtime pelo servidor.
+
+**Runtime (servidor):**
+- `DATABASE_URL` — Postgres do Railway (o código também aceita `NEON_DATABASE`).
+- `AUTH_SECRET`
+- `SESSION_SECRET`
+- `MASTER_ADMIN_EMAIL`
+- `MASTER_ADMIN_PASSWORD`
+- `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` (push)
+- `OPENAI_API_KEY`
+- `NODE_ENV` = `production`
+- `PORT` — o Railway injeta, **não criar manualmente**.
+
+**Build (front / Vite):**
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `VITE_SUPABASE_PROJECT_ID`
+
+Depois de subir o Postgres, rodar uma vez `npm run db:push` (drizzle) apontando
+pra `DATABASE_URL` de produção, pra criar as tabelas.
+
+---
+
+## Atenção — uploads somem no Railway (decidir)
+
+O servidor salva os arquivos enviados (multer) numa pasta local `uploads/`. O
+disco do Railway é **efêmero**: a cada deploy/restart, o que estiver em
+`uploads/` some. Se o site depende de imagens enviadas ficarem salvas, escolher
+uma das opções:
+
+1. Criar um **Volume** no Railway montado em `uploads/` (resolve no painel, sem
+   mexer no código), ou
+2. Migrar os uploads pro Storage do Supabase (mexe no código — posso mandar um
+   prompt separado pra isso se quiser).
+
+Se os uploads não são críticos (ou são raros), dá pra deixar pra depois — mas é
+bom saber que sem uma dessas opções eles não persistem.
+
+---
+
+## Verificação (depois do commit)
+
+1. O serviço no Railway sai de "Build failed" e fica verde/online.
+2. Abrir a URL → o site carrega (front + API no mesmo endereço, então não tem
+   problema de CORS/endereço da API aqui).
+3. Testar login/admin e uma rota `/api/...` qualquer.
+4. No Replit, tudo continua funcionando igual.
